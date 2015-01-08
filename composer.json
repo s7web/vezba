@@ -1,0 +1,12 @@
+{
+    "require": {
+        "illuminate/database": "~4.2",
+        "twig/twig": "1.*",
+        "s7designcreative/router" : "1.*"
+    },
+    "autoload" : {
+        "classmap" : [
+            "app/models"
+        ]
+    }
+}
