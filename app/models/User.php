@@ -4,12 +4,12 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
 
 class User extends Eloquent{
 
-    protected $table = "new_table";
+    protected $table = "users";
 
     protected $fillable = array(
         "id",
-        "username",
-        "email"
+        "email",
+        "password"
     );
 
 }

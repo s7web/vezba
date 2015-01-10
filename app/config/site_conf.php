@@ -28,9 +28,9 @@ define('SECURE_KEY', '2z7e7we2e77mjfkiqowc=+');
  *********************************************/
 define( 'DATABASE_DRIVER', 'mysql' );
 define( 'DATABASE_HOST', 'localhost' );
-define( 'DATABASE_USERNAME', 'root' );
+define( 'DATABASE_USERNAME', 'nenadpaic' );
 define( 'DATABASE_PASSWORD', 'poiu123321' );
-define( 'DATABASE_NAME', 'test' );
+define( 'DATABASE_NAME', 'easy' );
 define( 'DATABASE_CHARSET', 'utf8' );
 define( 'DATABASE_COLLATION', 'utf8_unicode_ci' );
 define( 'DATABASE_PREFIX', '' );

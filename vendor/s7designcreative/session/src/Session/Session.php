@@ -115,8 +115,10 @@ class Session extends SecureSession {
 
     /**
      * After log in perform regenerate_id
+     *
+     * @param integer $uid
      */
-    public function set_after_login()
+    public function set_after_login( $uid )
     {
         session_regenerate_id();
 
@@ -126,6 +128,7 @@ class Session extends SecureSession {
         $_SESSION[ 'ip' ] = $this->encrypt( $_SERVER[ 'REMOTE_ADDR' ] );
         $_SESSION[ 'user_agent' ] = $this->encrypt( $_SERVER[ 'HTTP_USER_AGENT' ] );
         $_SESSION[ 'last_login' ] = $this->encrypt( time() );
+        $_SESSION['user_login'] = $this->encrypt( $uid );
     }
 
 } 
