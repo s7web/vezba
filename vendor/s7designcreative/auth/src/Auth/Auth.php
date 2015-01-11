@@ -23,8 +23,13 @@ class Auth {
         return new Login($session);
     }
 
-    public static function register( array $data ){
-
+    /**
+     * Get the instance of Register class to register user
+     *
+     * @return Register
+     */
+    public static function register(){
+        return new Register();
     }
 
     public static function accExpired(){
