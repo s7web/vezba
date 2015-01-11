@@ -9,10 +9,21 @@ namespace Validator;
  * @author s7designcreative
  */
 class ValidatorType {
+    
     private $errors = array();
+
+    /**
+     * Run validation check
+     *
+     * @param array $input
+     * @param array $rules
+     */
     public function __construct( array $input, array $rules ){
+
         foreach( $rules as $key => $value ){
+
             $rules = explode('|', $value);
+
             foreach( $rules as $r){
 
                 if( strpos($r, ':')){
@@ -21,9 +32,7 @@ class ValidatorType {
                     continue;
                 }
                 $this->$r($key, $input[$key]);
-
             }
-
         }
     }
 
