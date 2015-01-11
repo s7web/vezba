@@ -11,7 +11,20 @@ namespace Validator;
 class ValidatorType {
     private $errors = array();
     public function __construct( array $input, array $rules ){
+        foreach( $rules as $key => $value ){
+            $rules = explode('|', $value);
+            foreach( $rules as $r){
 
+                if( strpos($r, ':')){
+                    $rules_param = explode(':', $r);
+                    $this->$rules_param[0]( $key, $input[$key], $rules_param[1] );
+                    continue;
+                }
+                $this->$r($key, $input[$key]);
+
+            }
+
+        }
     }
 
     /**
@@ -23,7 +36,7 @@ class ValidatorType {
      */
     private function min( $key, $value, $length ){
         $val_length = strlen($value);
-        if( ! $val_length > $length ){
+        if(  $val_length < $length ){
             $this->setError($key, "$key must be minimium $length characters long");
         }
     }
@@ -48,8 +61,8 @@ class ValidatorType {
      * @param string $key
      * @param string $value
      */
-    private function required($input,$key, $value){
-        if( ! array_key_exists($key, $input) && $value == ''){
+    private function required($key, $value ){
+        if( $value == ''){
             $this->setError($key, "$key is required");
         }
     }
@@ -88,7 +101,7 @@ class ValidatorType {
      * @param string    $value
      */
     private function string_all( $key, $value ){
-      if(preg_match('^[a-zA-Z0-9\,\.\!\'\"\?\_\-\:\; \-]+$', $value) === 0){
+      if(preg_match('/^[a-zA-Z0-9\,\.\!\'\"\?\_\-\:\; \-]+$/', $value) === 0){
           $this->setError($key, "$key is not in valid format, its allowed only alpha numeric characters with punctuation and spaces!");
       }
     }
@@ -100,7 +113,7 @@ class ValidatorType {
      * @param string    $value
      */
     private function alpha( $key, $value){
-        if(preg_match("^[a-zA-Z]+$", $value ) === 0){
+        if(preg_match("/^[a-zA-Z]+$/", $value ) === 0){
             $this->setError($key, 'Only alphabet characters are allowed');
         }
     }
@@ -113,7 +126,7 @@ class ValidatorType {
      */
     private function numeric($key, $value){
         if(!is_numeric($value)){
-            $this->setError($key, "$key mus be numeric");
+            $this->setError($key, "$key must be numeric");
         }
     }
 
