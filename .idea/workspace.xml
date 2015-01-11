@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="bd3c9fe0-8f0e-4d54-9e10-4afae0703824" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/vendor/s7designcreative/validator/src/Validator/ValidatorType.php" afterPath="$PROJECT_DIR$/vendor/s7designcreative/validator/src/Validator/ValidatorType.php" />
-    </list>
+    <list default="true" id="bd3c9fe0-8f0e-4d54-9e10-4afae0703824" name="Default" comment="" />
     <ignored path="development.two.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/dataSources.local.xml" />
@@ -90,7 +88,7 @@
       <file leaf-file-name="ValidatorType.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/vendor/s7designcreative/validator/src/Validator/ValidatorType.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.35457706" vertical-offset="1020" max-vertical-offset="3247">
+            <state vertical-scroll-proportion="1.5365006" vertical-offset="0" max-vertical-offset="3247">
               <caret line="78" column="24" selection-start-line="78" selection-start-column="24" selection-end-line="78" selection-end-column="24" />
               <folding />
             </state>
@@ -1077,7 +1075,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/vendor/s7designcreative/validator/src/Validator/ValidatorType.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.35457706" vertical-offset="1020" max-vertical-offset="3247">
+        <state vertical-scroll-proportion="1.5365006" vertical-offset="0" max-vertical-offset="3247">
           <caret line="78" column="24" selection-start-line="78" selection-start-column="24" selection-end-line="78" selection-end-column="24" />
           <folding />
         </state>
