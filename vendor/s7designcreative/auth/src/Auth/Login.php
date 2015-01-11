@@ -141,7 +141,7 @@ class Login
      */
     private function preparePassword($password)
     {
-        return Encrypt::encrypt($this->filterPassword($password));
+        return Encrypt::encrypt($this->filterPassword($password), DEFAULT_ENCRYPTION);
     }
 
     /**

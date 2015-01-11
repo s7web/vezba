@@ -22,6 +22,8 @@ define( 'DEBUG_MODE', true );
 define('DEFAULT_LANG', 'en');
 //secure key for encrypt
 define('SECURE_KEY', '2z7e7we2e77mjfkiqowc=+');
+//default encryption
+define('DEFAULT_ENCRYPTION', 'blowfish');
 
 /*********************************************
  * *************DATABASE CONFIG***************
