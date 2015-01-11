@@ -90,8 +90,8 @@
       <file leaf-file-name="ValidatorType.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/vendor/s7designcreative/validator/src/Validator/ValidatorType.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.21668598" vertical-offset="0" max-vertical-offset="3026">
-              <caret line="11" column="4" selection-start-line="11" selection-start-column="4" selection-end-line="11" selection-end-column="4" />
+            <state vertical-scroll-proportion="0.35457706" vertical-offset="1020" max-vertical-offset="3247">
+              <caret line="78" column="24" selection-start-line="78" selection-start-column="24" selection-end-line="78" selection-end-column="24" />
               <folding />
             </state>
           </provider>
@@ -1077,8 +1077,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/vendor/s7designcreative/validator/src/Validator/ValidatorType.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.21668598" vertical-offset="0" max-vertical-offset="3026">
-          <caret line="11" column="4" selection-start-line="11" selection-start-column="4" selection-end-line="11" selection-end-column="4" />
+        <state vertical-scroll-proportion="0.35457706" vertical-offset="1020" max-vertical-offset="3247">
+          <caret line="78" column="24" selection-start-line="78" selection-start-column="24" selection-end-line="78" selection-end-column="24" />
           <folding />
         </state>
       </provider>
