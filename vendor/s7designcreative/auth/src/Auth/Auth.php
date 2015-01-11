@@ -6,27 +6,21 @@ use Session\Session;
  * Class Auth
  * @package Auth
  *
- * @version 09.01.2015
+ * @version 11.01.2015
  * @author s7designcreative
  */
 class Auth {
+
     /**
-     * Login user
+     * Login user class container
      *
      * @param Session $session
-     * @param string $email
-     * @param string $password
-     * @return array|bool
+     * @return Login
      */
-    public static function login(Session $session, $email, $password)
+    public static function login(Session $session)
     {
 
-        $login = new Login($session);
-        if ($login->login($email, $password)) {
-            return TRUE;
-        } else {
-            return $login->getErrors();
-        }
+        return new Login($session);
     }
 
     public static function register( array $data ){
