@@ -35,6 +35,10 @@ class Request {
     /** @var string $this->request_method */
     private $request_method;
 
+    /**
+     * Session object
+     * @var Session
+     */
     private $session;
 
     /**
@@ -284,6 +288,21 @@ class Request {
         }
     }
 
+    /**
+     * Return session object
+     *
+     * @return Session
+     */
+    public function getSession(){
+
+        return $this->session;
+    }
+
+    /**
+     * SetUp token for CSRF protection
+     *
+     * @return string
+     */
     public function csrf_protect(){
 
         $token = md5(uniqid(rand(), true));

@@ -1,18 +1,18 @@
 <?php
 
-use Illuminate\Database\Capsule\Manager as Capsule;
+use Doctrine\ORM\Tools\Setup;
+use Doctrine\ORM\EntityManager;
 
-$capsule = new Capsule();
+$paths     = array(APP_PATH . '/src');
+$isDevMode = false;
 
-$capsule->addConnection([
-    "driver"   => DATABASE_DRIVER,
-    "host"     => DATABASE_HOST,
-    "username" => DATABASE_USERNAME,
-    "password" => DATABASE_PASSWORD,
-    "database" => DATABASE_NAME,
-    "charset"  => DATABASE_CHARSET,
-    "collation" => DATABASE_COLLATION,
-    "prefix"   => DATABASE_PREFIX
-]);
+$dbParams = array(
+    'host'     => '127.0.0.1',
+    'driver'   => 'pdo_mysql',
+    'user'     => 'root',
+    'password' => '',
+    'dbname'   => 'test',
+);
 
-$capsule->bootEloquent();
+$config = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode);
+$entityManager = EntityManager::create($dbParams, $config);

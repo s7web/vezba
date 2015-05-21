@@ -7,14 +7,15 @@
  * @version 10-12-2014
  * @author  s7designcreative
  */
-class App {
+class App
+{
 
 
-	protected $controller = "home";
+    protected $controller = "home";
 
-	protected $method = "index";
+    protected $method = "index";
 
-	protected $params = [];
+    protected $params = [ ];
 
     /**
      * Construct method
@@ -30,10 +31,8 @@ class App {
 
             $route_exists = $request->getExists();
             if ($route_exists) {
-                if (is_readable( "../app/controllers/" . $request->getController() . ".php" )) {
-
-                    $this->controller = $request->getController();
-                    require_once "../app/controllers/" . $request->getController() . ".php";
+                $this->controller = $request->getController();
+                if (class_exists( $this->controller )) {
 
                     $this->controller = new $this->controller;
 
@@ -59,15 +58,11 @@ class App {
                 throw new \Exception( 'Such route does not exist!' );
             }
 
-            $args = new stdClass();
-            $args->request = $request;
-            $args->session = $session;
-
-            call_user_func( [ $this->controller, $this->method ], $args );
+            call_user_func( [ $this->controller, $this->method ], $request );
         } catch ( \Exception $e ) {
             $error = $e->getMessage();
             $trace = $e->getTrace();
-            require_once SITE_PATH . 'errors.php';
+            require_once SITE_PATH.'errors.php';
         }
     }
 }

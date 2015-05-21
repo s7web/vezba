@@ -39,7 +39,7 @@ class MenuExtension extends \Twig_Extension {
      */
     public function generate_menu( $class, $method ){
         require_once APP_PATH . '/controllers/'. strtolower($class ) . '.php';
-        call_user_func([$class, $method]);
+        @call_user_func([$class, $method]);
     }
 
     /**
