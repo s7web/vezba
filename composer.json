@@ -10,7 +10,10 @@
         "behat/mink": "~1.6",
         "behat/mink-browserkit-driver": "~1.2",
         "behat/mink-selenium2-driver": "~1.2",
-        "behat/mink-goutte-driver": "~1.1"
+        "behat/mink-goutte-driver": "~1.1",
+        "symfony/form": "~2.6",
+        "symfony/validator": "~2.6",
+        "symfony/twig-bridge": "~2.6"
     },
     "autoload" : {
         "psr-0" : {
