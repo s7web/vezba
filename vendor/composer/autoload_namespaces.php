@@ -48,5 +48,5 @@ return array(
     'Behat\\Gherkin' => array($vendorDir . '/behat/gherkin/src'),
     'Behat\\Behat' => array($vendorDir . '/behat/behat/src'),
     'Auth' => array($vendorDir . '/s7designcreative/auth/src'),
-    '' => array($baseDir . '/app/src'),
+    '' => array($baseDir . '/src'),
 );
