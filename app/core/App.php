@@ -59,7 +59,7 @@ class App
                 throw new \Exception( 'Such route does not exist!' );
             }
 
-            $paths     = array(SITE_PATH . '/src');
+            $paths     = array( SITE_PATH.'/src' );
             $isDevMode = false;
 
             $dbParams = array(
@@ -70,10 +70,10 @@ class App
                 'dbname'   => DATABASE_NAME,
             );
 
-            $config = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode);
+            $config = Setup::createAnnotationMetadataConfiguration( $paths, $isDevMode );
 
-            $entityManager = EntityManager::create($dbParams, $config);
-            $serviceContainer = new \Helpers\ServiceContainer($request, $entityManager);
+            $entityManager    = EntityManager::create( $dbParams, $config );
+            $serviceContainer = new \Helpers\ServiceContainer( $request, $entityManager );
 
             call_user_func( [ $this->controller, $this->method ], $serviceContainer );
         } catch ( \Exception $e ) {

@@ -1,8 +1,8 @@
 <?php
 //site root path
-define( 'SITE_PATH', __DIR__ . '/../../' );
+define( 'SITE_PATH', __DIR__.'/../../' );
 //application path
-define( 'APP_PATH', __DIR__ . '/../' );
+define( 'APP_PATH', __DIR__.'/../' );
 //configuration path
 define( 'CONFIG_PATH', __DIR__ );
 //site name
@@ -19,11 +19,11 @@ define( 'DEFAULT_METHOD', 'index' );
 define( 'DEBUG_MODE', true );
 
 //default lang
-define('DEFAULT_LANG', 'en');
+define( 'DEFAULT_LANG', 'en' );
 //secure key for encrypt
-define('SECURE_KEY', '2z7e7we2e77mjfkiqowc=+');
+define( 'SECURE_KEY', '2z7e7we2e77mjfkiqowc=+' );
 //default encryption
-define('DEFAULT_ENCRYPTION', 'blowfish');
+define( 'DEFAULT_ENCRYPTION', 'blowfish' );
 
 /*********************************************
  * *************DATABASE CONFIG***************
