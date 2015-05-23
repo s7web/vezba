@@ -8,7 +8,8 @@ namespace Helpers;
  * @version 4-1-2015
  * @author  s7designcreative
  */
-class MenuExtension extends \Twig_Extension {
+class MenuExtension extends \Twig_Extension
+{
 
     /**
      * Add new function to twig
@@ -17,8 +18,8 @@ class MenuExtension extends \Twig_Extension {
     public function getFunctions()
     {
         return array(
-            'sidebar_menu' => new \Twig_Function_Method($this, 'generate_sidebar_menu'),
-            'menu' => new \Twig_Function_Method($this, 'generate_menu'),
+            'sidebar_menu' => new \Twig_Function_Method( $this, 'generate_sidebar_menu' ),
+            'menu'         => new \Twig_Function_Method( $this, 'generate_menu' ),
         );
     }
 
@@ -28,18 +29,21 @@ class MenuExtension extends \Twig_Extension {
      * @param $class
      * @param $method
      */
-    public function generate_sidebar_menu($class, $method){
-       call_user_func([$class, $method]);
+    public function generate_sidebar_menu( $class, $method )
+    {
+        call_user_func( [ $class, $method ] );
     }
 
     /**
      * Function callback
+     *
      * @param $class
      * @param $method
      */
-    public function generate_menu( $class, $method ){
-        require_once APP_PATH . '/controllers/'. strtolower($class ) . '.php';
-        call_user_func([$class, $method]);
+    public function generate_menu( $class, $method )
+    {
+        require_once APP_PATH.'/controllers/'.strtolower( $class ).'.php';
+        call_user_func( [ $class, $method ] );
     }
 
     /**

@@ -17,14 +17,16 @@ class SecureSession
      */
     function __construct()
     {
-        $textkey = SECURE_KEY;
+        $textkey         = SECURE_KEY;
         $this->securekey = hash( 'sha256', $textkey, true );
-        $this->iv = mcrypt_create_iv( 32 );
+        $this->iv        = mcrypt_create_iv( 32 );
     }
 
     /**
      * Encrypt given param
+     *
      * @param $input
+     *
      * @return string
      */
     function encrypt( $input )
@@ -38,6 +40,7 @@ class SecureSession
      * Decrypt given param
      *
      * @param $input
+     *
      * @return string
      */
     function decrypt( $input )
@@ -49,22 +52,24 @@ class SecureSession
 
     /**
      * Set session key and encrypt it
+     *
      * @param $name
      * @param $val
      */
     public function setSessionKey( $name, $val )
     {
-        $_SESSION[ $name ] = $this->encrypt( $val );
+        $_SESSION[$name] = $this->encrypt( $val );
     }
 
     /**
      * Get decrypted value from session
      *
      * @param $name
+     *
      * @return string
      */
     public function getSessionKey( $name )
     {
-        return $this->decrypt( $_SESSION[ $name ] );
+        return $this->decrypt( $_SESSION[$name] );
     }
 } 

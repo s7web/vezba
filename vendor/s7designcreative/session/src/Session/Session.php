@@ -8,7 +8,8 @@ namespace Session;
  * @version 4-1-2015
  * @author  s7designcreative
  */
-class Session extends SecureSession {
+class Session extends SecureSession
+{
 
     /**
      * Start session, chenge name to site name, check is session valid
@@ -16,11 +17,12 @@ class Session extends SecureSession {
     public function __construct()
     {
         //session_name( SITE_NAME );
-        if(session_id() == '') {
+        if (session_id() == '') {
             session_start();
         }
         $this->confirm_session_valid();
     }
+
     /**
      * Destroy session
      */
@@ -37,10 +39,10 @@ class Session extends SecureSession {
      */
     private function request_ip_matches()
     {
-        if (!array_key_exists( 'ip', $_SESSION ) || !array_key_exists( 'REMOTE_ADDR', $_SERVER )) {
+        if ( ! array_key_exists( 'ip', $_SESSION ) || ! array_key_exists( 'REMOTE_ADDR', $_SERVER )) {
             return false;
         }
-        if ($this->decrypt( $_SESSION[ 'ip' ] ) === $_SERVER[ 'REMOTE_ADDR' ]) {
+        if ($this->decrypt( $_SESSION['ip'] ) === $_SERVER['REMOTE_ADDR']) {
             return true;
         } else {
             return false;
@@ -52,12 +54,13 @@ class Session extends SecureSession {
      *
      * @return bool
      */
-    private function request_user_agent_matches(){
+    private function request_user_agent_matches()
+    {
 
-        if(!array_key_exists( 'user_agent', $_SESSION) || !array_key_exists( 'HTTP_USER_AGENT',  $_SERVER)) {
+        if ( ! array_key_exists( 'user_agent', $_SESSION ) || ! array_key_exists( 'HTTP_USER_AGENT', $_SERVER )) {
             return false;
         }
-        if($this->decrypt( $_SESSION['user_agent'] ) === $_SERVER['HTTP_USER_AGENT']) {
+        if ($this->decrypt( $_SESSION['user_agent'] ) === $_SERVER['HTTP_USER_AGENT']) {
             return true;
         } else {
             return false;
@@ -72,10 +75,10 @@ class Session extends SecureSession {
     {
         $max_elapsed = 60 * 60 * 24; // 1 day
         // return false if value is not set
-        if (!array_key_exists( 'last_login', $_SESSION )) {
+        if ( ! array_key_exists( 'last_login', $_SESSION )) {
             return false;
         }
-        $sesion_last_log = $this->decrypt( $_SESSION['last_login']);
+        $sesion_last_log = $this->decrypt( $_SESSION['last_login'] );
         /** @var $sesion_last_log int */
         if (( $sesion_last_log + $max_elapsed ) >= time()) {
             return true;
@@ -91,13 +94,13 @@ class Session extends SecureSession {
      */
     private function is_session_valid()
     {
-        if (!$this->request_ip_matches()) {
+        if ( ! $this->request_ip_matches()) {
             return false;
         }
-        if (!$this->request_user_agent_matches()) {
+        if ( ! $this->request_user_agent_matches()) {
             return false;
         }
-        if (!$this->last_login_check()) {
+        if ( ! $this->last_login_check()) {
             return false;
         }
 
@@ -107,8 +110,12 @@ class Session extends SecureSession {
     /**
      * Check is session valid if not destroy session
      */
-    private  function confirm_session_valid(){
-        if( array_key_exists( 'logged',  $_SESSION ) && $this->decrypt( $_SESSION['logged'] ) === true &&  !$this->is_session_valid()) {
+    private function confirm_session_valid()
+    {
+        if (array_key_exists( 'logged', $_SESSION ) && $this->decrypt(
+                $_SESSION['logged']
+            ) === true && ! $this->is_session_valid()
+        ) {
             $this->session_end();
         }
     }
@@ -123,11 +130,11 @@ class Session extends SecureSession {
         session_regenerate_id();
 
         /** @var $_SESSION array */
-        $_SESSION[ 'logged' ] = $this->encrypt( true );
+        $_SESSION['logged'] = $this->encrypt( true );
         // Save these values in the session, even when checks aren't enabled
-        $_SESSION[ 'ip' ] = $this->encrypt( $_SERVER[ 'REMOTE_ADDR' ] );
-        $_SESSION[ 'user_agent' ] = $this->encrypt( $_SERVER[ 'HTTP_USER_AGENT' ] );
-        $_SESSION[ 'last_login' ] = $this->encrypt( time() );
+        $_SESSION['ip'] = $this->encrypt( $_SERVER['REMOTE_ADDR'] );
+        $_SESSION['user_agent'] = $this->encrypt( $_SERVER['HTTP_USER_AGENT'] );
+        $_SESSION['last_login'] = $this->encrypt( time() );
         $_SESSION['user_login'] = $this->encrypt( $uid );
     }
 

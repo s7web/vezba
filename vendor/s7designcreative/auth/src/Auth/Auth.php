@@ -1,5 +1,6 @@
 <?php
 namespace Auth;
+
 use Session\Session;
 
 /**
@@ -9,18 +10,20 @@ use Session\Session;
  * @version 11.01.2015
  * @author s7designcreative
  */
-class Auth {
+class Auth
+{
 
     /**
      * Login user class container
      *
      * @param Session $session
+     *
      * @return Login
      */
-    public static function login(Session $session)
+    public static function login( Session $session )
     {
 
-        return new Login($session);
+        return new Login( $session );
     }
 
     /**
@@ -28,11 +31,13 @@ class Auth {
      *
      * @return Register
      */
-    public static function register(){
+    public static function register()
+    {
         return new Register();
     }
 
-    public static function accExpired(){
+    public static function accExpired()
+    {
 
     }
 

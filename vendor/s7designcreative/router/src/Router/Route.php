@@ -8,15 +8,16 @@ namespace Router;
  * @version 1-1-2015
  * @author  s7designcreative
  */
-class Route {
+class Route
+{
 
-    /** @var  string $this->route */
+    /** @var  string $this ->route */
     public $route;
 
-    /** @var  string $this->controller */
+    /** @var  string $this ->controller */
     public $controller;
 
-    /** @var  string $this->method */
+    /** @var  string $this ->method */
     public $method;
 
     public $request_method;
@@ -25,6 +26,7 @@ class Route {
      * Set route
      *
      * @param array $route
+     *
      * @return $this
      * @throws \Exception
      */
@@ -35,9 +37,9 @@ class Route {
             throw new \Exception( 'Route is empty. Error in configuration' );
         }
 
-        $this->route = $route[ 'route' ];
-        $this->controller = $route[ 'controller' ];
-        $this->method = $route[ 'method' ];
+        $this->route          = $route['route'];
+        $this->controller     = $route['controller'];
+        $this->method         = $route['method'];
         $this->request_method = $route['request_method'];
 
         return $this;

@@ -21,13 +21,14 @@ class EncryptBlowfish implements EncryptInterface
      * Encrypt password using blowfish
      *
      * @param $password
+     *
      * @return bool|string
      */
     public function make( $password )
     {
         $this->password = $this->clean_string( $password );
-        $this->salt = SECURE_KEY;
-        $this->cost = 12;
+        $this->salt     = SECURE_KEY;
+        $this->cost     = 12;
 
         $pass_encrypted = $this->encrypt();
 
@@ -38,6 +39,7 @@ class EncryptBlowfish implements EncryptInterface
      * Ensure that we do htmlentities
      *
      * @param $password
+     *
      * @return mixed
      */
     private function clean_string( $password )

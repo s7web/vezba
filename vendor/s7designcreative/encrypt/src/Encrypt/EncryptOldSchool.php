@@ -19,12 +19,13 @@ class EncryptOldSchool implements EncryptInterface
      * Encrypt password
      *
      * @param $password
+     *
      * @return string
      */
     public function make( $password )
     {
         $this->password = $this->clean( $password );
-        $this->salt = SECURE_KEY;
+        $this->salt     = SECURE_KEY;
 
         $pass_enc = $this->encrypt();
 
@@ -35,6 +36,7 @@ class EncryptOldSchool implements EncryptInterface
      * Ensure that we do htmlentities
      *
      * @param $password
+     *
      * @return mixed
      */
     private function clean( $password )
@@ -51,7 +53,7 @@ class EncryptOldSchool implements EncryptInterface
     private function encrypt()
     {
 
-        $pass_enc = sha1( md5( $this->salt ) . sha1( $this->password ) );
+        $pass_enc = sha1( md5( $this->salt ).sha1( $this->password ) );
 
         return $pass_enc;
     }

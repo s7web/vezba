@@ -13,26 +13,27 @@ use Session\Session;
  * @version 1-1-2015
  * @author  s7designcreative
  */
-class Request {
+class Request
+{
 
-    /** @var  string $this->url */
+    /** @var  string $this ->url */
     private $url;
 
-    /** @var $this->routes array */
+    /** @var $this ->routes array */
     private $routes;
 
-    /** @var  string $this->controller */
+    /** @var  string $this ->controller */
     private $controller;
 
-    /** @var  string $this->method */
+    /** @var  string $this ->method */
     private $method;
 
-    /** @var  array $this->params */
+    /** @var  array $this ->params */
     private $params;
 
-    /** @var  bool $this->exists */
+    /** @var  bool $this ->exists */
     private $exists;
-    /** @var string $this->request_method */
+    /** @var string $this ->request_method */
     private $request_method;
 
     private $session;
@@ -44,9 +45,9 @@ class Request {
      */
     public function __construct( Router $routes, Session $session )
     {
-        $this->url = ( array_key_exists( 'url',  $_GET ) ) ? $_GET[ 'url' ] : null;
+        $this->url = ( array_key_exists( 'url', $_GET ) ) ? $_GET['url'] : null;
 
-        $this->request_method = filter_var( $_SERVER[ 'REQUEST_METHOD' ], FILTER_SANITIZE_STRING );
+        $this->request_method = filter_var( $_SERVER['REQUEST_METHOD'], FILTER_SANITIZE_STRING );
 
         $this->session = $session;
 
@@ -60,9 +61,10 @@ class Request {
      *
      * @return array
      */
-    private function parseUrl(){
+    private function parseUrl()
+    {
 
-        $url = explode( '/',  rtrim( $this->url, '/' )  );
+        $url = explode( '/', rtrim( $this->url, '/' ) );
 
         return $url;
     }
@@ -78,10 +80,10 @@ class Request {
     {
 
         $this->exists = false;
-        $have_params = false;
+        $have_params  = false;
 
         $route_request = $this->getRequestedRoute();
-        $params_check = strpos( $route_request, '=' );
+        $params_check  = strpos( $route_request, '=' );
         if ($params_check != false) {
             $have_params = true;
         }
@@ -96,13 +98,13 @@ class Request {
                     break;
                 }
 
-                if ($this->request_method == 'POST' && $this->session->getSessionKey( 'token' ) != $_POST[ 'token' ]) {
+                if ($this->request_method == 'POST' && $this->session->getSessionKey( 'token' ) != $_POST['token']) {
                     throw new \Exception( 'Invalid request' );
                     break;
                 }
                 $this->controller = $route->controller;
-                $this->method = $route->method;
-                $this->params = array();
+                $this->method     = $route->method;
+                $this->params     = array();
                 if ($have_params) {
                     $this->params = $this->filterRequestedParams();
                 }
@@ -112,9 +114,9 @@ class Request {
         }
         if ($this->url === null) {
             $this->controller = DEFAULT_CTRL;
-            $this->method = DEFAULT_METHOD;
-            $this->params = array();
-            $this->exists = true;
+            $this->method     = DEFAULT_METHOD;
+            $this->params     = array();
+            $this->exists     = true;
         }
     }
 
@@ -124,6 +126,7 @@ class Request {
      * @see Request::matchRoute
      *
      * @param bool $have_params
+     *
      * @return array|string
      */
     private function filterRequestedRoute( $have_params )
@@ -132,7 +135,7 @@ class Request {
         if ($have_params) {
             array_pop( $route );
         }
-        $route = filter_var(implode( '/', $route ), FILTER_SANITIZE_URL );
+        $route = filter_var( implode( '/', $route ), FILTER_SANITIZE_URL );
 
         return $route;
     }
@@ -159,8 +162,8 @@ class Request {
     private function filterRequestedParams()
     {
 
-        $route = $this->parseUrl();
-        $params = array_pop( $route );
+        $route       = $this->parseUrl();
+        $params      = array_pop( $route );
         $real_params = array();
 
         $params = explode( ';', $params );
@@ -170,12 +173,12 @@ class Request {
                 continue;
             }
             $real_uf = explode( '=', $param );
-            if (!array_key_exists( 1, $real_uf ) || $real_uf[ 1 ] === '') {
+            if ( ! array_key_exists( 1, $real_uf ) || $real_uf[1] === '') {
                 continue;
             }
 
-            $real_params[ filter_var( $real_uf[ 0 ], FILTER_SANITIZE_STRING ) ] = filter_var(
-                $real_uf[ 1 ],
+            $real_params[filter_var( $real_uf[0], FILTER_SANITIZE_STRING )] = filter_var(
+                $real_uf[1],
                 FILTER_SANITIZE_STRING
             );
         }
@@ -236,13 +239,14 @@ class Request {
      * Return single param from GET request array, you need to provide key
      *
      * @param $key
+     *
      * @return string
      */
     public function requestGetParam( $key )
     {
         $params = $this->filterRequestedParams();
         if (array_key_exists( $key, $params )) {
-            return $params[ $key ];
+            return $params[$key];
         } else {
             return '';
         }
@@ -256,14 +260,15 @@ class Request {
      */
     public function getAllPost()
     {
-        $post = $_POST;
+        $post          = $_POST;
         $filtered_post = array();
         foreach ($post as $key => $value) {
-            $filtered_post[ filter_var( $key, FILTER_SANITIZE_STRING ) ] = filter_var(
+            $filtered_post[filter_var( $key, FILTER_SANITIZE_STRING )] = filter_var(
                 $value,
                 FILTER_SANITIZE_STRING
             );
         }
+
         return $filtered_post;
     }
 
@@ -271,6 +276,7 @@ class Request {
      * Get single param from POST request
      *
      * @param $key
+     *
      * @return mixed
      */
     public function getParamPost( $key )
@@ -278,17 +284,18 @@ class Request {
 
         $post = $this->getAllPost();
         if (array_key_exists( $key, $post )) {
-            return $post[ $key ];
+            return $post[$key];
         } else {
             return '';
         }
     }
 
-    public function csrf_protect(){
+    public function csrf_protect()
+    {
 
-        $token = md5(uniqid(rand(), true));
+        $token = md5( uniqid( rand(), true ) );
 
-        $this->session->setSessionKey('token', $token);
+        $this->session->setSessionKey( 'token', $token );
 
         return $token;
     }

@@ -8,8 +8,9 @@ namespace Router;
  * @version 1-1-2015
  * @author  s7designcreative
  */
-class Router{
-    /** @var  array $this->routes */
+class Router
+{
+    /** @var  array $this ->routes */
     public $routes;
 
     /**
@@ -17,9 +18,10 @@ class Router{
      *
      * @param array $routes
      */
-    public function setRouter(array $routes){
-        foreach( $routes as $r ){
-            $router = new Route();
+    public function setRouter( array $routes )
+    {
+        foreach ($routes as $r) {
+            $router         = new Route();
             $this->routes[] = $router->setRoute( $r );
         }
 
@@ -30,7 +32,8 @@ class Router{
      *
      * @return $this
      */
-    public function getRouter(){
+    public function getRouter()
+    {
         return $this;
     }
 

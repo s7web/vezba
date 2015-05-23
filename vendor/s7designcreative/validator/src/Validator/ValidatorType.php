@@ -19,21 +19,21 @@ class ValidatorType
      * @param array $input
      * @param array $rules
      */
-    public function __construct(array $input, array $rules)
+    public function __construct( array $input, array $rules )
     {
 
         foreach ($rules as $key => $value) {
 
-            $rules = explode('|', $value);
+            $rules = explode( '|', $value );
 
             foreach ($rules as $r) {
 
-                if (strpos($r, ':')) {
-                    $rules_param = explode(':', $r);
-                    $this->$rules_param[0]($key, $input[$key], $rules_param[1]);
+                if (strpos( $r, ':' )) {
+                    $rules_param = explode( ':', $r );
+                    $this->$rules_param[0]( $key, $input[$key], $rules_param[1] );
                     continue;
                 }
-                $this->$r($key, $input[$key]);
+                $this->$r( $key, $input[$key] );
             }
         }
     }
@@ -45,11 +45,11 @@ class ValidatorType
      * @param string $value
      * @param string $length
      */
-    private function min($key, $value, $length)
+    private function min( $key, $value, $length )
     {
-        $val_length = strlen($value);
+        $val_length = strlen( $value );
         if ($val_length < $length) {
-            $this->setError($key, "$key must be minimium $length characters long");
+            $this->setError( $key, "$key must be minimium $length characters long" );
         }
     }
 
@@ -60,11 +60,11 @@ class ValidatorType
      * @param string $value
      * @param string $length
      */
-    private function max($key, $value, $length)
+    private function max( $key, $value, $length )
     {
-        $val_length = strlen($value);
-        if (!$val_length < $length) {
-            $this->setError($key, "$key must be less than $length characters long");
+        $val_length = strlen( $value );
+        if ( ! $val_length < $length) {
+            $this->setError( $key, "$key must be less than $length characters long" );
         }
     }
 
@@ -74,10 +74,10 @@ class ValidatorType
      * @param string $key
      * @param string $value
      */
-    private function required($key, $value)
+    private function required( $key, $value )
     {
         if ($value == '') {
-            $this->setError($key, "$key is required");
+            $this->setError( $key, "$key is required" );
         }
     }
 
@@ -87,12 +87,12 @@ class ValidatorType
      * @param string $key
      * @param string $value
      */
-    private function email($key, $value)
+    private function email( $key, $value )
     {
-        $email_validate = filter_var($value, FILTER_VALIDATE_EMAIL);
+        $email_validate = filter_var( $value, FILTER_VALIDATE_EMAIL );
 
-        if (!$email_validate) {
-            $this->setError($key, "$key is not in valid format");
+        if ( ! $email_validate) {
+            $this->setError( $key, "$key is not in valid format" );
         }
     }
 
@@ -102,11 +102,11 @@ class ValidatorType
      * @param string $key
      * @param string $value
      */
-    private function url($key, $value)
+    private function url( $key, $value )
     {
-        $valid_url = filter_var($value, FILTER_VALIDATE_URL);
-        if (!$valid_url) {
-            $this->setError($key, "That is not valid url");
+        $valid_url = filter_var( $value, FILTER_VALIDATE_URL );
+        if ( ! $valid_url) {
+            $this->setError( $key, "That is not valid url" );
         }
     }
 
@@ -116,10 +116,13 @@ class ValidatorType
      * @param string $key
      * @param string $value
      */
-    private function string_all($key, $value)
+    private function string_all( $key, $value )
     {
-        if (preg_match('/^[a-zA-Z0-9\,\.\!\'\"\?\_\-\:\; \-]+$/', $value) === 0) {
-            $this->setError($key, "$key is not in valid format, its allowed only alpha numeric characters with punctuation and spaces!");
+        if (preg_match( '/^[a-zA-Z0-9\,\.\!\'\"\?\_\-\:\; \-]+$/', $value ) === 0) {
+            $this->setError(
+                $key,
+                "$key is not in valid format, its allowed only alpha numeric characters with punctuation and spaces!"
+            );
         }
     }
 
@@ -129,10 +132,10 @@ class ValidatorType
      * @param string $key
      * @param string $value
      */
-    private function alpha($key, $value)
+    private function alpha( $key, $value )
     {
-        if (preg_match("/^[a-zA-Z]+$/", $value) === 0) {
-            $this->setError($key, 'Only alphabet characters are allowed');
+        if (preg_match( "/^[a-zA-Z]+$/", $value ) === 0) {
+            $this->setError( $key, 'Only alphabet characters are allowed' );
         }
     }
 
@@ -142,10 +145,10 @@ class ValidatorType
      * @param string $key
      * @param string $value
      */
-    private function numeric($key, $value)
+    private function numeric( $key, $value )
     {
-        if (!is_numeric($value)) {
-            $this->setError($key, "$key must be numeric");
+        if ( ! is_numeric( $value )) {
+            $this->setError( $key, "$key must be numeric" );
         }
     }
 
@@ -156,10 +159,10 @@ class ValidatorType
      */
     public function isValid()
     {
-        if (empty($this->errors)) {
-            return TRUE;
+        if (empty( $this->errors )) {
+            return true;
         } else {
-            return FALSE;
+            return false;
         }
     }
 
@@ -169,7 +172,7 @@ class ValidatorType
      * @param string $key
      * @param string $error
      */
-    private function setError($key, $error)
+    private function setError( $key, $error )
     {
         $this->errors[$key] = $error;
     }
