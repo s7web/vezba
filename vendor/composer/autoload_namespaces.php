@@ -30,6 +30,7 @@ return array(
     'Session' => array($vendorDir . '/s7designcreative/session/src'),
     'Router' => array($vendorDir . '/s7designcreative/router/src'),
     'Response' => array($vendorDir . '/s7designcreative/response/src'),
+    'Psr\\Log\\' => array($vendorDir . '/psr/log'),
     'Prophecy\\' => array($vendorDir . '/phpspec/prophecy/src'),
     'Helpers' => array($vendorDir . '/s7designcreative/helpers/src'),
     'Encrypt' => array($vendorDir . '/s7designcreative/encrypt/src'),

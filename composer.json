@@ -13,7 +13,8 @@
         "behat/mink-goutte-driver": "~1.1",
         "symfony/form": "~2.6",
         "symfony/validator": "~2.6",
-        "symfony/twig-bridge": "~2.6"
+        "symfony/twig-bridge": "~2.6",
+        "monolog/monolog": "~1.13"
     },
     "autoload" : {
         "psr-0" : {

@@ -18,7 +18,7 @@ class Controller {
      */
     protected function view( $view, $data = array() )
     {
-        $loader = new Twig_Loader_Filesystem( PATH_TO_SETUP . 'views' );
+        $loader = new Twig_Loader_Filesystem( __DIR__ . '/../../src' );
         $twig = new Twig_Environment( $loader );
         $twig->addExtension(new \Helpers\MenuExtension());
         $twig->addExtension(new \Helpers\LanguageExtension());
