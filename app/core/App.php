@@ -25,6 +25,9 @@ class App
      *
      * Calls parse url method, checks if controller and method exists, if every thing is ok
      * gives new instance of controller, executes method with given params
+     * Also boots a Doctrine2 ORM, and creates ServiceContainer for Session and Request objects
+     *
+     * @param \Router\Router $router
      */
     public function __construct( \Router\Router $router )
     {

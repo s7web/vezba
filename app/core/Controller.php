@@ -17,6 +17,8 @@ class Controller {
      * Calls a view file from controller
      * @param $view
      * @param array
+     *
+     * @return void
      */
     protected function view( $view, $data = array() )
     {

@@ -29,10 +29,10 @@ define( 'DEFAULT_ENCRYPTION', 'blowfish' );
  * *************DATABASE CONFIG***************
  *********************************************/
 define( 'DATABASE_DRIVER', 'pdo_mysql' );
-define( 'DATABASE_HOST', 'localhost' );
+define( 'DATABASE_HOST', '127.0.0.1' );
 define( 'DATABASE_USERNAME', 'root' );
-define( 'DATABASE_PASSWORD', 'root' );
-define( 'DATABASE_NAME', 'easycms' );
+define( 'DATABASE_PASSWORD', '' );
+define( 'DATABASE_NAME', 'test' );
 define( 'DATABASE_CHARSET', 'utf8' );
 define( 'DATABASE_COLLATION', 'utf8_unicode_ci' );
 define( 'DATABASE_PREFIX', '' );
