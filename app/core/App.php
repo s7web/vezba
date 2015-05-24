@@ -35,6 +35,11 @@ class App
             $session = new \Session\Session();
             $request = new \Router\Request( $router, $session );
 
+            $logger = new \Monolog\Logger( 'app_level_logs' );
+            $logger->pushHandler(
+                new \Monolog\Handler\StreamHandler( SITE_PATH.'log/app.log', \Monolog\Logger::DEBUG )
+            );
+
             $route_exists = $request->getExists();
             if ($route_exists) {
                 $this->controller = $request->getController();
@@ -76,12 +81,17 @@ class App
             $config = Setup::createAnnotationMetadataConfiguration( $paths, $isDevMode );
 
             $entityManager    = EntityManager::create( $dbParams, $config );
-            $serviceContainer = new \Helpers\ServiceContainer( $request, $entityManager );
+            $serviceContainer = new \Helpers\ServiceContainer( $request, $entityManager, $logger );
 
             call_user_func( [ $this->controller, $this->method ], $serviceContainer );
         } catch ( \Exception $e ) {
             $error = $e->getMessage();
             $trace = $e->getTrace();
+            $logger->addDebug(
+                'Error has occurred in application, exception has been thrown. Route called
+             '.$_SERVER['REQUEST_URI'].' | Error: '.$error,
+                array( $request->getParams() )
+            );
             require_once SITE_PATH.'errors.php';
         }
     }
