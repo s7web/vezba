@@ -48,6 +48,16 @@ define( 'DATABASE_CHARSET', 'utf8' );
 define( 'DATABASE_COLLATION', 'utf8_unicode_ci' );
 define( 'DATABASE_PREFIX', '' );
 ```
-
-
+After this step you are ready to start adding routes inside file app/config/routes.yml. This is yml structural language,
+so here is example how you can add a new route:
+```yml
+users:
+  route: "home/cms"
+  controller: "User\Controller\UserController"
+  method: "index"
+  request_method: "GET"
+```
+first give unique name for your route, next define route ( URL ), Controller full namespace, method and then allowed
+request method ( POST, GET, PUT, DELETE, PATCH ) depending on type of request which will be performed. Or you can simply
+say ANY for any type of request.
 
