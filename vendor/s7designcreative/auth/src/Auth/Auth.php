@@ -20,10 +20,10 @@ class Auth
      *
      * @return Login
      */
-    public static function login( Session $session )
+    public static function login( Session $session, $entityManager )
     {
 
-        return new Login( $session );
+        return new Login( $session, $entityManager );
     }
 
     /**

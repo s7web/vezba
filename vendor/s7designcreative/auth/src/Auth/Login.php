@@ -15,11 +15,28 @@ class Login
 {
     /** @var Session $this ->session */
     private $session;
+
+    /**
+     * @var
+     */
+    private $entityManager;
+
+    /**
+     * @var array
+     */
     private $errors = array();
 
-    public function __construct( Session $session )
+    /**
+     * Set up class properties
+     *
+     * @param Session $session
+     * @param $entityManager
+     */
+    public function __construct( Session $session, $entityManager )
     {
         $this->session = $session;
+
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -60,7 +77,7 @@ class Login
      */
     private function findUser( $email, $password )
     {
-        return \User::where( 'email', '=', $email )->where( 'password', '=', $password )->first();
+        return array();
     }
 
     /**
