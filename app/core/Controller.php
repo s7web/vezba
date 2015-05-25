@@ -30,6 +30,11 @@ class Controller {
         $twig = new Twig_Environment( $loader );
         $twig->addExtension(new \Helpers\MenuExtension());
         $twig->addExtension(new \Helpers\LanguageExtension());
+        $twig->addExtension(new \Twig_Extension_Debug());
+
+        if(DEBUG_MODE){
+            $twig->enableDebug();
+        }
 
         $data[ 'view_data_config' ] = array(
             'site_name' => SITE_NAME,
