@@ -97,11 +97,6 @@ class Request
                     throw new \Exception( 'Request method is not allowed' );
                     break;
                 }
-
-                if ($this->request_method == 'POST' && $this->session->getSessionKey( 'token' ) != $_POST['token']) {
-                    throw new \Exception( 'Invalid request' );
-                    break;
-                }
                 $this->controller = $route->controller;
                 $this->method     = $route->method;
                 $this->params     = array();
