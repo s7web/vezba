@@ -3,5 +3,3 @@ users:
   controller: "User\Controller\UserController"
   method: "index"
   request_method: "GET"
-
-

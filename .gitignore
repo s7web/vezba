@@ -1,1 +1,4 @@
 .idea/
+src/
+app/config/routes.yml
+app/config/site_config.php
