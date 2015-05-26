@@ -1,0 +1,12 @@
+default:
+    autoload:
+        '': %paths.base%/tests/functional/features/bootstrap
+    suites:
+        functional:
+            paths: [ %paths.base%/tests/functional/features ]
+            contexts:
+                - FeatureContext
+    extensions:
+      Behat\MinkExtension:
+        goutte: ~
+        selenium2: ~
