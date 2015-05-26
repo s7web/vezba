@@ -29,7 +29,7 @@ class App
      *
      * @param \Router\Router $router
      */
-    public function __construct( \Router\Router $router )
+    public function __construct(\Router\Router $router )
     {
         try {
             $session = new \Session\Session();
