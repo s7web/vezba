@@ -1,7 +1,6 @@
 {
     "require": {
         "twig/twig": "1.*",
-        "s7designcreative/router" : "1.*",
         "doctrine/orm": "~2.5",
         "behat/behat": "~3.0",
         "phpunit/phpunit": "~4.6",
