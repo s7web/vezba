@@ -34,27 +34,16 @@ class Controller
         $reflectionObject = new ReflectionClass( $className );
         $annotations      = $annotationReader->getClassAnnotation( $reflectionObject, 'Template' );
 
-        //Form builder config in array format
-        $config = $this->getFormConfig();
-
         $loader = new Twig_Loader_Filesystem(
             array(
                 __DIR__.'/../../src/'.$annotations->module.'/views',
                 __DIR__.'/../views',
-                $config['vendorTwigBridge'].'/Resources/views/Form'
             )
         );
 
         $twig       = new Twig_Environment( $loader );
-        $formEngine = new \Symfony\Bridge\Twig\Form\TwigRendererEngine( array( $config['defaultForm'] ) );
-        $formEngine->setEnvironment( $twig );
         $twig->addExtension( new \Helpers\MenuExtension() );
         $twig->addExtension( new \Helpers\LanguageExtension() );
-        $twig->addExtension(
-            new FormExtension(
-                new TwigRenderer( $formEngine )
-            )
-        );
         $twig->addExtension( new \Twig_Extension_Debug() );
 
         if (DEBUG_MODE) {
@@ -67,41 +56,5 @@ class Controller
         );
 
         echo $twig->render( $view, $data );
-
-    }
-
-    /**
-     * Get Symfony form builder
-     *
-     * @return \Symfony\Component\Form\FormFactoryInterface
-     */
-    protected function getFormBuilder()
-    {
-
-        $validator   = Validation::createValidator();
-        $formFactory = Forms::createFormFactoryBuilder()
-                            ->addExtension( new ValidatorExtension( $validator ) )
-                            ->getFormFactory();
-
-        return $formFactory;
-    }
-
-    /**
-     * Get configuration for form builder
-     *
-     * @return array
-     */
-    private function getFormConfig()
-    {
-
-        $vendorDir = SITE_PATH.'vendor';
-        $config    = array(
-            'vendorFormDir'      => $vendorDir.'/symfony/form/Symfony/Component/Form',
-            'vendorValidatorDir' => $vendorDir.'/symfony/validator/Symfony/Component/Validator',
-            'vendorTwigBridge'   => $vendorDir.'/symfony/twig-bridge/Symfony/Bridge/Twig',
-            'defaultForm'        => 'form_div_layout.html.twig',
-        );
-
-        return $config;
     }
 }
