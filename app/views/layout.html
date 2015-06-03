@@ -7,53 +7,65 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-
-    <!-- Bootstrap core CSS -->
-    <!-- Bootstrap core CSS -->
-    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="http://getbootstrap.com/examples/justified-nav/justified-nav.css" rel="stylesheet">
-
-
-
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-    <!-- Custom styles for this template -->
-    <link href="http://getbootstrap.com/examples/carousel/carousel.css" rel="stylesheet">
 
     <title>{{ view_data_config['site_name'] }}-{% block title %}  {% endblock %}</title>
-    <link rel="stylesheet" href="/public/css/animate.css"/>
-    <link rel="stylesheet" href="/public/css/style.css"/>
+
+    <link rel="stylesheet" href="/public/css/bootstrap.min.css"/>
+    {% block css %} {% endblock %}
+
 </head>
 
 <!-- NAVBAR
 ================================================== -->
 <body>
 
-<div class="container">
+<div class="row navigation_wrapper">
+<div class="col-md-12 navigation_container_wrapper">
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/public/crawler/search">Four Dots Crawler</a>
+            </div>
 
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/public/crawler/search">Query explorer</a></li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+</div>
+</div>
 
     {% block content %}
 
     {% endblock %}
     <!-- Site footer -->
     <footer class="footer">
-        <p>© S7design 2015</p>
-        <a href="/public/home/lang=en">English version</a>
-        <a href="/public/home/lang=sr">Serbian version</a>
     </footer>
-</div>
 
+<script src="/public/js/angular/angular.min.js"></script>
+<script src="/public/js/angular/angular-resource.min.js"></script>
+<script src="/public/js/angular/angular-sanitize.js"></script>
 
-<!-- Placed at the end of the document so the pages load faster -->
 <script src="/public/js/jquery.min.js"></script>
 <script src="/public/js/bootstrap.min.js"></script>
-<script src="/public/js/docs.min.js"></script>
+
+{% block javascripts_header %}{% endblock %}
 
 </body>
 </html>
