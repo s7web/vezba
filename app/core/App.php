@@ -83,6 +83,22 @@ class App
             $entityManager    = EntityManager::create( $dbParams, $config );
             $serviceContainer = new \Helpers\ServiceContainer( $request, $entityManager, $logger );
 
+            $route_role = $request->role;
+
+            $login = \Auth\Auth::login( $request->session, $entityManager );
+            if($request->session->is_logged()) {
+                $user = $login->getUser();
+            } else {
+                $username = $request->getParamPost( 'user' );
+                $password= $request->getParamPost( 'password' );
+                $user = $login->login( $username, $password );
+            }
+
+            if($route_role !== 'GUEST'){
+                if(!$user || ( $user && !in_array($route_role, $user->getRoles()))) {
+                    return \Response\Response::redirect('/public/login');
+                }
+            }
             call_user_func( [ $this->controller, $this->method ], $serviceContainer );
         } catch ( \Exception $e ) {
             $error = $e->getMessage();

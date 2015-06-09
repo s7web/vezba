@@ -120,6 +120,9 @@ class Session extends SecureSession
         }
     }
 
+    public function is_logged() {
+        return $this->getSessionKey('logged') === 'true';
+    }
     /**
      * After log in perform regenerate_id
      *
@@ -130,7 +133,7 @@ class Session extends SecureSession
         session_regenerate_id();
 
         /** @var $_SESSION array */
-        $_SESSION['logged'] = $this->encrypt( true );
+        $_SESSION['logged'] = $this->encrypt( 'true' );
         // Save these values in the session, even when checks aren't enabled
         $_SESSION['ip'] = $this->encrypt( $_SERVER['REMOTE_ADDR'] );
         $_SESSION['user_agent'] = $this->encrypt( $_SERVER['HTTP_USER_AGENT'] );

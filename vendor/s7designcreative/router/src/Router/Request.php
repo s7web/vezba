@@ -17,10 +17,10 @@ class Request
 {
 
     /** @var  string $this ->url */
-    private $url;
+    public $url;
 
     /** @var $this ->routes array */
-    private $routes;
+    public $routes;
 
     /** @var  string $this ->controller */
     private $controller;
@@ -36,7 +36,9 @@ class Request
     /** @var string $this ->request_method */
     private $request_method;
 
-    private $session;
+    public $session;
+
+    public $role;
 
     /**
      * Set up Request class
@@ -88,18 +90,19 @@ class Request
             $have_params = true;
         }
 
-        foreach ($this->routes->routes as $route) {
+        foreach ($this->routes->routes as $name => $route) {
 
-            if ($route->route === $this->filterRequestedRoute( $have_params )) {
-                if (strtoupper( $route->request_method ) !== strtoupper( $this->request_method ) &&
-                    $route->request_method != 'ANY'
+            if ($route['route'] === $this->filterRequestedRoute( $have_params )) {
+                if (strtoupper( $route['request_method'] ) !== strtoupper( $this->request_method ) &&
+                    $route['request_method'] != 'ANY'
                 ) {
                     throw new \Exception( 'Request method is not allowed' );
                     break;
                 }
-                $this->controller = $route->controller;
-                $this->method     = $route->method;
+                $this->controller = $route['controller'];
+                $this->method     = $route['method'];
                 $this->params     = array();
+                $this->role       = $route['role'];
                 if ($have_params) {
                     $this->params = $this->filterRequestedParams();
                 }
@@ -294,4 +297,5 @@ class Request
 
         return $token;
     }
+
 } 

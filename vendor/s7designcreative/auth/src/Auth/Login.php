@@ -42,42 +42,27 @@ class Login
     /**
      * Log in user
      *
-     * @param string $email
+     * @param string $username
      * @param string $password
      *
      * @return bool
      */
-    public function login( $email, $password )
+    public function login( $username, $password )
     {
-        $email       = $this->filterEmail( $email );
-        $password    = $this->preparePassword( $password );
-        $user        = $this->findUser( $email, $password );
-        $user_active = $this->checkIsActive( $user );
+        require_once(__DIR__.'/Entity/User.php');
+        $password = $this->session->encrypt($password);
+        $user = $this->entityManager->getRepository( 's7designcreative\Auth\Entity\User' )->findOneBy(array(
+            'username' => $username,
+            'password' => $password,
+        ));
         if ( ! $user) {
             $this->setError( 'Wrong email/password' );
 
             return false;
         }
+        $this->session->set_after_login( $user->getId() );
 
-        if ( ! $user_active) {
-            return false;
-        }
-        $this->session->set_after_login( $user->id );
-
-        return true;
-    }
-
-    /**
-     * Check email, password against database
-     *
-     * @param string $email
-     * @param string $password
-     *
-     * @return mixed
-     */
-    private function findUser( $email, $password )
-    {
-        return array();
+        return $user;
     }
 
     /**
@@ -146,28 +131,12 @@ class Login
         return filter_var( $password, FILTER_SANITIZE_STRING );
     }
 
-    /**
-     * Get user object
-     * @return \Illuminate\Support\Collection|static
-     */
+
     public function getUser()
     {
         $user_id = (int) $this->session->getSessionKey( 'user_login' );
-
-        return \User::find( $user_id );
-    }
-
-    /**
-     * Return filtered and encrypted password
-     *
-     * @param $password
-     *
-     * @return mixed
-     * @throws \Exception
-     */
-    private function preparePassword( $password )
-    {
-        return Encrypt::encrypt( $this->filterPassword( $password ), DEFAULT_ENCRYPTION );
+        require_once(__DIR__.'/Entity/User.php');
+        return $this->entityManager->getRepository( 's7designcreative\Auth\Entity\User' )->find($user_id);
     }
 
     /**

@@ -20,11 +20,7 @@ class Router
      */
     public function setRouter( array $routes )
     {
-        foreach ($routes as $r) {
-            $router         = new Route();
-            $this->routes[] = $router->setRoute( $r );
-        }
-
+        $this->routes = $routes;
     }
 
     /**
