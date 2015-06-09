@@ -1,7 +1,0 @@
-[2015-05-24 00:44:00] app_level_logs.DEBUG: this is test [] []
-[2015-05-24 00:44:00] app_level_logs.DEBUG: this is test [] []
-[2015-05-24 00:44:00] app_level_logs.DEBUG: this is test [] []
-[2015-05-24 00:44:01] app_level_logs.DEBUG: this is test [] []
-[2015-05-24 00:44:19] app_level_logs.DEBUG: this is test [] []
-[2015-05-24 00:44:21] app_level_logs.DEBUG: this is test [] []
-[2015-05-24 00:53:43] app_level_logs.ERROR: Error has occurred in application, exceptions has been thrown. Route called              /public/home/cm| Error: Such route does not exist! [null] []
