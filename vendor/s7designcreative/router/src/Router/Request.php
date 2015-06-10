@@ -274,18 +274,14 @@ class Request
      * Get single param from POST request
      *
      * @param $key
+     * @param $default
      *
      * @return mixed
      */
-    public function getParamPost( $key )
+    public function getParamPost( $key, $default = '' )
     {
 
-        $post = $this->getAllPost();
-        if (array_key_exists( $key, $post )) {
-            return $post[$key];
-        } else {
-            return '';
-        }
+        return isset($_POST[$key]) ? $_POST[$key] : $default;
     }
 
     public function csrf_protect()
