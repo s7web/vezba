@@ -33,6 +33,7 @@ return array(
     'Psr\\Log\\' => array($vendorDir . '/psr/log'),
     'Prophecy\\' => array($vendorDir . '/phpspec/prophecy/src'),
     'Helpers' => array($vendorDir . '/s7designcreative/helpers/src'),
+    'GoogleUrl' => array($vendorDir . '/google-url/lib'),
     'Encrypt' => array($vendorDir . '/s7designcreative/encrypt/src'),
     'Doctrine\\ORM\\' => array($vendorDir . '/doctrine/orm/lib'),
     'Doctrine\\Instantiator\\' => array($vendorDir . '/doctrine/instantiator/src'),
