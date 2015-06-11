@@ -8,7 +8,6 @@ require_once SITE_PATH .'/vendor/autoload.php';
 
 $console = new Application();
 
-
 $console
     ->register('assets')
     ->setDescription('Install assets from src to public')
@@ -23,6 +22,17 @@ $console
             shell_exec("cp -r $s7dir/$package/public $public/s7designcreative/$package");
             $output->writeln(sprintf('Package <info>%s</info> assets installed', $package));
         }
+    });
+
+// TODO this command is for crawler project and should be moved to it after logic for registering commands in project have been implemented
+$console
+    ->register('crawl')
+    ->setDescription('Crawl site from database.')
+    ->setCode(function (InputInterface $input, OutputInterface $output) {
+        require_once 'init.php';
+        $app = new App();
+        $crawl = new \s7designcreative\crawler\Command\CrawlSite();
+        $crawl->run($app->entityManager);
     });
 
 $console->run();

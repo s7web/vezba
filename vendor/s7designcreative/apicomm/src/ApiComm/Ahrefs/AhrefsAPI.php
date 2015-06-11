@@ -496,13 +496,3 @@ class AhrefsAPI implements ApiInterface {
         return $this->curlInfo;
     }
 }
-
-
-/**
- * Function to handle the error exceptions
- * @return Formatted error String
- */
-function Error($exception) {
-    echo "Error: " . $exception->getMessage();
-}
-set_exception_handler('Error');

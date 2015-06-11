@@ -13,84 +13,85 @@ use Doctrine\ORM\EntityManager;
 
 class App
 {
+    protected $request;
 
-    protected $controller = "home";
+    /** @var EntityManager */
+    public $entityManager;
 
-    protected $method = "index";
+    public function __construct(){
+        $paths     = array( SITE_PATH.'/src' );
+        $isDevMode = false;
 
-    protected $params = [ ];
+        $dbParams = array(
+            'host'     => DATABASE_HOST,
+            'driver'   => DATABASE_DRIVER,
+            'user'     => DATABASE_USERNAME,
+            'password' => DATABASE_PASSWORD,
+            'dbname'   => DATABASE_NAME,
+        );
 
+        $config = Setup::createAnnotationMetadataConfiguration( $paths, $isDevMode );
+
+        $this->entityManager = EntityManager::create( $dbParams, $config );
+    }
     /**
-     * Construct method
-     *
      * Calls parse url method, checks if controller and method exists, if every thing is ok
      * gives new instance of controller, executes method with given params
      * Also boots a Doctrine2 ORM, and creates ServiceContainer for Session and Request objects
-     *
      * @param \Router\Router $router
+     * @throws Exception
      */
-    public function __construct(\Router\Router $router )
+    public function setRequest(\Router\Router $router) {
+
+        $session = new \Session\Session();
+        $request = new \Router\Request( $router, $session );
+        $route_exists = $request->getExists();
+        if ($route_exists) {
+            $this->controller = $request->getController();
+            if (class_exists( $this->controller )) {
+
+                $this->controller = new $this->controller;
+
+            } else {
+                throw new \Exception( 'Such controller does not exists!' );
+            }
+        } else {
+            throw new \Exception( 'Such route does not exist!' );
+        }
+
+        if ($route_exists) {
+
+            if (method_exists( $this->controller, $request->getMethod() )) {
+
+                $this->method = $request->getMethod();
+
+            } else {
+                throw new \Exception( 'Such method does not exist!' );
+            }
+        } else {
+            throw new \Exception( 'Such route does not exist!' );
+        }
+
+        $this->request = $request;
+    }
+
+    public function run( )
     {
         try {
-            $session = new \Session\Session();
-            $request = new \Router\Request( $router, $session );
-
             $logger = new \Monolog\Logger( 'app_level_logs' );
             $logger->pushHandler(
                 new \Monolog\Handler\StreamHandler( SITE_PATH.'log/app.log', \Monolog\Logger::DEBUG )
             );
+            $serviceContainer = new \Helpers\ServiceContainer( $this->request, $this->entityManager, $logger );
 
-            $route_exists = $request->getExists();
-            if ($route_exists) {
-                $this->controller = $request->getController();
-                if (class_exists( $this->controller )) {
+            $route_role = $this->request->role;
 
-                    $this->controller = new $this->controller;
-
-                } else {
-                    throw new \Exception( 'Such controller does not exists!' );
-                }
-            } else {
-                throw new \Exception( 'Such route does not exist!' );
-            }
-
-            if ($route_exists) {
-
-                if (method_exists( $this->controller, $request->getMethod() )) {
-
-                    $this->method = $request->getMethod();
-
-                } else {
-                    throw new \Exception( 'Such method does not exist!' );
-                }
-            } else {
-                throw new \Exception( 'Such route does not exist!' );
-            }
-
-            $paths     = array( SITE_PATH.'/src' );
-            $isDevMode = false;
-
-            $dbParams = array(
-                'host'     => DATABASE_HOST,
-                'driver'   => DATABASE_DRIVER,
-                'user'     => DATABASE_USERNAME,
-                'password' => DATABASE_PASSWORD,
-                'dbname'   => DATABASE_NAME,
-            );
-
-            $config = Setup::createAnnotationMetadataConfiguration( $paths, $isDevMode );
-
-            $entityManager    = EntityManager::create( $dbParams, $config );
-            $serviceContainer = new \Helpers\ServiceContainer( $request, $entityManager, $logger );
-
-            $route_role = $request->role;
-
-            $login = \Auth\Auth::login( $request->session, $entityManager );
-            if($request->session->is_logged()) {
+            $login = \Auth\Auth::login( $this->request->session, $this->entityManager );
+            if($this->request->session->is_logged()) {
                 $user = $login->getUser();
             } else {
-                $username = $request->getParamPost( 'user' );
-                $password= $request->getParamPost( 'password' );
+                $username = $this->request->getParamPost( 'user' );
+                $password= $this->request->getParamPost( 'password' );
                 $user = $login->login( $username, $password );
             }
 
@@ -102,11 +103,10 @@ class App
             call_user_func( [ $this->controller, $this->method ], $serviceContainer );
         } catch ( \Exception $e ) {
             $error = $e->getMessage();
-            $trace = $e->getTrace();
             $logger->addDebug(
                 'Error has occurred in application, exception has been thrown. Route called
              '.$_SERVER['REQUEST_URI'].' | Error: '.$error,
-                array( $request->getParams() )
+                array( $this->request->getParams() )
             );
             require_once SITE_PATH.'errors.php';
         }
