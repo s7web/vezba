@@ -19,6 +19,8 @@ use \Symfony\Bridge\Twig\Form\TwigRenderer;
 class Controller
 {
 
+    private $message = '';
+    private $messageClass = '';
     /**
      * Calls a view file from controller
      *
@@ -55,6 +57,15 @@ class Controller
             'site_url'  => SITE_URL,
         );
 
+        $data['message'] = $this->message;
+        $data['messageClass'] = $this->messageClass;
+
         echo $twig->render( $view, $data );
+    }
+
+    protected function userMessage($message, $class = '')
+    {
+        $this->message       = $message;
+        $this->messageClass = $class;
     }
 }

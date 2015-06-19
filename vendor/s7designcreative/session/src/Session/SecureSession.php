@@ -70,6 +70,9 @@ class SecureSession
      */
     public function getSessionKey( $name )
     {
+        if( ! isset($_SESSION[$name])) {
+            return false;
+        }
         return $this->decrypt( $_SESSION[$name] );
     }
 } 

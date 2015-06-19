@@ -31,7 +31,7 @@ class ResponseType
         if ( ! is_numeric( $status ) || $status > 600) {
             throw new \Exception( 'Invalid status' );
         }
-        header( ':', true, $status );
+        //header( ':', true, $status );
     }
 
     /**

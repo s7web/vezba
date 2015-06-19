@@ -1,4 +1,4 @@
 Options +FollowSymLinks
 RewriteEngine On
 
-RewriteRule ^(.*)$ /public/home/cms [R=301,NC,L]
+RewriteRule ^(.*)$ /public/table [R,NC,L]
