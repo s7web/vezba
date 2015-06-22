@@ -19,7 +19,7 @@ $console
         shell_exec("rm -rf $public/s7designcreative/");
         mkdir($public . '/s7designcreative');
         foreach($packages as $package){
-            shell_exec("cp -r $s7dir/$package/public $public/s7designcreative/$package");
+            shell_exec("ln -s $s7dir/$package/public $public/s7designcreative/$package");
             $output->writeln(sprintf('Package <info>%s</info> assets installed', $package));
         }
     });
