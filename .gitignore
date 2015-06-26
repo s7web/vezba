@@ -4,3 +4,4 @@ app/config/routes.yml
 app/config/site_config.php
 log/
 public/s7designcreative
+public/file.csv

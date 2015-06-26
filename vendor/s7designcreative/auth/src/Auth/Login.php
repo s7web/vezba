@@ -2,6 +2,7 @@
 namespace Auth;
 
 use Encrypt\Encrypt;
+use s7designcreative\Auth\Entity\User;
 use Session\Session;
 
 /**
@@ -50,15 +51,16 @@ class Login
     public function login( $username, $password )
     {
         require_once(__DIR__.'/Entity/User.php');
-        $password = $this->session->encrypt($password);
+
         $user = $this->entityManager->getRepository( 's7designcreative\Auth\Entity\User' )->findOneBy(array(
             'username' => $username,
-            'password' => $password,
         ));
         if ( ! $user) {
-            $this->setError( 'Wrong email/password' );
-
-            return false;
+            return new User();
+        } else {
+            if (! password_verify($password, $user->getPassword())) {
+                return new User();
+            }
         }
         $this->session->set_after_login( $user->getId() );
 

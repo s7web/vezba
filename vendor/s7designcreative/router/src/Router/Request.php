@@ -38,7 +38,7 @@ class Request
 
     public $session;
 
-    public $role;
+    public $roles;
 
     /**
      * Set up Request class
@@ -102,7 +102,7 @@ class Request
                 $this->controller = $route['controller'];
                 $this->method     = $route['method'];
                 $this->params     = array();
-                $this->role       = $route['role'];
+                $this->roles      = $route['roles'];
                 if ($have_params) {
                     $this->params = $this->filterRequestedParams();
                 }
@@ -292,6 +292,14 @@ class Request
         $this->session->setSessionKey( 'token', $token );
 
         return $token;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRequestMethod()
+    {
+        return $this->request_method;
     }
 
 } 

@@ -40,7 +40,6 @@ function errorHandler( $errno, $errstr, $errfile, $errline )
     }
 }
 
-register_shutdown_function('shutdownFunction');
 
 function shutDownFunction() {
     $error = error_get_last();
@@ -50,4 +49,3 @@ function shutDownFunction() {
         $logger->addError('Fatal error', $error);
     }
 }
-set_error_handler( "errorHandler" );

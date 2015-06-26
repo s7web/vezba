@@ -29,7 +29,7 @@ $console
     ->register('crawl')
     ->setDescription('Crawl site from database.')
     ->setCode(function (InputInterface $input, OutputInterface $output) {
-        require_once 'init.php';
+        require_once APP_PATH . 'core/App.php';
         $app = new App();
         $crawl = new \s7designcreative\crawler\Command\CrawlSite();
         $crawl->run($app->entityManager);

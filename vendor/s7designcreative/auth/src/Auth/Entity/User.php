@@ -19,11 +19,30 @@ class User {
     /** @Column(type="string") **/
     protected $password;
 
-    /** @Column(type="string") **/
+    /** @Column(type="string", nullable=true) **/
     protected $guid;
 
     /** @Column(type="array") **/
     protected $roles;
+
+    /** @Column(type="array", nullable=true) **/
+    protected $meta;
+
+    /**
+     * @return mixed
+     */
+    public function getMeta()
+    {
+        return $this->meta;
+    }
+
+    /**
+     * @param mixed $meta
+     */
+    public function setMeta($meta)
+    {
+        $this->meta = $meta;
+    }
 
     /**
      * @return mixed

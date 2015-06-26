@@ -48,11 +48,8 @@ class App
         $route_exists = $request->getExists();
         if ($route_exists) {
             $this->controller = $request->getController();
-            if (class_exists( $this->controller )) {
+            if (!class_exists( $this->controller )) {
 
-                $this->controller = new $this->controller;
-
-            } else {
                 throw new \Exception( 'Such controller does not exists!' );
             }
         } else {
@@ -77,14 +74,13 @@ class App
 
     public function run( )
     {
-        try {
+        //try {
             $logger = new \Monolog\Logger( 'app_level_logs' );
             $logger->pushHandler(
                 new \Monolog\Handler\StreamHandler( SITE_PATH.'log/app.log', \Monolog\Logger::DEBUG )
             );
-            $serviceContainer = new \Helpers\ServiceContainer( $this->request, $this->entityManager, $logger );
 
-            $route_role = $this->request->role;
+            $route_roles = $this->request->roles;
 
             $login = \Auth\Auth::login( $this->request->session, $this->entityManager );
             if($this->request->session->is_logged()) {
@@ -95,20 +91,22 @@ class App
                 $user = $login->login( $username, $password );
             }
 
-            if($route_role !== 'GUEST'){
-                if(!$user || ( $user && !in_array($route_role, $user->getRoles()))) {
+            if(! in_array('GUEST', $route_roles)){
+                if(!$user || ( $user && ! array_intersect($route_roles, $user->getRoles()))) {
                     return \Response\Response::redirect('/public/login');
                 }
             }
+            $serviceContainer = new \Helpers\ServiceContainer( $this->request, $this->entityManager, $logger );
+            $this->controller = new $this->controller($user);
             call_user_func( [ $this->controller, $this->method ], $serviceContainer );
-        } catch ( \Exception $e ) {
-            $error = $e->getMessage();
-            $logger->addDebug(
-                'Error has occurred in application, exception has been thrown. Route called
-             '.$_SERVER['REQUEST_URI'].' | Error: '.$error,
-                array( $this->request->getParams() )
-            );
-            require_once SITE_PATH.'errors.php';
-        }
+//        } catch ( \Exception $e ) {
+//            $error = $e->getMessage();
+//            $logger->addDebug(
+//                'Error has occurred in application, exception has been thrown. Route called
+//             '.$_SERVER['REQUEST_URI'].' | Error: '.$error,
+//                array( $this->request->getParams() )
+//            );
+//            require_once SITE_PATH.'errors.php';
+//        }
     }
 }

@@ -21,6 +21,15 @@ class Controller
 
     private $message = '';
     private $messageClass = '';
+
+    protected $user;
+
+    function __construct($user)
+    {
+        $this->user = $user;
+    }
+
+
     /**
      * Calls a view file from controller
      *
@@ -59,6 +68,7 @@ class Controller
 
         $data['message'] = $this->message;
         $data['messageClass'] = $this->messageClass;
+        $data['user'] = $this->user;
 
         echo $twig->render( $view, $data );
     }
