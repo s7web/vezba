@@ -62,7 +62,7 @@ class Login
                 return new User();
             }
         }
-        $this->session->set_after_login( $user->getId() );
+        $_SESSION['auth'] = $user->getId();
 
         return $user;
     }
@@ -136,7 +136,7 @@ class Login
 
     public function getUser()
     {
-        $user_id = (int) $this->session->getSessionKey( 'user_login' );
+        $user_id = (int) $_SESSION['auth'];
         require_once(__DIR__.'/Entity/User.php');
         return $this->entityManager->getRepository( 's7designcreative\Auth\Entity\User' )->find($user_id);
     }

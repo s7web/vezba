@@ -83,7 +83,7 @@ class App
         $route_roles = $this->request->roles;
 
         $login = \Auth\Auth::login( $this->request->session, $this->entityManager );
-        if($this->request->session->is_logged()) {
+        if(isset($_SESSION['auth']) && $_SESSION['auth']) {
             $user = $login->getUser();
         } else {
             $username = $this->request->getParamPost( 'user' );
