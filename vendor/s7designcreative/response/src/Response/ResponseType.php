@@ -86,7 +86,7 @@ class ResponseType
         ob_start();
         $this->setHeaderStatus( 301 );
 
-        header( 'Location: /public/index.php/'.$location );
+        header( 'Location: /public/index.php?'.$location );
         ob_get_clean();
         exit();
     }

@@ -47,7 +47,7 @@ class Request
      */
     public function __construct( Router $routes, Session $session )
     {
-        $this->url = $_SERVER['REQUEST_URI'];
+        $this->url = 'public/index.php/' . $_SERVER['QUERY_STRING'];
 
         $this->request_method = filter_var( $_SERVER['REQUEST_METHOD'], FILTER_SANITIZE_STRING );
 
