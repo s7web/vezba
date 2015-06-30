@@ -47,7 +47,7 @@ class Request
      */
     public function __construct( Router $routes, Session $session )
     {
-        $this->url = ( array_key_exists( 'url', $_GET ) ) ? $_GET['url'] : null;
+        $this->url = $_SERVER['REQUEST_URI'];
 
         $this->request_method = filter_var( $_SERVER['REQUEST_METHOD'], FILTER_SANITIZE_STRING );
 
@@ -134,6 +134,8 @@ class Request
             array_pop( $route );
         }
         $route = filter_var( implode( '/', $route ), FILTER_SANITIZE_URL );
+
+        $route = preg_replace('/.*index.php\//', '', $route);
 
         return $route;
     }

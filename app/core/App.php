@@ -74,39 +74,29 @@ class App
 
     public function run( )
     {
-        //try {
-            $logger = new \Monolog\Logger( 'app_level_logs' );
-            $logger->pushHandler(
-                new \Monolog\Handler\StreamHandler( SITE_PATH.'log/app.log', \Monolog\Logger::DEBUG )
-            );
+        $logger = new \Monolog\Logger( 'app_level_logs' );
+        $logger->pushHandler(
+            new \Monolog\Handler\StreamHandler( SITE_PATH.'log/app.log', \Monolog\Logger::DEBUG )
+        );
 
-            $route_roles = $this->request->roles;
+        $route_roles = $this->request->roles;
 
-            $login = \Auth\Auth::login( $this->request->session, $this->entityManager );
-            if($this->request->session->is_logged()) {
-                $user = $login->getUser();
-            } else {
-                $username = $this->request->getParamPost( 'user' );
-                $password= $this->request->getParamPost( 'password' );
-                $user = $login->login( $username, $password );
+        $login = \Auth\Auth::login( $this->request->session, $this->entityManager );
+        if($this->request->session->is_logged()) {
+            $user = $login->getUser();
+        } else {
+            $username = $this->request->getParamPost( 'user' );
+            $password= $this->request->getParamPost( 'password' );
+            $user = $login->login( $username, $password );
+        }
+
+        if(! in_array('GUEST', $route_roles)){
+            if(!$user || ( $user && ! array_intersect($route_roles, $user->getRoles()))) {
+                return \Response\Response::redirect('login');
             }
-
-            if(! in_array('GUEST', $route_roles)){
-                if(!$user || ( $user && ! array_intersect($route_roles, $user->getRoles()))) {
-                    return \Response\Response::redirect('/public/login');
-                }
-            }
-            $serviceContainer = new \Helpers\ServiceContainer( $this->request, $this->entityManager, $logger );
-            $this->controller = new $this->controller($user);
-            call_user_func( [ $this->controller, $this->method ], $serviceContainer );
-//        } catch ( \Exception $e ) {
-//            $error = $e->getMessage();
-//            $logger->addDebug(
-//                'Error has occurred in application, exception has been thrown. Route called
-//             '.$_SERVER['REQUEST_URI'].' | Error: '.$error,
-//                array( $this->request->getParams() )
-//            );
-//            require_once SITE_PATH.'errors.php';
-//        }
+        }
+        $serviceContainer = new \Helpers\ServiceContainer( $this->request, $this->entityManager, $logger );
+        $this->controller = new $this->controller($user);
+        call_user_func( [ $this->controller, $this->method ], $serviceContainer );
     }
 }
