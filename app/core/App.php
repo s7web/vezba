@@ -32,6 +32,7 @@ class App
         );
 
         $config = Setup::createAnnotationMetadataConfiguration( $paths, $isDevMode );
+        $config->setAutoGenerateProxyClasses(false);
 
         $this->entityManager = EntityManager::create( $dbParams, $config );
     }
