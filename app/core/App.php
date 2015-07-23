@@ -33,6 +33,7 @@ class App
 
         $config = Setup::createAnnotationMetadataConfiguration( $paths, $isDevMode );
         $config->setAutoGenerateProxyClasses(false);
+		$config->setProxyDir(SITE_PATH . '/cache');
 
         $this->entityManager = EntityManager::create( $dbParams, $config );
     }
