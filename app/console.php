@@ -35,4 +35,14 @@ $console
         $crawl->run($app->entityManager);
     });
 
+$console
+    ->register('google')
+    ->setDescription('Get Google results from term(s).')
+    ->setCode(function (InputInterface $input, OutputInterface $output) {
+        require_once APP_PATH . 'core/App.php';
+        $app = new App();
+        $google = new \s7designcreative\crawler\Command\Google();
+        $google->run($app->entityManager);
+    });
+
 $console->run();
