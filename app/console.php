@@ -45,4 +45,14 @@ $console
         $google->run($app->entityManager);
     });
 
+$console
+    ->register('seo')
+    ->setDescription('CognitiveSEO check for update')
+    ->setCode(function (InputInterface $input, OutputInterface $output) {
+        require_once APP_PATH . 'core/App.php';
+        $app = new App();
+        $cognitive = new \s7designcreative\crawler\Command\Cognitive();
+		$cognitive->run($app->entityManager);
+    });
+
 $console->run();
