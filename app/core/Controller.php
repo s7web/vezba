@@ -20,7 +20,7 @@ class Controller
 {
 
     private $message = '';
-    private $messageClass = '';
+    private $messageClass = 'bg-info';
 
     protected $user;
 
@@ -67,6 +67,10 @@ class Controller
         );
 
         $data['message'] = $this->message;
+		if(isset($_SESSION['message'])){
+			$data['message'] = $_SESSION['message'];
+			unset($_SESSION['message']);
+		}
         $data['messageClass'] = $this->messageClass;
         $data['user'] = $this->user;
 
@@ -76,6 +80,7 @@ class Controller
     protected function userMessage($message, $class = '')
     {
         $this->message       = $message;
+		$_SESSION['message'] = $message;
         $this->messageClass = $class;
     }
 }
