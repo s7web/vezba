@@ -33,7 +33,6 @@ return array(
     'Psr\\Log\\' => array($vendorDir . '/psr/log'),
     'Prophecy\\' => array($vendorDir . '/phpspec/prophecy/src'),
     'Helpers' => array($vendorDir . '/s7designcreative/helpers/src'),
-    'GoogleUrl' => array($vendorDir . '/google-url/lib'),
     'Encrypt' => array($vendorDir . '/s7designcreative/encrypt/src'),
     'Doctrine\\ORM\\' => array($vendorDir . '/doctrine/orm/lib'),
     'Doctrine\\Instantiator\\' => array($vendorDir . '/doctrine/instantiator/src'),
@@ -52,5 +51,6 @@ return array(
     'Behat\\Behat' => array($vendorDir . '/behat/behat/src'),
     'Auth' => array($vendorDir . '/s7designcreative/auth/src'),
     'ApiComm' => array($vendorDir . '/s7designcreative/apicomm/src'),
+    'Acl' => array($vendorDir . '/s7designcreative/acl/src'),
     '' => array($baseDir . '/src'),
 );
