@@ -52,5 +52,6 @@ return array(
     'Auth' => array($vendorDir . '/s7designcreative/auth/src'),
     'ApiComm' => array($vendorDir . '/s7designcreative/apicomm/src'),
     'Acl' => array($vendorDir . '/s7designcreative/acl/src'),
+	'GoogleUrl' => array($vendorDir . '/google-url/lib'),
     '' => array($baseDir . '/src'),
 );
