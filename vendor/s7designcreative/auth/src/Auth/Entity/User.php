@@ -19,6 +19,40 @@ class User {
     /** @Column(type="string") **/
     protected $password;
 
+    /** @Column(type="string") **/
+    protected $status;
+
+    /** @Column(type="integer") **/
+    protected $user_group;
+
+	/**
+	 * @return mixed
+	 */
+	public function getUserGroup() {
+		return $this->user_group;
+	}
+
+	/**
+	 * @param mixed $user_group
+	 */
+	public function setUserGroup( $user_group ) {
+		$this->user_group = $user_group;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getStatus() {
+		return $this->status;
+	}
+
+	/**
+	 * @param mixed $status
+	 */
+	public function setStatus( $status ) {
+		$this->status = $status;
+	}
+
     /** @Column(type="string", nullable=true) **/
     protected $guid;
 

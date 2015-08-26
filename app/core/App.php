@@ -94,12 +94,21 @@ class App
         }
 
         if(! in_array('GUEST', $route_roles)){
+			if(in_array('SUPER_ADMIN', $user->getRoles())) {
+				if(!preg_match('/\/all-users/', $this->request->url)) {
+					return \Response\Response::redirect('all-users');
+				}
+			}
             if(!$user || ( $user && ! array_intersect($route_roles, $user->getRoles()))) {
                 return \Response\Response::redirect('login');
             }
+			if($user->getStatus() == 0 && !preg_match('/\/registered$/', $this->request->url)) {
+                return \Response\Response::redirect('registered');
+
+			}
         }
         $serviceContainer = new \Helpers\ServiceContainer( $this->request, $this->entityManager, $logger );
-        $this->controller = new $this->controller($user);
+        $this->controller = new $this->controller($user, $this->entityManager);
         call_user_func( [ $this->controller, $this->method ], $serviceContainer );
     }
 }

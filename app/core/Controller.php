@@ -7,26 +7,22 @@ use \Symfony\Component\Validator\Validation;
 use \Symfony\Bridge\Twig\Extension\FormExtension;
 use \Symfony\Bridge\Twig\Form\TwigRenderer;
 
-/**
- * Class Controller
- *
- * Class with base functions for Controllers
- *
- * @author  s7designcreative
- * @version 10-12-2014
- *
- */
 class Controller
 {
 
     private $message = '';
     private $messageClass = 'bg-info';
 
+	/** @var  \s7designcreative\Auth\Entity\User */
     protected $user;
 
-    function __construct($user)
+	/** @var  \Doctrine\ORM\EntityManager */
+	protected $em;
+
+    function __construct($user, $em)
     {
         $this->user = $user;
+		$this->em = $em;
     }
 
 
