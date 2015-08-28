@@ -46,12 +46,12 @@ $console
     });
 
 $console
-    ->register('seo')
-    ->setDescription('CognitiveSEO check for update')
+    ->register('notify')
+    ->setDescription('Dibz notify user')
     ->setCode(function (InputInterface $input, OutputInterface $output) {
         require_once APP_PATH . 'core/App.php';
         $app = new App();
-        $cognitive = new \s7designcreative\crawler\Command\Cognitive();
+        $cognitive = new \s7designcreative\crawler\Command\Notify();
 		$cognitive->run($app->entityManager);
     });
 
