@@ -134,6 +134,11 @@ class Login
     }
 
 
+	/**
+     * Get current user object
+     *
+     * @return User
+     */
     public function getUser()
     {
         $user_id = (int) $_SESSION['auth'];

@@ -78,7 +78,7 @@ class Acl
             throw new \Exception("Acl list is empty, you must have least one role defined!");
         }
 
-        if ( $this->currentUserRole !== $this->minRoleToAccess || ! in_array($this->currentUserRole, $this->aclList[$this->minRoleToAccess])) {
+        if ( $this->currentUserRole !== $this->minRoleToAccess && ! in_array($this->minRoleToAccess, $this->aclList[$this->currentUserRole])) {
             return false;
         }
 

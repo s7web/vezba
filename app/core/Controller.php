@@ -22,14 +22,6 @@ class Controller
     private $message = '';
     private $messageClass = 'bg-info';
 
-    protected $user;
-
-    function __construct($user)
-    {
-        $this->user = $user;
-    }
-
-
     /**
      * Calls a view file from controller
      *
@@ -72,7 +64,6 @@ class Controller
 			unset($_SESSION['message']);
 		}
         $data['messageClass'] = $this->messageClass;
-        $data['user'] = $this->user;
 
         echo $twig->render( $view, $data );
     }

@@ -10,9 +10,13 @@
 
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
+use \Acl\Acl;
 
 class App
 {
+    /**
+     * @var \Router\Request
+     */
     protected $request;
 
     /** @var EntityManager */
@@ -75,31 +79,29 @@ class App
         $this->request = $request;
     }
 
-    public function run( )
+    public function run(Acl $acl)
     {
         $logger = new \Monolog\Logger( 'app_level_logs' );
         $logger->pushHandler(
             new \Monolog\Handler\StreamHandler( SITE_PATH.'log/app.log', \Monolog\Logger::DEBUG )
         );
 
-        $route_roles = $this->request->roles;
-
         $login = \Auth\Auth::login( $this->request->session, $this->entityManager );
+        $acl->setMinRoleToAccess($this->request->getRole());
+        $userRole = "guest";
+
         if(isset($_SESSION['auth']) && $_SESSION['auth']) {
-            $user = $login->getUser();
-        } else {
-            $username = $this->request->getParamPost( 'user' );
-            $password= $this->request->getParamPost( 'password' );
-            $user = $login->login( $username, $password );
+            $userRole = $login->getUser()->getRoles();
         }
 
-        if(! in_array('GUEST', $route_roles)){
-            if(!$user || ( $user && ! array_intersect($route_roles, $user->getRoles()))) {
-                return \Response\Response::redirect('login');
-            }
+        $acl->setCurrentUserRole($userRole);
+
+        if(!$acl->performCheck()){
+           return \Response\Response::redirect("login");
         }
+
         $serviceContainer = new \Helpers\ServiceContainer( $this->request, $this->entityManager, $logger );
-        $this->controller = new $this->controller($user);
+        $this->controller = new $this->controller();
         call_user_func( [ $this->controller, $this->method ], $serviceContainer );
     }
 }

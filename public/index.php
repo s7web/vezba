@@ -21,4 +21,4 @@ require_once APP_PATH . 'core/Controller.php';
 
 $app = new App();
 $app->setRequest($routes);
-$app->run();
+$app->run($acl);

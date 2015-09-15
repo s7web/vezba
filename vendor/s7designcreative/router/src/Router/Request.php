@@ -38,7 +38,7 @@ class Request
 
     public $session;
 
-    public $roles;
+    private $role;
 
     /**
      * Set up Request class
@@ -102,7 +102,7 @@ class Request
                 $this->controller = $route['controller'];
                 $this->method     = $route['method'];
                 $this->params     = array();
-                $this->roles      = $route['roles'];
+                $this->role       = $route['role'];
                 if ($have_params) {
                     $this->params = $this->filterRequestedParams();
                 }
@@ -304,4 +304,12 @@ class Request
         return $this->request_method;
     }
 
+    /**
+     * Get role required for accessing route
+     *
+     * @return string
+     */
+    public function getRole() {
+        return $this->role;
+    }
 } 
