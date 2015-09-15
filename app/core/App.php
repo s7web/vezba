@@ -97,7 +97,7 @@ class App
         $acl->setCurrentUserRole($userRole);
 
         if(!$acl->performCheck()){
-           return \Response\Response::redirect("login");
+           return \Response\Response::redirect(ACL_REDIRECT);
         }
 
         $serviceContainer = new \Helpers\ServiceContainer( $this->request, $this->entityManager, $logger );
