@@ -14,11 +14,59 @@
         "symfony/validator": "~2.6",
         "symfony/twig-bridge": "~2.6",
         "monolog/monolog": "~1.13",
-        "behat/mink-extension": "~2.0"
+        "behat/mink-extension": "~2.0",
+        "s7designcreative/acl": "1.*",
+        "s7designcreative/auth" : "1.*",
+        "s7designcreative/apicomm": "1.*",
+        "s7designcreative/encrypt": "1.*",
+        "s7designcreative/helpers": "1.*",
+        "s7designcreative/response": "1.*",
+        "s7designcreative/router": "1.*",
+        "s7designcreative/session": "1.*",
+        "s7designcreative/validator": "1.*"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://bitbucket.org/nenadpaic/acl.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://bitbucket.org/nenadpaic/auth.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://bitbucket.org/nenadpaic/apicomm.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://bitbucket.org/nenadpaic/encrypt.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://bitbucket.org/nenadpaic/helpers.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://bitbucket.org/nenadpaic/response.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://bitbucket.org/nenadpaic/router.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://bitbucket.org/nenadpaic/session.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://bitbucket.org/nenadpaic/validator.git"
+        }
+    ],
     "autoload" : {
         "psr-0" : {
             "" : "src"
           }
-    }
+    },
+    "minimum-stability": "dev"
 }

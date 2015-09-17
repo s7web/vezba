@@ -1,8 +1,8 @@
 .idea/
-src/
 app/config/routes.yml
 app/config/site_config.php
 log/
+vendor/
 public/s7designcreative
 public/file.csv
 cache/
