@@ -2,71 +2,16 @@
     "require": {
         "twig/twig": "1.*",
         "doctrine/orm": "~2.5",
-        "behat/behat": "~3.0",
-        "phpunit/phpunit": "~4.6",
         "symfony/yaml": "~2.6",
         "symfony/console": "~2.6",
-        "behat/mink": "~1.6",
-        "behat/mink-browserkit-driver": "~1.2",
-        "behat/mink-selenium2-driver": "~1.2",
-        "behat/mink-goutte-driver": "~1.1",
-        "symfony/form": "~2.6",
         "symfony/validator": "~2.6",
         "symfony/twig-bridge": "~2.6",
-        "monolog/monolog": "~1.13",
-        "behat/mink-extension": "~2.0",
-        "s7designcreative/acl": "1.*",
-        "s7designcreative/auth" : "1.*",
-        "s7designcreative/apicomm": "1.*",
-        "s7designcreative/encrypt": "1.*",
-        "s7designcreative/helpers": "1.*",
-        "s7designcreative/response": "1.*",
-        "s7designcreative/router": "1.*",
-        "s7designcreative/session": "1.*",
-        "s7designcreative/validator": "1.*"
+        "monolog/monolog": "~1.13"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://bitbucket.org/nenadpaic/acl.git"
-        },
-        {
-            "type": "vcs",
-            "url": "https://bitbucket.org/nenadpaic/auth.git"
-        },
-        {
-            "type": "vcs",
-            "url": "https://bitbucket.org/nenadpaic/apicomm.git"
-        },
-        {
-            "type": "vcs",
-            "url": "https://bitbucket.org/nenadpaic/encrypt.git"
-        },
-        {
-            "type": "vcs",
-            "url": "https://bitbucket.org/nenadpaic/helpers.git"
-        },
-        {
-            "type": "vcs",
-            "url": "https://bitbucket.org/nenadpaic/response.git"
-        },
-        {
-            "type": "vcs",
-            "url": "https://bitbucket.org/nenadpaic/router.git"
-        },
-        {
-            "type": "vcs",
-            "url": "https://bitbucket.org/nenadpaic/session.git"
-        },
-        {
-            "type": "vcs",
-            "url": "https://bitbucket.org/nenadpaic/validator.git"
-        }
-    ],
     "autoload" : {
-        "psr-0" : {
-            "" : "src"
+        "psr-4" : {
+            "" : "src",
+            "S7D\\Vendor\\" : "vendor/s7designcreative/Vendor"
           }
-    },
-    "minimum-stability": "dev"
+    }
 }

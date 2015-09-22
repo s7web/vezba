@@ -8,9 +8,9 @@ use Symfony\Component\Yaml\Parser;
 $yaml    = new Parser();
 $router  = $yaml->parse( file_get_contents( APP_PATH.'/config/routes.yml' ) );
 $aclList = $yaml->parse( file_get_contents( APP_PATH . '/config/acl.yml' ) );
-/** @var \Router\Router $routes */
-$routes = new \Router\Router();
-$acl    = new \Acl\Acl();
+/** @var S7D\Vendor\Router\Router $routes */
+$routes = new S7D\Vendor\Router\Router();
+$acl    = new S7D\Vendor\Acl\Acl();
 //set routes
 $routes->setRouter( $router );
 $acl->setAclList($aclList);
