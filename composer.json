@@ -6,7 +6,11 @@
         "symfony/console": "~2.6",
         "symfony/validator": "~2.6",
         "symfony/twig-bridge": "~2.6",
-        "monolog/monolog": "~1.13"
+        "monolog/monolog": "~1.13",
+        "guzzlehttp/guzzle": "^6.1",
+        "symfony/dom-crawler": "^2.7",
+        "sneakybobito/google-url": "dev-master",
+        "symfony/css-selector": "^2.7"
     },
     "autoload" : {
         "psr-4" : {
