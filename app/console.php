@@ -45,4 +45,14 @@ $console
         $google->run($app->entityManager);
     });
 
+$console
+	->register('notify')
+	->setDescription('Dibz notify user')
+	->setCode(function (InputInterface $input, OutputInterface $output) {
+		require_once APP_PATH . 'core/App.php';
+		$app = new App();
+		$cognitive = new \S7D\App\Dibz\Command\Notify();
+		$cognitive->run($app->entityManager);
+	});
+
 $console->run();
