@@ -16,7 +16,7 @@ class Session extends SecureSession
      */
     public function __construct()
     {
-        //session_name( SITE_NAME );
+		parent::__construct();
         if (session_id() == '') {
             session_start();
         }
