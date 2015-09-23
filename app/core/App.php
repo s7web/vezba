@@ -95,7 +95,7 @@ class App
 			$user = $login->login( $username, $password );
 		}
 		if(! in_array('GUEST', $route_roles)){
-			if(in_array('SUPER_ADMIN', $user->getRoles())) {
+			if($user->getRoles() && in_array('SUPER_ADMIN', $user->getRoles())) {
 				if(!preg_match('/\/all-users/', $this->request->url)) {
 					return \S7D\Vendor\Response\Response::redirect('all-users');
 				}
