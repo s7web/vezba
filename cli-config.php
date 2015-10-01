@@ -4,7 +4,7 @@ require_once 'app/init.php';
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
 
-$paths     = array( SITE_PATH.'/src', SITE_PATH.'/vendor/s7designcreative/auth/src/' );
+$paths     = array( SITE_PATH.'/src', SITE_PATH.'vendor/s7designcreative/Vendor/Auth/' );
 $isDevMode = false;
 
 $dbParams = array(

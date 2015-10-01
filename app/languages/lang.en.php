@@ -3,7 +3,7 @@ $lang = array(
     'secure' => 'Secure',
     'fast' => 'Fast',
     'reliable' => 'Reliable',
-    'welcome'  => 'Welcome to s7design framework',
+    'welcome'  => 'Welcome to S7Design framework',
     'aboutus'  => 'About us',
 
 );

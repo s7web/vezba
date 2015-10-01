@@ -13,18 +13,15 @@ class Controller
     private $message = '';
     private $messageClass = 'bg-info';
 
-	/** @var  \s7designcreative\Auth\Entity\User */
-    protected $user;
-
+	/** @var  S7D\Vendor\Auth\Entity\User */
+	protected $user;
 	/** @var  \Doctrine\ORM\EntityManager */
 	protected $em;
-
-    function __construct($user, $em)
-    {
-        $this->user = $user;
+	function __construct($user, $em)
+	{
+		$this->user = $user;
 		$this->em = $em;
-    }
-
+	}
 
     /**
      * Calls a view file from controller
@@ -49,8 +46,8 @@ class Controller
         );
 
         $twig       = new Twig_Environment( $loader );
-        $twig->addExtension( new \Helpers\MenuExtension() );
-        $twig->addExtension( new \Helpers\LanguageExtension() );
+        $twig->addExtension( new S7D\Vendor\Helpers\MenuExtension() );
+        $twig->addExtension( new S7D\Vendor\Helpers\LanguageExtension() );
         $twig->addExtension( new \Twig_Extension_Debug() );
 
         if (DEBUG_MODE) {
@@ -68,7 +65,7 @@ class Controller
 			unset($_SESSION['message']);
 		}
         $data['messageClass'] = $this->messageClass;
-        $data['user'] = $this->user;
+		$data['user'] = $this->user;
 
         echo $twig->render( $view, $data );
     }

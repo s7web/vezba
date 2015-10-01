@@ -7,8 +7,12 @@ use Symfony\Component\Yaml\Parser;
 
 $yaml    = new Parser();
 $router  = $yaml->parse( file_get_contents( APP_PATH.'/config/routes.yml' ) );
-/** @var \Router\Router $routes */
-$routes = new \Router\Router();
+
+$aclList = $yaml->parse( file_get_contents( APP_PATH . '/config/acl.yml' ) );
+/** @var S7D\Vendor\Router\Router $routes */
+$routes = new S7D\Vendor\Router\Router();
+$acl    = new S7D\Vendor\Acl\Acl();
+
 //set routes
 $routes->setRouter( $router );
 
@@ -18,4 +22,4 @@ require_once APP_PATH . 'core/Controller.php';
 
 $app = new App();
 $app->setRequest($routes);
-$app->run();
+$app->run($acl);

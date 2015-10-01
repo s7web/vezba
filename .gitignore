@@ -1,9 +1,10 @@
 .idea/
-src/
 app/config/routes.yml
 app/config/site_config.php
 log/
+vendor/*
+!vendor/s7designcreative
 public/s7designcreative
 public/sites.csv
 cache/
-test.php
+src/
