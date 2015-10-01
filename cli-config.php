@@ -1,5 +1,5 @@
 <?php
-require_once 'app/init.php';
+require_once 'app/config/site_config.php';
 
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
