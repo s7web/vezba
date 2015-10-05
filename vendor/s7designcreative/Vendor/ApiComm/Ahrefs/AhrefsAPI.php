@@ -17,7 +17,7 @@ if (!function_exists('curl_init')) {
     throw new \Exception('CURL PHP extension needed.');
 }
 
-class AhrefsAPI implements ApiInterface {
+class AhrefsAPI {
 
     /**
      * Class Variables
@@ -64,11 +64,11 @@ class AhrefsAPI implements ApiInterface {
      * @param boolean $checking Enable column checking
      */
     public function __construct($token = '', $debug = false, $apiUrl = '', $checking = true) {
-        if (trim($token) == '' && SEO_TOKEN == '')
+        if (trim($token) == '' && $token == '')
             throw new \Exception("API token is required.");
-        $this->token = SEO_TOKEN;
+        $this->token = $token;
         $this->params['output'] = 'json';
-        $this->debug = DEBUG_MODE;
+        $this->debug = $debug;
         $this->checking = $checking;
         $this->where = ArrayRules::$where;
         $this->functions = ArrayRules::$functions;

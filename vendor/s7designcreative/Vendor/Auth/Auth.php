@@ -1,15 +1,8 @@
 <?php
 namespace S7D\Vendor\Auth;
 
-use S7D\Vendor\Session\Session;
+use S7D\Vendor\HTTP\Session;
 
-/**
- * Class Auth
- * @package Auth
- *
- * @version 11.01.2015
- * @author S7Designcreative
- */
 class Auth
 {
 

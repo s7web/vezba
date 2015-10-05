@@ -2,15 +2,8 @@
 namespace S7D\Vendor\Auth;
 
 use S7D\Vendor\Auth\Entity\User;
-use S7D\Vendor\Session\Session;
+use S7D\Vendor\HTTP\Session;
 
-/**
- * Class Login
- * @package Auth
- *
- * @version 09.01.2015
- * @author S7Designcreative
- */
 class Login
 {
     /** @var Session $this ->session */
@@ -49,20 +42,15 @@ class Login
      */
     public function login( $username, $password )
     {
-        require_once( __DIR__ . '/Entity/User.php' );
-
         $user = $this->entityManager->getRepository( 'S7D\Vendor\Auth\Entity\User' )->findOneBy(array(
             'username' => $username,
         ));
-        if ( ! $user) {
-            return new User();
+        if ( $user && password_verify($password, $user->getPassword())) {
+			$this->session->set('auth', $user->getId());
         } else {
-            if (! password_verify($password, $user->getPassword())) {
-                return new User();
-            }
-        }
-        $_SESSION['auth'] = $user->getId();
-
+			$user = new User();
+			$user->setRoles(['GUEST']);
+		}
         return $user;
     }
 
@@ -140,7 +128,7 @@ class Login
      */
     public function getUser()
     {
-        $user_id = (int) $_SESSION['auth'];
+        $user_id = (int) $this->session->get('auth');
         require_once( __DIR__ . '/Entity/User.php' );
         return $this->entityManager->getRepository( 'S7D\Vendor\Auth\Entity\User' )->find($user_id);
     }

@@ -1,0 +1,27 @@
+login:
+  route: login
+  controller: S7D\Vendor\Auth\Controller\UserController
+  method: login
+  request_method: GET
+  roles: [GUEST, ADMIN, USER, SUPER_ADMIN]
+
+logout:
+  route: logout
+  controller: S7D\Vendor\Auth\Controller\UserController
+  method: logout
+  request_method: GET
+  roles: [GUEST, ADMIN, USER, SUPER_ADMIN]
+
+register:
+  route: register
+  controller: S7D\Vendor\Auth\Controller\UserController
+  method: register
+  request_method: ANY
+  roles: [GUEST]
+
+registered:
+  route: registered
+  controller: S7D\Vendor\Auth\Controller\UserController
+  method: registered
+  request_method: ANY
+  roles: [ADMIN, USER]

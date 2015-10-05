@@ -1,58 +1,40 @@
 <?php
+require __DIR__ . '/../vendor/autoload.php';
+
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-
-require_once 'config/site_config.php';
-require_once SITE_PATH .'/vendor/autoload.php';
+use S7D\Vendor\Routing\Application as App;
 
 $console = new Application();
+$app = new App(__DIR__ . '/..');
 
 $console
     ->register('assets')
     ->setDescription('Install assets from src to public')
     ->setCode(function (InputInterface $input, OutputInterface $output) {
-        $S7Dir = __DIR__ . '/../src/S7D/APP';
+        $S7Dir = __DIR__ . '/../src/S7D/App';
         $public = __DIR__ . '/../public';
         $packages = scandir($S7Dir);
         $packages = array_diff($packages, array('.', '..'));
-        shell_exec("rm -rf $public/S7Designcreative/");
-        mkdir($public . '/S7Designcreative');
+        shell_exec("rm -rf $public/s7d/");
+        mkdir($public . '/s7d');
         foreach($packages as $package){
-            shell_exec("ln -s $S7Dir/$package/public $public/S7Designcreative/$package");
+            shell_exec("ln -s $S7Dir/$package/public $public/s7d/$package");
             $output->writeln(sprintf('Package <info>%s</info> assets installed', $package));
         }
-    });
+    }
+);
 
-// TODO this command is for crawler project and should be moved to it after logic for registering commands in project have been implemented
-$console
-    ->register('crawl')
-    ->setDescription('Crawl site from database.')
-    ->setCode(function (InputInterface $input, OutputInterface $output) {
-        require_once APP_PATH . 'core/App.php';
-        $app = new App();
-        $crawl = new \S7D\App\Dibz\Command\CrawlSite();
-        $crawl->run($app->entityManager);
-    });
-
-$console
-    ->register('google')
-    ->setDescription('Get Google results from term(s).')
-    ->setCode(function (InputInterface $input, OutputInterface $output) {
-        require_once APP_PATH . 'core/App.php';
-        $app = new App();
-        $google = new \S7D\App\Dibz\Command\Google();
-        $google->run($app->entityManager);
-    });
-
-$console
-	->register('notify')
-	->setDescription('Dibz notify user')
-	->setCode(function (InputInterface $input, OutputInterface $output) {
-		require_once APP_PATH . 'core/App.php';
-		$app = new App();
-		$cognitive = new \S7D\App\Dibz\Command\Notify();
-		$cognitive->run($app->entityManager);
-	});
+foreach($app->parameters['commands'] as $command => $arr) {
+	$console
+		->register($command)
+		->setDescription($arr['description'])
+		->setCode(function (InputInterface $input, OutputInterface $output) use ($app, $arr) {
+			$c = new $arr['class'];
+			$c->run($app->em, $app->parameters, $app->root . '/log');
+		}
+	);
+}
 
 $console->run();
