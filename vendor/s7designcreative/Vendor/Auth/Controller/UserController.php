@@ -9,9 +9,9 @@ class UserController extends Controller {
 
 	public function login() {
 		if($this->user->getId()) {
-			Response::redirect($this->parameters['landing'][$this->user->getRoles()[0]]);
+			Response::redirect($this->parameters->get('landing')[$this->user->getRoles()[0]]);
 		}
-		return $this->view('S7D\App\Dibz::login.html.twig');
+		return $this->view('S7D\App\\' . $this->parameters->get('app') . '::login.html.twig');
 	}
 
 	public function logout(){
@@ -52,10 +52,10 @@ class UserController extends Controller {
 			$this->session->setFlash('You have been registered. Wait until administrator enable this account.');
 		}
 
-		return $this->view('S7D\App\Dibz::login.html.twig');
+		return $this->view('S7D\App\\' . $this->parameters->get('app') . '::login.html.twig');
 	}
 
 	public function registered(){
-		return $this->view('S7D\App\Dibz::registered.html.twig');
+		return $this->view('S7D\App\\' . $this->parameters->get('app') . '::registered.html.twig');
 	}
 }

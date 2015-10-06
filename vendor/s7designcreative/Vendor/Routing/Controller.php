@@ -1,6 +1,7 @@
 <?php
 namespace S7D\Vendor\Routing;
 
+use S7D\Vendor\Helpers\Parameter;
 use \S7D\Vendor\HTTP\Response;
 
 class Controller
@@ -16,6 +17,9 @@ class Controller
 
 	/** @var  \S7D\Vendor\HTTP\Session */
 	protected $session;
+
+	/** @var  Parameter */
+	protected $parameters;
 
 	function __construct($user, $em, $request, $session, $parameters)
 	{
@@ -54,7 +58,7 @@ class Controller
         $twig->addExtension( new \S7D\Vendor\Helpers\MenuExtension() );
         $twig->addExtension( new \Twig_Extension_Debug() );
 
-        if ($this->parameters['debug']) {
+        if ($this->parameters->get('debug')) {
             $twig->enableDebug();
         }
 

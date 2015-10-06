@@ -3,6 +3,7 @@ namespace S7D\Vendor\Routing;
 
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
+use S7D\Vendor\Helpers\Parameter;
 use Symfony\Component\Yaml\Parser;
 
 class Application
@@ -21,23 +22,33 @@ class Application
 		$config->setProxyDir( $this->root . '/cache');
 
 		$this->parameters = $this->getParams('parameters.yml');
-        $this->em = EntityManager::create( $this->parameters['database'], $config );
+        $this->em = EntityManager::create( $this->parameters->get('database'), $config );
 	}
 
     public function run() {
 
-		$router = $this->getParams('routes.yml');
+		$routesArray = $this->getParams('routes.yml')->getAll();
+		/** @var Route[] $routes */
+		$routes = [];
+		foreach($routesArray as $name => $route) {
+			if(!isset($route['controller']) || !isset($route['method']) || !isset($route['route'])) {
+				throw new \Exception(sprintf('Route %s missing controller and/or method.', $name));
+			}
+			$method = isset($route['request_method']) ? $route['request_method'] : '';
+			$roles = isset($route['roles']) ? $route['roles'] : '';
+			$routes[] = new Route($name, $route['route'], $route['controller'], $route['method'], $method, $roles);
+		}
 		$request = new \S7D\Vendor\HTTP\Request();
 		$session = new \S7D\Vendor\HTTP\Session();
 		$uri = explode('?', $_SERVER['REQUEST_URI']);
 		$uri = end($uri);
 		$found = false;
-		foreach($router as $route) {
-			if(preg_match('/^' . str_replace('/', '\/', $route['route']) . '$/', $uri, $queryParams)) {
-				$controller = $route['controller'];
-				$action = $route['method'];
+		foreach($routes as $route) {
+			if(preg_match('/^' . str_replace('/', '\/', $route->pattern) . '$/', $uri, $queryParams)) {
+				$controller = $route->controller;
+				$action = $route->action;
 				array_shift($queryParams);
-				$roles = $route['roles'];
+				$roles = $route->roles;
 				$found = true;
 				break;
 			}
@@ -71,17 +82,13 @@ class Application
 
 		$yml = new Parser();
 		$data = $yml->parse( file_get_contents( $this->root . '/app/config/' . $filePattern ) );
+		$app = isset($data['app']) ? $data['app'] : $this->parameters->get('app');
 
-		$iteratorDirectory = new \RecursiveDirectoryIterator( $this->root . '/src/');
-		/** @var \SplFileInfo[] $iterator */
-		$iterator = new \RecursiveIteratorIterator($iteratorDirectory);
-
-		foreach($iterator as $file) {
-			if($file->getFilename() === $filePattern) {
-				$data = array_merge($data, $yml->parse(file_get_contents($file->getPath() . '/' . $file->getFilename())));
-			}
+		$appConfig = $this->root . '/src/S7D/App/' . $app . '/config/' . $filePattern;
+		if(file_exists($appConfig)) {
+			$data = array_merge($data, $yml->parse(file_get_contents($appConfig)));
 		}
-		return $data;
+		return new Parameter($data);
 	}
 
 }
