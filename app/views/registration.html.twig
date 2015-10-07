@@ -1,8 +1,30 @@
-<script src='https://www.google.com/recaptcha/api.js'></script>
-<h2>Registration</h2>
-<form method="post" action="/public/?verify/">
-    <input type="email" name="email" required placeholder="Email">
-    <input type="text" name="password" required placeholder="Password">
-    <div class="g-recaptcha" data-sitekey="6LfjPg4TAAAAAEuS9_2NIQAp-knyCIbnoLBSAq2L"></div>
-    <input type="submit">
-</form>
+{% extends 'app_layout.html.twig' %}
+{% block body %}
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <h2>Registration</h2>
+    <form method="post" action="/public/index.php?verify" class="form-horizontal">
+        <div class="form-group">
+            <label for="inputEmail1" class="col-sm-2 control-label">Email</label>
+            <div class="col-sm-5">
+                <input type="email" class="form-control" id="inputEmail1" placeholder="Email" name="email" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputPassword1" class="col-sm-2 control-label">Password</label>
+            <div class="col-sm-5">
+                <input type="password" pattern=".{6,}" title="Password must contain at least 6 characters" class="form-control" id="inputPassword1" placeholder="Password" name="password" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputPassword1" class="col-sm-2 control-label"></label>
+            <div class="col-sm-5">
+                <div class="g-recaptcha" data-sitekey="{{ captchaKey }}"></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-5">
+                <button type="submit" class="btn btn-default">Sign up</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}

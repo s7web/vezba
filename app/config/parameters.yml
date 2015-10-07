@@ -9,4 +9,7 @@ database:
 debug: true
 secret: 2z7e7we2e77mjfkiqowc=+
 app: Dibz
-google-recaptcha: 6LfjPg4TAAAAACM-y8OQuqmgwy6Xhra-hZDcHOgp
+captcha:
+  url: https://www.google.com/recaptcha/api/siteverify
+  siteKey: 6LfjPg4TAAAAAEuS9_2NIQAp-knyCIbnoLBSAq2L
+  secret: 6LfjPg4TAAAAACM-y8OQuqmgwy6Xhra-hZDcHOgp
