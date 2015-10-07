@@ -9,6 +9,18 @@ use S7D\Vendor\Routing\Controller;
 class UserController extends Controller {
 
 	public function login() {
+		if($this->request->isPost()) {
+			$user = $this->em->getRepository( 'S7D\Vendor\Auth\Entity\User' )->findOneBy([
+				'username' => $this->request->get('user'),
+			]);
+			$password = $this->request->get('password');
+			if ( $user && $password && password_verify($password, $user->getPassword())) {
+				$this->session->set('auth', $user->getId());
+			} else {
+				$this->session->setFlash('Invalid email and/or password.');
+			}
+			Response::redirectBack();
+		}
 		if($this->user->getId()) {
 			Response::redirect($this->parameters->get('landing')[$this->user->getRoles()[0]]);
 		}

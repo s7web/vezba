@@ -3,6 +3,7 @@ namespace S7D\Vendor\Routing;
 
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
+use S7D\Vendor\Auth\Entity\User;
 use S7D\Vendor\Helpers\Parameter;
 use Symfony\Component\Yaml\Parser;
 
@@ -57,11 +58,11 @@ class Application
 			throw new \Exception('Route doesn\'t exists.');
 		}
 
-		$login = \S7D\Vendor\Auth\Auth::login( $session, $this->em );
 		if($session->get('auth')) {
 			$user = $this->em->getRepository( 'S7D\Vendor\Auth\Entity\User' )->find($session->get('auth'));
 		} else {
-			$user = $login->login( $request->get( 'user' ), $request->get( 'password' ) );
+			$user = new User();
+			$user->setRoles(['GUEST']);
 		}
 
 		if(array_intersect($user->getRoles(), $roles)) {
