@@ -12,7 +12,7 @@ class UserController extends Controller {
 		if($this->user->getId()) {
 			Response::redirect($this->parameters->get('landing')[$this->user->getRoles()[0]]);
 		}
-		return $this->view('S7D\App\\' . $this->parameters->get('app') . '::login.html.twig');
+		return $this->render();
 	}
 
 	public function logout() {
@@ -21,7 +21,7 @@ class UserController extends Controller {
 	}
 
 	public function registration() {
-		return $this->view('S7D\App\\' . $this->parameters->get('app') . '::registration.html.twig', [
+		return $this->render([
 			'captchaKey' => $this->parameters->get('captcha.siteKey')
 		]);
 	}
@@ -56,7 +56,7 @@ class UserController extends Controller {
 				'Content-type: text/html'
 			);
 			$this->insertUser($email, $this->request->get('password'), 'USER', [], 0, $token);
-			return $this->view('S7D\App\\' . $app . '::verify.html.twig');
+			return $this->render();
 		}
 		$this->session->setFlash('Something went wrong.');
 		Response::redirectBack();
@@ -70,10 +70,10 @@ class UserController extends Controller {
 			$this->em->persist($user);
 			$this->em->flush();
 			$this->session->setFlash('Registration success.');
-			Response::redirect('?login');
 		} else {
-			return new Response('Invalid token.');
+			$this->session->setFlash('Invalid token.');
 		}
+		Response::redirect('?login');
 	}
 
 	private function insertUser($email, $password, $role, $meta = [], $status = 0, $token = null) {
@@ -95,32 +95,5 @@ class UserController extends Controller {
 		$this->em->flush();
 
 		return $user->getId();
-	}
-
-	public function register() {
-
-		$email = $this->request->get('email');
-		$user = $this->em->getRepository( 'S7D\Vendor\Auth\Entity\User' )->findOneBy(array(
-			'email' => $email,
-		));
-		if($user) {
-			$this->session->setFlash("Registration failed, email $email is alredy taken.");
-		} else {
-			$name = explode(' ', $this->request->get('name'));
-			$firstName = $name[0];
-			$lastName = isset($name[1]) ? $name[1] : '';
-			$meta = [
-				'first_name' => $firstName,
-				'last_name' => $lastName,
-			];
-			$this->insertUser($email, $this->request->get('password'), 'ADMIN', $meta);
-			$this->session->setFlash('You have been registered. Wait until administrator enable this account.');
-		}
-
-		return $this->view('S7D\App\\' . $this->parameters->get('app') . '::login.html.twig');
-	}
-
-	public function registered(){
-		return $this->view('S7D\App\\' . $this->parameters->get('app') . '::registered.html.twig');
 	}
 }

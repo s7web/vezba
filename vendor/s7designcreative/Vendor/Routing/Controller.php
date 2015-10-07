@@ -38,21 +38,16 @@ class Controller
      *
      * @return Response
      */
-    protected function view( $view, $data = array() ) {
+    protected function view( $view, $data = [] ) {
 
-		if(! preg_match('/::/', $view)) {
-        	$className = get_class($this);
-			preg_match('/(.*)Controller.+/', $className, $class);
-			$path = $_SERVER['DOCUMENT_ROOT'] . 'src/' . str_replace('\\', '/', $class[1]) . 'views/';
-		} else {
-			$path = $_SERVER['DOCUMENT_ROOT'] . 'src/' . preg_replace(['/::.*/', '/\\\/'], ['', '/'], $view) . '/views/';
+		if(preg_match('/::/', $view)) {
 			$view = preg_replace('/.*::/', '', $view);
 		}
 
-        $loader = new \Twig_Loader_Filesystem(array(
-			$path,
+        $loader = new \Twig_Loader_Filesystem([
+			$_SERVER['DOCUMENT_ROOT'] . 'src/S7D/App/' . $this->parameters->get('app') . '/views/',
 			$_SERVER['DOCUMENT_ROOT'] . 'app/views/',
-		));
+		]);
 
         $twig = new \Twig_Environment( $loader );
         $twig->addExtension( new \S7D\Vendor\Helpers\MenuExtension() );
