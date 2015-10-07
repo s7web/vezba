@@ -45,7 +45,7 @@ class Login
         $user = $this->entityManager->getRepository( 'S7D\Vendor\Auth\Entity\User' )->findOneBy(array(
             'username' => $username,
         ));
-        if ( $user && password_verify($password, $user->getPassword())) {
+        if ( $user && $password && password_verify($password, $user->getPassword())) {
 			$this->session->set('auth', $user->getId());
         } else {
 			$user = new User();

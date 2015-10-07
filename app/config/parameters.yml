@@ -1,3 +1,4 @@
+url: easy-cms.nikola.loc/public/
 database:
   dbname: easycms
   driver: pdo_mysql
@@ -8,3 +9,4 @@ database:
 debug: true
 secret: 2z7e7we2e77mjfkiqowc=+
 app: Dibz
+google-recaptcha: 6LfjPg4TAAAAACM-y8OQuqmgwy6Xhra-hZDcHOgp

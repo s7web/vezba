@@ -12,6 +12,20 @@ logout:
   request_method: GET
   roles: [GUEST, ADMIN, USER, SUPER_ADMIN]
 
+registration:
+  route: registration
+  controller: S7D\Vendor\Auth\Controller\UserController
+  method: registration
+  request_method: ANY
+  roles: [GUEST]
+
+verify:
+  route: verify/(.+)?
+  controller: S7D\Vendor\Auth\Controller\UserController
+  method: verify
+  request_method: ANY
+  roles: [GUEST]
+
 register:
   route: register
   controller: S7D\Vendor\Auth\Controller\UserController

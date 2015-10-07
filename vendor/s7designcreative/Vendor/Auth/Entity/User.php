@@ -56,6 +56,23 @@ class User {
 	/** @Column(type="string", nullable=true) **/
 	protected $guid;
 
+	/** @Column(type="string", nullable=true) **/
+	protected $token;
+
+	/**
+	 * @return mixed
+	 */
+	public function getToken() {
+		return $this->token;
+	}
+
+	/**
+	 * @param mixed $token
+	 */
+	public function setToken( $token ) {
+		$this->token = $token;
+	}
+
 	/** @Column(type="array") **/
 	protected $roles;
 
