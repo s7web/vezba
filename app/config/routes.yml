@@ -3,14 +3,14 @@ login:
   controller: S7D\Vendor\Auth\Controller\UserController
   method: login
   request_method: GET
-  roles: [GUEST, ADMIN, USER, SUPER_ADMIN]
+  roles: [GUEST]
 
 logout:
   route: logout
   controller: S7D\Vendor\Auth\Controller\UserController
   method: logout
   request_method: GET
-  roles: [GUEST, ADMIN, USER, SUPER_ADMIN]
+  roles: [ADMIN, USER, SUPER_ADMIN]
 
 registration:
   route: registration

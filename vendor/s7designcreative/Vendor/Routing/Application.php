@@ -5,6 +5,7 @@ use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
 use S7D\Vendor\Auth\Entity\User;
 use S7D\Vendor\Helpers\Parameter;
+use S7D\Vendor\HTTP\Response;
 use Symfony\Component\Yaml\Parser;
 
 class Application
@@ -70,9 +71,9 @@ class Application
 			$response = call_user_func_array( [ $controller, $action ], array_values($queryParams) );
 
 		} else {
-			\S7D\Vendor\Response\Response::redirect('login');
+			Response::redirect($this->parameters->get('landing')[$user->getRoles()[0]]);
 		}
-		if(!$response instanceof \S7D\Vendor\HTTP\Response) {
+		if(!$response instanceof Response) {
 			throw new \Exception(sprintf('Action %s::%s must return Response object.', get_class($controller), $action));
 		}
 		$response->out();

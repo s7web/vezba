@@ -21,9 +21,6 @@ class UserController extends Controller {
 			}
 			Response::redirectBack();
 		}
-		if($this->user->getId()) {
-			Response::redirect($this->parameters->get('landing')[$this->user->getRoles()[0]]);
-		}
 		return $this->render();
 	}
 
