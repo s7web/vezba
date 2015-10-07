@@ -9,8 +9,8 @@ class Parameter {
 		$this->data = $data;
 	}
 
-	public function get($key, $default = false) {
-		return array_key_exists($key, $this->data) ? $this->data[$key] : $default;
+	public function get($key, $default = null) {
+		return ArrayDot::get($this->data, $key, null);
 	}
 
 	public function getAll() {

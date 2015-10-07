@@ -1,6 +1,8 @@
 <?php
 namespace S7D\Vendor\HTTP;
 
+use S7D\Vendor\Helpers\ArrayDot;
+
 class Session {
 
 	function __construct() {
@@ -8,7 +10,11 @@ class Session {
 	}
 
 	public function get($key, $default = false) {
-		return isset($_SESSION[$key]) ? $_SESSION[$key] : $default;
+		return ArrayDot::get($_SESSION, $key, $default);
+	}
+
+	public function getAll() {
+		return $_SESSION;
 	}
 
 	public function set($key, $value) {
