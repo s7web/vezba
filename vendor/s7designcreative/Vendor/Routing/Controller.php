@@ -24,7 +24,9 @@ class Controller
 	/** @var  Router */
 	protected $router;
 
-	function __construct($user, $em, $request, $session, $router, $parameters)
+	protected $rootDir;
+
+	function __construct($user, $em, $request, $session, $router, $parameters, $rootDir)
 	{
 		$this->user = $user;
 		$this->em = $em;
@@ -32,6 +34,7 @@ class Controller
 		$this->session = $session;
 		$this->parameters = $parameters;
 		$this->router = $router;
+		$this->rootDir = $rootDir;
 	}
 
     /**
@@ -49,8 +52,8 @@ class Controller
 		}
 
         $loader = new \Twig_Loader_Filesystem([
-			$_SERVER['DOCUMENT_ROOT'] . 'src/S7D/App/' . $this->parameters->get('app') . '/views/',
-			$_SERVER['DOCUMENT_ROOT'] . 'app/views/',
+			$this->rootDir . '/src/S7D/App/' . $this->parameters->get('app') . '/views/',
+			$this->rootDir . '/app/views/',
 		]);
 
         $twig = new \Twig_Environment( $loader );

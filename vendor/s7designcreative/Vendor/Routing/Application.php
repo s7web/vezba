@@ -67,7 +67,7 @@ class Application
 		}
 
 		if(array_intersect($user->getRoles(), $roles)) {
-			$controller = new $controller($user, $this->em, $request, $session, $router, $this->parameters);
+			$controller = new $controller($user, $this->em, $request, $session, $router, $this->parameters, $this->root);
 			$response = call_user_func_array( [ $controller, $action ], array_values($queryParams) );
 
 		} else {
