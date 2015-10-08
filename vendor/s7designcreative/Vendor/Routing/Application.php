@@ -30,22 +30,22 @@ class Application
     public function run() {
 
 		$routesArray = $this->getParams('routes.yml')->getAll();
-		/** @var Route[] $routes */
-		$routes = [];
+
+		$router = new Router();
 		foreach($routesArray as $name => $route) {
 			if(!isset($route['controller']) || !isset($route['method']) || !isset($route['route'])) {
 				throw new \Exception(sprintf('Route %s missing controller and/or method.', $name));
 			}
 			$method = isset($route['request_method']) ? $route['request_method'] : '';
 			$roles = isset($route['roles']) ? $route['roles'] : '';
-			$routes[] = new Route($name, $route['route'], $route['controller'], $route['method'], $method, $roles);
+			$router->addRoute($name, new Route($route['route'], $route['controller'], $route['method'], $method, $roles));
 		}
 		$request = new \S7D\Vendor\HTTP\Request();
 		$session = new \S7D\Vendor\HTTP\Session();
 		$uri = explode('?', $_SERVER['REQUEST_URI']);
 		$uri = end($uri);
 		$found = false;
-		foreach($routes as $route) {
+		foreach($router->routes as $route) {
 			if(preg_match('/^' . str_replace('/', '\/', $route->pattern) . '$/', $uri, $queryParams)) {
 				$controller = $route->controller;
 				$action = $route->action;
@@ -67,11 +67,12 @@ class Application
 		}
 
 		if(array_intersect($user->getRoles(), $roles)) {
-			$controller = new $controller($user, $this->em, $request, $session, $this->parameters);
+			$controller = new $controller($user, $this->em, $request, $session, $router, $this->parameters);
 			$response = call_user_func_array( [ $controller, $action ], array_values($queryParams) );
 
 		} else {
-			Response::redirect($this->parameters->get('landing')[$user->getRoles()[0]]);
+			$response = new Response();
+			$response->redirect($this->parameters->get('landing')[$user->getRoles()[0]]);
 		}
 		if(!$response instanceof Response) {
 			throw new \Exception(sprintf('Action %s::%s must return Response object.', get_class($controller), $action));

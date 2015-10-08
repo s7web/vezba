@@ -19,14 +19,14 @@ class UserController extends Controller {
 			} else {
 				$this->session->setFlash('Invalid email and/or password.');
 			}
-			Response::redirectBack();
+			return $this->redirectBack();
 		}
 		return $this->render();
 	}
 
 	public function logout() {
 		$this->session->remove('auth');
-		Response::redirect('?login');
+		return $this->redirectRoute('logout');
 	}
 
 	public function registration() {
@@ -41,7 +41,7 @@ class UserController extends Controller {
 		$user = $this->em->getRepository( 'S7D\Vendor\Auth\Entity\User' )->findOneBy(['email' => $email]);
 		if($user) {
 			$this->session->setFlash(sprintf('Registration failed, email %s already taken.', $email));
-			Response::redirectBack();
+			return $this->redirectBack();
 		}
 		$client = new Client();
 		$captcha = $client->request('POST', $this->parameters->get('captcha.url'), [
@@ -68,7 +68,7 @@ class UserController extends Controller {
 			return $this->render();
 		}
 		$this->session->setFlash('Something went wrong.');
-		Response::redirectBack();
+		return $this->redirectBack();
 	}
 
 	public function confirm($token) {
@@ -82,7 +82,7 @@ class UserController extends Controller {
 		} else {
 			$this->session->setFlash('Invalid token.');
 		}
-		Response::redirect('?login');
+		return $this->redirectRoute('logout');
 	}
 
 	private function insertUser($email, $password, $role, $meta = [], $status = 0, $token = null) {

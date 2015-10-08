@@ -3,8 +3,6 @@ namespace S7D\Vendor\Routing;
 
 class Route {
 
-	public $name;
-
 	public $pattern;
 
 	public $controller;
@@ -15,8 +13,7 @@ class Route {
 
 	public $roles;
 
-	function __construct( $name, $pattern, $controller, $action, $method, $roles ) {
-		$this->name       = $name;
+	function __construct( $pattern, $controller, $action, $method, $roles ) {
 		$this->pattern    = $pattern;
 		$this->controller = $controller;
 		$this->action     = $action;

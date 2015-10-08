@@ -1,7 +1,7 @@
 {% extends 'app_layout.html.twig' %}
 {% block body %}
     <h2>Login</h2>
-    <form method="post" action="/public/index.php?login" class="form-horizontal">
+    <form method="post" action="{{ path('login') }}" class="form-horizontal">
         <div class="form-group">
             <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
             <div class="col-sm-5">

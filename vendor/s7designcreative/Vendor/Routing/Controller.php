@@ -21,13 +21,17 @@ class Controller
 	/** @var  Parameter */
 	protected $parameters;
 
-	function __construct($user, $em, $request, $session, $parameters)
+	/** @var  Router */
+	protected $router;
+
+	function __construct($user, $em, $request, $session, $router, $parameters)
 	{
 		$this->user = $user;
 		$this->em = $em;
 		$this->request = $request;
 		$this->session = $session;
 		$this->parameters = $parameters;
+		$this->router = $router;
 	}
 
     /**
@@ -53,6 +57,13 @@ class Controller
         $twig->addExtension( new \S7D\Vendor\Helpers\MenuExtension() );
         $twig->addExtension( new \Twig_Extension_Debug() );
 
+		$router = $this->router;
+
+		$function = new \Twig_SimpleFunction('path', function($routeName, $id = null) use ($router){
+			return $router->generateUrl($this->parameters->get('url'), $routeName, $id);
+		});
+		$twig->addFunction($function);
+
         if ($this->parameters->get('debug')) {
             $twig->enableDebug();
         }
@@ -71,4 +82,18 @@ class Controller
 		return $this->view($view, $data);
 	}
 
+	protected function redirect($url) {
+		$response = new Response();
+		$response->redirect($url);
+		return $response;
+	}
+
+	protected function redirectRoute($route, $id = null) {
+		$url = $this->router->generateUrl($this->parameters->get('url'), $route, $id);
+		return $this->redirect($url);
+	}
+
+	protected function redirectBack(){
+		return $this->redirect($_SERVER['HTTP_REFERER']);
+	}
 }

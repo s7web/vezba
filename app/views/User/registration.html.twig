@@ -2,7 +2,7 @@
 {% block body %}
     <script src='https://www.google.com/recaptcha/api.js'></script>
     <h2>Registration</h2>
-    <form method="post" action="/public/index.php?verify" class="form-horizontal">
+    <form method="post" action="{{ path('verify') }}" class="form-horizontal">
         <div class="form-group">
             <label for="inputEmail1" class="col-sm-2 control-label">Email</label>
             <div class="col-sm-5">

@@ -1,4 +1,4 @@
-url: easy-cms.nikola.loc/public/
+url: http://easy-cms.nikola.loc/public/
 database:
   dbname: easycms
   driver: pdo_mysql

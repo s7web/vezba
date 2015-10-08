@@ -9,7 +9,9 @@ class Response {
 
 	protected $contentType;
 
-	function __construct($output, $contentType = ':', $code = 200) {
+	protected $redirect;
+
+	function __construct($output = null, $contentType = ':', $code = 200) {
 		$this->output = $output;
 		$this->contentType = $contentType;
 		$this->code = $code;
@@ -21,15 +23,14 @@ class Response {
 
 	public function out() {
 		header($this->contentType, true, $this->code);
+		if($this->code === 301) {
+			exit();
+		}
 		echo $this->output;
 	}
 
-	public static function redirectBack(){
-		self::redirect($_SERVER['HTTP_REFERER']);
-	}
-
-	public static function redirect($url) {
-		header( 'Location: '.$url, true, 301 );
-		exit();
+	public function redirect($url) {
+		$this->contentType = 'Location: '.$url;
+		$this->code = 301;
 	}
 }
