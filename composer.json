@@ -11,7 +11,8 @@
         "symfony/dom-crawler": "^2.7",
         "sneakybobito/google-url": "dev-master",
         "symfony/css-selector": "^2.7",
-        "swiftmailer/swiftmailer": "^5.4"
+        "swiftmailer/swiftmailer": "^5.4",
+        "phpunit/phpunit": "4.8.*"
     },
     "autoload" : {
         "psr-4" : {
