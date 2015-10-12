@@ -6,3 +6,4 @@ public/s7d
 public/sites.csv
 cache/
 src/
+app/config/parameters.yml
