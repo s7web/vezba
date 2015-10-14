@@ -1,8 +1,14 @@
 <?php
 namespace S7D\Vendor\Routing;
 
+use Doctrine\ORM\EntityManager;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
+use S7D\Vendor\Auth\Entity\User;
 use S7D\Vendor\Helpers\Parameter;
+use S7D\Vendor\HTTP\Request;
 use \S7D\Vendor\HTTP\Response;
+use S7D\Vendor\HTTP\Session;
 
 class Controller
 {
@@ -26,7 +32,9 @@ class Controller
 
 	protected $rootDir;
 
-	function __construct($user, $em, $request, $session, $router, $parameters, $rootDir)
+	protected $validCSRF = true;
+
+	function __construct(User $user, EntityManager $em, Request $request, Session $session, Router $router, Parameter $parameters, $rootDir)
 	{
 		$this->user = $user;
 		$this->em = $em;
@@ -35,6 +43,17 @@ class Controller
 		$this->parameters = $parameters;
 		$this->router = $router;
 		$this->rootDir = $rootDir;
+		if($request->isPost() && $request->get('CSRFtoken') !== $session->getCSRF()) {
+			$this->validCSRF = false;
+			$logger = new Logger('Invalid CSRF');
+			$logger->pushHandler(new StreamHandler($rootDir . '/log/invalid_requests.log'));
+			$logger->addInfo(vsprintf('%s, %s, %s, %s', [
+				$_SERVER['REMOTE_ADDR'],
+				$user->getEmail(),
+				$request->getMethod(),
+				$_SERVER['HTTP_REFERER'],
+			]));
+		}
 	}
 
     /**
@@ -64,6 +83,14 @@ class Controller
 
 		$function = new \Twig_SimpleFunction('path', function($routeName, $id = null) use ($router){
 			return $router->generateUrl($this->parameters->get('url'), $routeName, $id);
+		});
+		$twig->addFunction($function);
+
+		$function = new \Twig_SimpleFunction('CSRFinput', function($reload = false) {
+			if($reload) {
+				$this->session->generateCSRF();
+			}
+			return sprintf('<input type="hidden" name="CSRFtoken" value="%s">', $this->session->getCSRF() );
 		});
 		$twig->addFunction($function);
 

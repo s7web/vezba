@@ -37,4 +37,15 @@ class Session {
 		$this->remove('flash');
 		return $flash;
 	}
+
+	public function generateCSRF() {
+		$token = md5(uniqid());
+		$this->set('CSRFtoken', $token);
+		return $token;
+	}
+
+	public function getCSRF() {
+		return $this->get('CSRFtoken') ? $this->get('CSRFtoken') : $this->generateCSRF();
+	}
+
 }
