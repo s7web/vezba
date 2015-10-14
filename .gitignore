@@ -4,6 +4,7 @@ vendor/*
 !vendor/s7designcreative
 public/s7d
 public/sites.csv
+public/upload
 cache/
 src/
 app/config/parameters.yml

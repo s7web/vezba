@@ -1,0 +1,26 @@
+<link rel="stylesheet" href="//blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
+<script src="https://cdn.jsdelivr.net/bootstrap.image-gallery/3.1.0/js/bootstrap-image-gallery.js"></script>
+<script src="//blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js"></script>
+
+<ul class="list-inline">
+    {% for item in gallery %}
+        <li>
+            <a href="/{{ item.full }}" data-gallery>
+                <img src="{{ item.thumb }}">
+            </a>
+        </li>
+    {% else %}
+        No items.
+    {% endfor %}
+</ul>
+
+
+<div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls">
+    <div class="slides"></div>
+    <h3 class="title"></h3>
+    <a class="prev">‹</a>
+    <a class="next">›</a>
+    <a class="close">×</a>
+    <a class="play-pause"></a>
+    <ol class="indicator"></ol>
+</div>

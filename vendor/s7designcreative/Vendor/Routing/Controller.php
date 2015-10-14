@@ -67,6 +67,16 @@ class Controller
 		});
 		$twig->addFunction($function);
 
+		$that = $this;
+		$function = new \Twig_SimpleFunction('renderController', function($action) use ($that, $twig){
+			list($cnt, $action) = explode('::', $action);
+			$cnt = new $cnt($that->user, $that->em, $that->request, $that->session, $that->router, $that->parameters, $that->rootDir);
+			/** @var Response $response */
+			$response = $cnt->$action();
+			return $response->getOutput();
+		});
+		$twig->addFunction($function);
+
         if ($this->parameters->get('debug')) {
             $twig->enableDebug();
         }

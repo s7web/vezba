@@ -18,7 +18,7 @@ class Application
 
 	function __construct( $root ) {
 		$this->root = $root;
-        $paths  = array( $this->root . '/src', $this->root . '/vendor/s7designcreative/Vendor/Auth/' );
+        $paths  = array( $this->root . '/src', $this->root . '/vendor/s7designcreative/' );
         $config = Setup::createAnnotationMetadataConfiguration( $paths );
         $config->setAutoGenerateProxyClasses(false);
 		$config->setProxyDir( $this->root . '/cache');

@@ -46,3 +46,10 @@ registered:
   method: registered
   request_method: ANY
   roles: [ADMIN, USER]
+
+saveImage:
+  route: image/save
+  controller: S7D\Vendor\Media\Controller\ImageController
+  method: saveImage
+  request_method: ANY
+  roles: [ADMIN]

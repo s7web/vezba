@@ -33,4 +33,8 @@ class Response {
 		$this->contentType = 'Location: '.$url;
 		$this->code = 301;
 	}
+
+	public function getOutput() {
+		return $this->output;
+	}
 }
