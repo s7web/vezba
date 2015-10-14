@@ -2,7 +2,6 @@
 namespace S7D\Vendor\Media\Controller;
 
 use Eventviva\ImageResize;
-use S7D\Vendor\HTTP\ResponseImage;
 use S7D\Vendor\Media\Entity\Media;
 use S7D\Vendor\Routing\Controller;
 
@@ -15,7 +14,7 @@ class ImageController extends Controller {
 	public function saveImage() {
 
 		$image = $this->request->get('image');
-		$name = isset($_FILES['file']) ? preg_replace('/\..*/', '', $_FILES['file']['name']) : md5(uniqid());
+		$name = $this->request->get('filename', md5(uniqid()));
 
 		$image = str_replace('data:image/png;base64,', '', $image);
 		$image = base64_decode($image);

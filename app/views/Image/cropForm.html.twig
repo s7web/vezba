@@ -6,6 +6,7 @@
 <form method="post" action="{{ path('saveImage') }}" enctype="multipart/form-data">
     <div class="crop-image"></div>
     <input type="hidden" name="image">
+    <input type="hidden" name="filename">
     <span class="btn btn-danger btn-file">
         <input type="file" name="file">
     </span>
@@ -26,12 +27,12 @@
                     zoomable: false
                 });
             }
-
             reader.readAsDataURL(this.files[0]);
+            $('[name="filename"]').val(this.files[0]['name'].replace(/\.[a-zA-Z]+$/,''))
         });
 
         $('form').submit(function() {
-            $(this).find(':hidden').val($img.cropper('getCroppedCanvas').toDataURL());
+            $(this).find('[name="image"]').val($img.cropper('getCroppedCanvas').toDataURL());
         });
     });
 </script>
