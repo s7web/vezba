@@ -3,7 +3,7 @@
 namespace S7D\Vendor\Auth\Entity;
 
 /**
- * @Entity @Table(name="user")
+ * @MappedSuperclass
  */
 class User {
 
