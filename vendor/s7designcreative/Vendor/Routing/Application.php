@@ -33,7 +33,7 @@ class Application
 
 		$router = new Router();
 		foreach($routesArray as $name => $route) {
-			if(!isset($route['controller']) || !isset($route['method']) || !isset($route['route'])) {
+			if(!isset($route['controller']) || !isset($route['method'])) {
 				throw new \Exception(sprintf('Route %s missing controller and/or method.', $name));
 			}
 			$method = isset($route['request_method']) ? $route['request_method'] : '';
@@ -42,8 +42,8 @@ class Application
 		}
 		$request = new \S7D\Vendor\HTTP\Request();
 		$session = new \S7D\Vendor\HTTP\Session();
-		$uri = explode('?', $_SERVER['REQUEST_URI']);
-		$uri = end($uri);
+		$uri = ltrim($_SERVER['REQUEST_URI'], '/');
+		$uri = preg_replace('/\?.*/', '', $uri);
 		$found = false;
 		foreach($router->routes as $route) {
 			if(preg_match('/^' . str_replace('/', '\/', $route->pattern) . '$/', $uri, $queryParams)) {

@@ -14,6 +14,6 @@ class Router {
 		if(!isset($this->routes[$name])) {
 			throw new \Exception(sprintf('Route \'%s\' is not defined.', $name));
 		}
-		return $baseUrl . '?' . preg_replace('/\(.*\)/', $id, $this->routes[$name]->pattern);
+		return $baseUrl . preg_replace('/\(.*\)/', $id, $this->routes[$name]->pattern);
 	}
 }
