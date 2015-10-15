@@ -10,7 +10,7 @@ class UserController extends Controller {
 
 	public function login() {
 		if($this->request->isPost()) {
-			$user = $this->em->getRepository( 'S7D\Vendor\Auth\Entity\User' )->findOneBy([
+			$user = $this->em->getRepository( 'S7D\App\\' . $this->parameters->get('app')  . '\Entity\ExtendedUser' )->findOneBy([
 				'username' => $this->request->get('user'),
 			]);
 			$password = $this->request->get('password');
@@ -38,7 +38,7 @@ class UserController extends Controller {
 	public function verify() {
 
 		$email = $this->request->get('email');
-		$user = $this->em->getRepository( 'S7D\Vendor\Auth\Entity\User' )->findOneBy(['email' => $email]);
+		$user = $this->em->getRepository( 'S7D\App\\' . $this->parameters->get('app')  . '\Entity\ExtendedUser' )->findOneBy(['email' => $email]);
 		if($user) {
 			$this->session->setFlash(sprintf('Registration failed, email %s already taken.', $email));
 			return $this->redirectBack();
@@ -72,7 +72,7 @@ class UserController extends Controller {
 	}
 
 	public function confirm($token) {
-		$user = $this->em->getRepository( 'S7D\Vendor\Auth\Entity\User' )->findOneBy(['token' => $token]);
+		$user = $this->em->getRepository( 'S7D\App\\' . $this->parameters->get('app')  . '\Entity\ExtendedUser' )->findOneBy(['token' => $token]);
 		if($user) {
 			$user->setToken(null);
 			$user->setStatus(1);
@@ -94,7 +94,7 @@ class UserController extends Controller {
 		$user->setRoles([$role]);
 		$user->setStatus($status);
 		$user->setToken($token);
-		$group = $this->em->getRepository( 'S7D\Vendor\Auth\Entity\User' )->createQueryBuilder('u');
+		$group = $this->em->getRepository( 'S7D\App\\' . $this->parameters->get('app')  . '\Entity\ExtendedUser' )->createQueryBuilder('u');
 		$group->select('MAX(u.user_group)');
 		$newGroup = $group->getQuery()->getSingleScalarResult() + 1;
 		$user->setUserGroup($newGroup);

@@ -20,7 +20,7 @@ class Application
 		$this->root = $root;
 		$this->parameters = $this->getParams('parameters.yml');
 
-        $paths  = array( $this->root . '/src/S7D/App/' . $this->parameters->get('app'), $this->root . '/vendor/s7designcreative/Vendor/Auth/' );
+        $paths  = array( $this->root . '/src/S7D/App/' . $this->parameters->get('app') );
         $config = Setup::createAnnotationMetadataConfiguration( $paths );
         $config->setAutoGenerateProxyClasses(false);
 		$config->setProxyDir( $this->root . '/cache');
@@ -61,7 +61,7 @@ class Application
 		}
 
 		if($session->get('auth')) {
-			$user = $this->em->getRepository( 'S7D\Vendor\Auth\Entity\User' )->find($session->get('auth'));
+			$user = $this->em->getRepository( 'S7D\App\\' . $this->parameters->get('app')  . '\Entity\ExtendedUser' )->find($session->get('auth'));
 		} else {
 			$user = new User();
 			$user->setRoles(['GUEST']);
