@@ -129,11 +129,15 @@ class Controller
 	}
 
 	protected function redirectRoute($route, $id = null) {
-		$url = $this->router->generateUrl($this->parameters->get('url'), $route, $id);
+		$url = $this->generateUrl($route, $id);
 		return $this->redirect($url);
 	}
 
 	protected function redirectBack(){
 		return $this->redirect($_SERVER['HTTP_REFERER']);
+	}
+
+	protected function generateUrl($route, $id = null) {
+		return $this->router->generateUrl($this->parameters->get('url'), $route, $id);
 	}
 }

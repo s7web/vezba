@@ -48,4 +48,8 @@ class Session {
 		return $this->get('CSRFtoken') ? $this->get('CSRFtoken') : $this->generateCSRF();
 	}
 
+	public function setAuth($id) {
+		$this->set('auth', $id);
+	}
+
 }

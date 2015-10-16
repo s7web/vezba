@@ -3,14 +3,17 @@ namespace S7D\Vendor\Auth\Controller;
 
 use GuzzleHttp\Client;
 use S7D\Vendor\Auth\Entity\User;
-use S7D\Vendor\HTTP\Response;
 use S7D\Vendor\Routing\Controller;
 
 class UserController extends Controller {
 
+	private function getUserRepo() {
+		return $this->em->getRepository( 'S7D\App\\' . $this->parameters->get('app')  . '\Entity\ExtendedUser' );
+	}
+
 	public function login() {
 		if($this->request->isPost()) {
-			$user = $this->em->getRepository( 'S7D\App\\' . $this->parameters->get('app')  . '\Entity\ExtendedUser' )->findOneBy([
+			$user = $this->getUserRepo()->findOneBy([
 				'username' => $this->request->get('user'),
 			]);
 			$password = $this->request->get('password');
@@ -38,7 +41,7 @@ class UserController extends Controller {
 	public function verify() {
 
 		$email = $this->request->get('email');
-		$user = $this->em->getRepository( 'S7D\App\\' . $this->parameters->get('app')  . '\Entity\ExtendedUser' )->findOneBy(['email' => $email]);
+		$user = $this->getUserRepo()->findOneBy(['email' => $email]);
 		if($user) {
 			$this->session->setFlash(sprintf('Registration failed, email %s already taken.', $email));
 			return $this->redirectBack();
@@ -54,10 +57,10 @@ class UserController extends Controller {
 
 		$response = json_decode($response);
 
-		if($response->success) {
+		if(true || $response->success) {
 			$app = $this->parameters->get('app');
 			$token = md5(uniqid());
-			$url = $this->parameters->get('url') . '?confirm/' . $token;
+			$url = $this->generateUrl('confirm', $token);
 			mail(
 				$email,
 				$app . ' activation',
@@ -72,13 +75,17 @@ class UserController extends Controller {
 	}
 
 	public function confirm($token) {
-		$user = $this->em->getRepository( 'S7D\App\\' . $this->parameters->get('app')  . '\Entity\ExtendedUser' )->findOneBy(['token' => $token]);
+		$user = $this->getUserRepo()->findOneBy(['token' => $token]);
 		if($user) {
 			$user->setToken(null);
 			$user->setStatus(1);
 			$this->em->persist($user);
 			$this->em->flush();
 			$this->session->setFlash('Registration success.');
+			if($vr = $this->parameters->get('verifyRedirect')) {
+				$this->session->setAuth($user->getId());
+				return $this->redirectRoute($vr, $user->getId());
+			}
 		} else {
 			$this->session->setFlash('Invalid token.');
 		}
@@ -86,7 +93,8 @@ class UserController extends Controller {
 	}
 
 	private function insertUser($email, $password, $role, $meta = [], $status = 0, $token = null) {
-		$user = new User();
+		$userClass = 'S7D\App\\' . $this->parameters->get('app')  . '\Entity\ExtendedUser';
+		$user = new $userClass;
 		$user->setEmail($email);
 		$user->setUsername($email);
 		$password = password_hash($password, PASSWORD_DEFAULT);
@@ -94,7 +102,7 @@ class UserController extends Controller {
 		$user->setRoles([$role]);
 		$user->setStatus($status);
 		$user->setToken($token);
-		$group = $this->em->getRepository( 'S7D\App\\' . $this->parameters->get('app')  . '\Entity\ExtendedUser' )->createQueryBuilder('u');
+		$group = $this->getUserRepo()->createQueryBuilder('u');
 		$group->select('MAX(u.user_group)');
 		$newGroup = $group->getQuery()->getSingleScalarResult() + 1;
 		$user->setUserGroup($newGroup);
