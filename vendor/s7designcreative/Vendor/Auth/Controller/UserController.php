@@ -57,7 +57,7 @@ class UserController extends Controller {
 
 		$response = json_decode($response);
 
-		if(true || $response->success) {
+		if($response->success) {
 			$app = $this->parameters->get('app');
 			$token = md5(uniqid());
 			$url = $this->generateUrl('confirm', $token);
