@@ -4,7 +4,7 @@ require __DIR__ . '/../vendor/autoload.php';
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use S7D\Vendor\Routing\Application as App;
+use S7D\Core\Routing\Application as App;
 
 $console = new Application();
 $app = new App(__DIR__ . '/..');
