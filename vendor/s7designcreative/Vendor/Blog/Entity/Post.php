@@ -58,10 +58,17 @@ class Post
     protected $tag;
 
     /**
+     * @ManyToMany(targetEntity="S7D\Vendor\Blog\Entity\Category", inversedBy="posts")
+     * @JoinTable(name="post_has_category")
+     */
+    protected $categories;
+
+    /**
      * Set up class properties
      */
     public function __construct(){
-        $this->tags = new ArrayCollection();
+        $this->tags       = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     /**
@@ -281,5 +288,28 @@ class Post
     {
         $this->author = $author;
     }
+
+    /**
+     * Get categories for post
+     *
+     * @return Category[]
+     */
+    public function getCategories()
+    {
+        return $this->categories;
+    }
+
+    /**
+     * Set categories for post
+     *
+     * @param Category $categories
+     *
+     * @return void
+     */
+    public function setCategories(Category $categories)
+    {
+        $this->categories[] = $categories;
+    }
+
 
 }
