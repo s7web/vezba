@@ -8,7 +8,7 @@ use S7D\Core\Routing\Controller;
 class UserController extends Controller {
 
 	private function getUserRepo() {
-		return $this->em->getRepository( 'S7D\App\\' . $this->parameters->get('app')  . '\Entity\ExtendedUser' );
+		return $this->em->getRepository( 'S7D\Core\Auth\Entity\User' );
 	}
 
 	public function login() {

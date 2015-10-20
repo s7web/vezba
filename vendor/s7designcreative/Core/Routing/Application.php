@@ -62,7 +62,7 @@ class Application
 		}
 
 		if($session->get('auth')) {
-			$user = $this->em->getRepository( 'S7D\App\\' . $this->parameters->get('app')  . '\Entity\ExtendedUser' )->find($session->get('auth'));
+			$user = $this->em->getRepository( 'S7D\Core\Auth\Entity\User' )->find($session->get('auth'));
 		} else {
 			$user = new User();
 			$role = new Role();
@@ -71,7 +71,7 @@ class Application
 		}
 
 		$allowed = false;
-		foreach($user->getRoles()->toArray() as $userRole) {
+		foreach($user->getRoles() as $userRole) {
 			if(in_array($userRole->name, $roles)) {
 				$allowed = true;
 			}
@@ -83,7 +83,7 @@ class Application
 
 		} else {
 			$response = new Response();
-			$response->redirect($this->parameters->get('landing')[$user->getRoles()->toArray()[0]->name]);
+			$response->redirect($this->parameters->get('landing')[$user->getRoles()[0]->name]);
 		}
 		if(!$response instanceof Response) {
 			throw new \Exception(sprintf('Action %s::%s must return Response object.', get_class($controller), $action));
