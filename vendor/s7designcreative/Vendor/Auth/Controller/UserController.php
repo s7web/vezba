@@ -64,8 +64,7 @@ class UserController extends Controller {
 			$message = \Swift_Message::newInstance('Registration on peepl network')
 			                         ->setFrom('npaic@s7designcreative.com', 'Peepl')
 			                         ->setTo($email)
-			                         ->setBody(sprintf('To activate your account on %s follow this <a href="%s">link</a>.', $app, $url))
-									 ->setContentType('Content-type: text/html');
+			                         ->setBody(sprintf('To activate your account on %s follow this url %s.', $app, $url));
 			$this->mailer->send($message);
 			$this->insertUser($email, $this->request->get('password'), 'USER', [], 0, $token);
 			return $this->render();
