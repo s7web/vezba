@@ -43,9 +43,9 @@ class Application
 		}
 		$request = new \S7D\Vendor\HTTP\Request();
 		$session = new \S7D\Vendor\HTTP\Session();
-	    $mailer  = \Swift_SmtpTransport::newInstance($this->parameters->get('host'),$this->parameters->get('port'))
-		    ->setUsername($this->parameters->get('username'))
-		    ->setPassword($this->parameters->get('password'));
+	    $mailer  = \Swift_SmtpTransport::newInstance($this->parameters->get('email.host'),$this->parameters->get('email.port'))
+		    ->setUsername($this->parameters->get('email.username'))
+		    ->setPassword($this->parameters->get('email.password'));
 		$uri = ltrim($_SERVER['REQUEST_URI'], '/');
 		$uri = preg_replace('/\?.*/', '', $uri);
 		$found = false;
