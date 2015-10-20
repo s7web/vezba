@@ -43,6 +43,9 @@ class Application
 		}
 		$request = new \S7D\Vendor\HTTP\Request();
 		$session = new \S7D\Vendor\HTTP\Session();
+	    $mailer  = \Swift_SmtpTransport::newInstance($this->parameters->get('host'),$this->parameters->get('port'))
+		    ->setUsername($this->parameters->get('username'))
+		    ->setPassword($this->parameters->get('password'));
 		$uri = ltrim($_SERVER['REQUEST_URI'], '/');
 		$uri = preg_replace('/\?.*/', '', $uri);
 		$found = false;
@@ -68,7 +71,7 @@ class Application
 		}
 
 		if(array_intersect($user->getRoles(), $roles)) {
-			$controller = new $controller($user, $this->em, $request, $session, $router, $this->parameters, $this->root);
+			$controller = new $controller($user, $this->em, $request, $session, $router, $this->parameters, $this->root, $mailer);
 			$response = call_user_func_array( [ $controller, $action ], array_values($queryParams) );
 
 		} else {

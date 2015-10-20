@@ -32,11 +32,14 @@ class Controller
 
 	protected $rootDir;
 
+	protected $mailer;
+
 	protected $validCSRF = true;
 
-	function __construct(User $user, EntityManager $em, Request $request, Session $session, Router $router, Parameter $parameters, $rootDir)
+	function __construct(User $user, EntityManager $em, Request $request, Session $session, Router $router, Parameter $parameters, $rootDir, $mailer)
 	{
 		$this->user = $user;
+		$this->mailer = \Swift_Mailer::newInstance($mailer);
 		$this->em = $em;
 		$this->request = $request;
 		$this->session = $session;
