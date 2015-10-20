@@ -1,12 +1,12 @@
 <?php
 
-namespace S7D\Vendor\Post\Entity;
+namespace S7D\Vendor\Blog\Entity;
 
 /**
  * Class Post
  * @package S7D\Vendor\Post\Entity
  *
- * @Entity @Table(name="role_has_category")
+ * @MappedSuperclass
  */
 class Post
 {
