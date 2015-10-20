@@ -86,8 +86,15 @@ class User {
 		$this->token = $token;
 	}
 
-	/** @Column(type="array") **/
+	/**
+	 * @ManyToMany(targetEntity="S7D\Core\Auth\Entity\Role")
+	 * @JoinTable(name="users_roles",
+	 *      joinColumns={@JoinColumn(name="user_id", referencedColumnName="id")},
+	 *      inverseJoinColumns={@JoinColumn(name="role_id", referencedColumnName="id")}
+	 *      )
+	 **/
 	protected $roles;
+
 
 	/** @Column(type="array", nullable=true) **/
 	protected $meta;

@@ -3,6 +3,7 @@ namespace S7D\Core\Routing;
 
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
+use S7D\Core\Auth\Entity\Role;
 use S7D\Core\Auth\Entity\User;
 use S7D\Core\Helpers\Parameter;
 use S7D\Core\HTTP\Response;
@@ -64,16 +65,25 @@ class Application
 			$user = $this->em->getRepository( 'S7D\App\\' . $this->parameters->get('app')  . '\Entity\ExtendedUser' )->find($session->get('auth'));
 		} else {
 			$user = new User();
-			$user->setRoles(['GUEST']);
+			$role = new Role();
+			$role->name = 'GUEST';
+			$user->setRoles([$role]);
 		}
 
-		if(array_intersect($user->getRoles(), $roles)) {
+		$allowed = false;
+		foreach($user->getRoles()->toArray() as $userRole) {
+			if(in_array($userRole->name, $roles)) {
+				$allowed = true;
+			}
+		}
+
+		if($allowed) {
 			$controller = new $controller($user, $this->em, $request, $session, $router, $this->parameters, $this->root);
 			$response = call_user_func_array( [ $controller, $action ], array_values($queryParams) );
 
 		} else {
 			$response = new Response();
-			$response->redirect($this->parameters->get('landing')[$user->getRoles()[0]]);
+			$response->redirect($this->parameters->get('landing')[$user->getRoles()->toArray()[0]->name]);
 		}
 		if(!$response instanceof Response) {
 			throw new \Exception(sprintf('Action %s::%s must return Response object.', get_class($controller), $action));
