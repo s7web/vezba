@@ -2,11 +2,13 @@
 
 namespace S7D\Vendor\Blog\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * Class Post
  * @package S7D\Vendor\Post\Entity
  *
- * @MappedSuperclass
+ * @Entity @Table(name="post")
  */
 class Post
 {
@@ -28,6 +30,51 @@ class Post
 
     /** @Column(type="datetime") */
     protected $created;
+
+    /**
+     * @ManyToOne(targetEntity="S7D\Vendor\Blog\Entity\PostStatus", inversedBy="post")
+     */
+    protected $status;
+
+    /**
+     * @ManyToOne(targetEntity="S7D\Vendor\Blog\Entity\PostType", inversedBy="post")
+     */
+    protected $type;
+
+    /**
+     * @ManyToMany(targetEntity="S7D\Vendor\Blog\Entity\Tag", inversedBy="post")
+     * @JoinTable(name="post_has_tag")
+     */
+    protected $tag;
+
+    /**
+     * Set up class properties
+     */
+    public function __construct(){
+        $this->tags = new ArrayCollection();
+    }
+
+    /**
+     * Get post type for post
+     *
+     * @return PostType
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Set post type for post
+     *
+     * @param PostType $type
+     *
+     * @return void
+     */
+    public function setType(PostType $type)
+    {
+        $this->type = $type;
+    }
 
     /**
      * Get id of post
@@ -159,5 +206,47 @@ class Post
     public function setCreated($created)
     {
         $this->created = $created;
+    }
+
+    /**
+     * Get post status
+     *
+     * @return PostStatus
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * Set post status
+     *
+     * @param PostStatus $status
+     *
+     * @return void
+     */
+    public function setStatus(PostStatus $status)
+    {
+        $this->status = $status;
+    }
+
+    /**
+     * Get collection of tags for post
+     *
+     * @return Tag
+     */
+    public function getTag()
+    {
+        return $this->tag;
+    }
+
+    /**
+     * Set tags for post
+     *
+     * @param Tag $tag
+     */
+    public function setTag(Tag $tag)
+    {
+        $this->tag[] = $tag;
     }
 }

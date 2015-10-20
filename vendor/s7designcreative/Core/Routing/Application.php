@@ -20,7 +20,7 @@ class Application
 		$this->root = $root;
 		$this->parameters = $this->getParams('parameters.yml');
 
-        $paths  = array( $this->root . '/src/S7D/App/' . $this->parameters->get('app') );
+        $paths  = array( $this->root . '/src/S7D/App/' . $this->parameters->get('app'), $this->root . '/vendor/s7designcreative/' );
         $config = Setup::createAnnotationMetadataConfiguration( $paths );
         $config->setAutoGenerateProxyClasses(false);
 		$config->setProxyDir( $this->root . '/cache');
