@@ -3,6 +3,7 @@
 namespace S7D\Vendor\Blog\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use S7D\Core\Auth\Entity\User;
 
 /**
  * Class Post
@@ -40,6 +41,15 @@ class Post
      * @ManyToOne(targetEntity="S7D\Vendor\Blog\Entity\PostType", inversedBy="post")
      */
     protected $type;
+
+    /** @Column(type="integer") */
+    protected $author_id;
+
+    /**
+     * @ManyToOne(targetEntity="S7D\Core\Auth\Entity\User", inversedBy="post")
+     * @JoinColumn(name="author_id", referencedColumnName="id")
+     */
+    protected $author;
 
     /**
      * @ManyToMany(targetEntity="S7D\Vendor\Blog\Entity\Tag", inversedBy="post")
@@ -249,4 +259,27 @@ class Post
     {
         $this->tag[] = $tag;
     }
+
+    /**
+     * Get author of post
+     *
+     * @return User
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
+     * Set author of post
+     *
+     * @param User $author
+     *
+     * @return void
+     */
+    public function setAuthor(User $author)
+    {
+        $this->author = $author;
+    }
+
 }

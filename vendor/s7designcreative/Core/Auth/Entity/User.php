@@ -2,8 +2,11 @@
 
 namespace S7D\Core\Auth\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use S7D\Vendor\Blog\Entity\Post;
+
 /**
- * @MappedSuperclass
+ * @Entity @Table(name="user")
  */
 class User {
 
@@ -24,6 +27,16 @@ class User {
 
 	/** @Column(type="integer") **/
 	protected $user_group;
+
+	/**
+	 * @OneToMany(targetEntity="S7D\Vendor\Blog\Entity\Post", mappedBy="author")
+	 */
+	protected $post;
+
+
+	public function __construct(){
+		$this->post = new ArrayCollection();
+	}
 
 	/**
 	 * @return mixed
@@ -189,6 +202,26 @@ class User {
 	public function setGuid($guid)
 	{
 		$this->guid = $guid;
+	}
+
+	/**
+	 * Get posts for user
+	 *
+	 * @return Post[]
+	 */
+	public function getPost()
+	{
+		return $this->post;
+	}
+
+	/**
+	 * Set posts for user
+	 *
+	 * @param Post $post
+	 */
+	public function setPost(Post $post)
+	{
+		$this->post[] = $post;
 	}
 
 }
