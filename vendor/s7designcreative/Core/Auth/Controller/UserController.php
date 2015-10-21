@@ -2,6 +2,7 @@
 namespace S7D\Core\Auth\Controller;
 
 use GuzzleHttp\Client;
+use S7D\Core\Auth\Entity\Role;
 use S7D\Core\Auth\Entity\User;
 use S7D\Core\Routing\Controller;
 
@@ -93,13 +94,14 @@ class UserController extends Controller {
 	}
 
 	private function insertUser($email, $password, $role, $meta = [], $status = 0, $token = null) {
-		$userClass = 'S7D\App\\' . $this->parameters->get('app')  . '\Entity\ExtendedUser';
-		$user = new $userClass;
+		$user = new User();
 		$user->setEmail($email);
 		$user->setUsername($email);
 		$password = password_hash($password, PASSWORD_DEFAULT);
 		$user->setPassword($password);
-		$user->setRoles([$role]);
+		$roleEntity = new Role();
+		$roleEntity->name = $role;
+		$user->setRoles([$roleEntity]);
 		$user->setStatus($status);
 		$user->setToken($token);
 		$group = $this->getUserRepo()->createQueryBuilder('u');
@@ -108,6 +110,7 @@ class UserController extends Controller {
 		$user->setUserGroup($newGroup);
 
 		$user->setMeta($meta);
+		$this->em->persist($roleEntity);
 		$this->em->persist($user);
 		$this->em->flush();
 

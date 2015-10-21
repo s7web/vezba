@@ -21,7 +21,10 @@ class Application
 		$this->root = $root;
 		$this->parameters = $this->getParams('parameters.yml');
 
-        $paths  = array( $this->root . '/src/S7D/App/' . $this->parameters->get('app'), $this->root . '/vendor/s7designcreative/' );
+		$paths = $this->parameters->get('packages');
+        $paths[] = $this->root . '/src/S7D/App/' . $this->parameters->get('app');
+        $paths[] = $this->root . '/vendor/s7designcreative/Core/';
+
         $config = Setup::createAnnotationMetadataConfiguration( $paths );
         $config->setAutoGenerateProxyClasses(false);
 		$config->setProxyDir( $this->root . '/cache');
@@ -70,20 +73,13 @@ class Application
 			$user->setRoles([$role]);
 		}
 
-		$allowed = false;
-		foreach($user->getRoles() as $userRole) {
-			if(in_array($userRole->name, $roles)) {
-				$allowed = true;
-			}
-		}
-
-		if($allowed) {
+		if(array_intersect($user->getRoles(), $roles)) {
 			$controller = new $controller($user, $this->em, $request, $session, $router, $this->parameters, $this->root);
 			$response = call_user_func_array( [ $controller, $action ], array_values($queryParams) );
 
 		} else {
 			$response = new Response();
-			$response->redirect($this->parameters->get('landing')[$user->getRoles()[0]->name]);
+			$response->redirect($this->parameters->get('landing')[$user->getRoles()[0]]);
 		}
 		if(!$response instanceof Response) {
 			throw new \Exception(sprintf('Action %s::%s must return Response object.', get_class($controller), $action));

@@ -120,7 +120,12 @@ class User {
 	 */
 	public function getRoles()
 	{
-		return $this->roles;
+		$plain = is_array($this->roles) ? $this->roles : $this->roles->toArray();
+		$result = [];
+		foreach($plain as $item) {
+			$result[] = $item->name;
+		}
+		return $result;
 	}
 
 	/**
