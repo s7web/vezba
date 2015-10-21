@@ -55,7 +55,7 @@ class Post
      * @ManyToMany(targetEntity="S7D\Vendor\Blog\Entity\Tag", inversedBy="post")
      * @JoinTable(name="post_has_tag")
      */
-    protected $tag;
+    protected $tags;
 
     /**
      * @ManyToMany(targetEntity="S7D\Vendor\Blog\Entity\Category", inversedBy="posts")
@@ -247,24 +247,16 @@ class Post
         $this->status = $status;
     }
 
-    /**
-     * Get collection of tags for post
-     *
-     * @return Tag
-     */
-    public function getTag()
+
+    public function getTags()
     {
-        return $this->tag;
+        return $this->tags;
     }
 
-    /**
-     * Set tags for post
-     *
-     * @param Tag $tag
-     */
-    public function setTag(Tag $tag)
+
+    public function setTags($tags)
     {
-        $this->tag[] = $tag;
+        $this->tags = $tags;
     }
 
     /**
@@ -299,17 +291,14 @@ class Post
         return $this->categories;
     }
 
-    /**
-     * Set categories for post
-     *
-     * @param Category $categories
-     *
-     * @return void
-     */
-    public function setCategories(Category $categories)
+
+    public function addCategory(Category $category)
     {
-        $this->categories[] = $categories;
+        $this->categories[] = $category;
     }
 
+	public function setCategories($categories) {
+		$this->categories = $categories;
+	}
 
 }
