@@ -64,10 +64,6 @@ class Application
 				break;
 			}
 		}
-		if(!$found) {
-			throw new \Exception('Route doesn\'t exists.');
-		}
-
 		if($session->get('auth')) {
 			$user = $this->em->getRepository( 'S7D\Core\Auth\Entity\User' )->find($session->get('auth'));
 		} else {
@@ -76,16 +72,23 @@ class Application
 			$role->name = 'GUEST';
 			$user->setRoles([$role]);
 		}
-
-		if(array_intersect($user->getRoles(), $roles)) {
-			$controller = new $controller($user, $this->em, $request, $session, $router, $this->parameters, $this->root, $mailer);
-			$response = call_user_func_array( [ $controller, $action ], array_values($queryParams) );
-
-		} else {
-			$response = new Response();
-			$response->redirect($this->parameters->get('landing')[$user->getRoles()[0]]);
+		$errorController = __NAMESPACE__ . '\Controller\ErrorController';
+		if(! $found) {
+			if($this->parameters->get('debug')) {
+				throw new \Exception('Route doesn\'t exists.');
+			}
+			$controller = $errorController;
+			$action = 'notFound';
+		} elseif(! array_intersect($user->getRoles(), $roles)){
+			if($this->parameters->get('debug')) {
+				throw new \Exception('This role can\'t access this resource.');
+			}
+			$controller = $errorController;
+			$action = 'forbidden';
 		}
-		if(!$response instanceof Response) {
+		$controller = new $controller($user, $this->em, $request, $session, $router, $this->parameters, $this->root, $mailer);
+		$response = call_user_func_array( [ $controller, $action ], array_values($queryParams) );
+		if(! $response instanceof Response) {
 			throw new \Exception(sprintf('Action %s::%s must return Response object.', get_class($controller), $action));
 		}
 		$response->out();

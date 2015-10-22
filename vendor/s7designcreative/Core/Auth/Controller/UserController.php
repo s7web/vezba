@@ -22,15 +22,16 @@ class UserController extends Controller {
 				$this->session->set('auth', $user->getId());
 			} else {
 				$this->session->setFlash('Invalid email and/or password.');
+				return $this->redirectBack();
 			}
-			return $this->redirectBack();
+			return $this->redirect($this->parameters->get('landing')[$user->getRoles()[0]]);
 		}
 		return $this->render();
 	}
 
 	public function logout() {
 		$this->session->remove('auth');
-		return $this->redirectRoute('logout');
+		return $this->redirectRoute('login');
 	}
 
 	public function registration() {

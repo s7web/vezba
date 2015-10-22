@@ -10,7 +10,7 @@ logout:
   controller: S7D\Core\Auth\Controller\UserController
   method: logout
   request_method: GET
-  roles: [ADMIN, USER, SUPER_ADMIN]
+  roles: [ADMIN, USER, GUEST]
 
 registration:
   route: registration

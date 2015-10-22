@@ -36,10 +36,11 @@ class Controller
 
 	protected $validCSRF = true;
 
-	function __construct(User $user, EntityManager $em, Request $request, Session $session, Router $router, Parameter $parameters, $rootDir, $mailer)
+	function __construct(User $user, EntityManager $em, Request $request, Session $session, Router $router, Parameter $parameters, $rootDir, $mailerTransport)
 	{
 		$this->user = $user;
-		$this->mailer = \Swift_Mailer::newInstance($mailer);
+		$this->mailerTransport = $mailerTransport;
+		$this->mailer = \Swift_Mailer::newInstance($mailerTransport);
 		$this->em = $em;
 		$this->request = $request;
 		$this->session = $session;
@@ -64,10 +65,11 @@ class Controller
      *
      * @param $view
      * @param array
+     * @param $code
      *
      * @return Response
      */
-    protected function view( $view, $data = [] ) {
+    protected function view( $view, $data = [], $code = 200) {
 
 		if(preg_match('/::/', $view)) {
 			$view = preg_replace('/.*::/', '', $view);
@@ -100,7 +102,7 @@ class Controller
 		$that = $this;
 		$function = new \Twig_SimpleFunction('renderController', function($action) use ($that, $twig){
 			list($cnt, $action) = explode('::', $action);
-			$cnt = new $cnt($that->user, $that->em, $that->request, $that->session, $that->router, $that->parameters, $that->rootDir);
+			$cnt = new $cnt($that->user, $that->em, $that->request, $that->session, $that->router, $that->parameters, $that->rootDir, $that->mailerTransport);
 			/** @var Response $response */
 			$response = $cnt->$action();
 			return $response->getOutput();
@@ -114,15 +116,17 @@ class Controller
         $data['flash'] = $this->session->getFlash();
 		$data['user'] = $this->user;
 
-        return new Response($twig->render( $view, $data ));
+        $response = new Response($twig->render( $view, $data ));
+		$response->setCode($code);
+		return $response;
     }
 
-	protected function render($data = []) {
+	protected function render($data = [], $code = 200) {
 
 		$caller = debug_backtrace()[1];
 		preg_match('/(.*)Controller\\\(\w*)Controller$/', $caller['class'], $class);
 		$view = $class[2] . '/' . $caller['function'] . '.html.twig';
-		return $this->view($view, $data);
+		return $this->view($view, $data, $code);
 	}
 
 	protected function redirect($url) {
@@ -142,5 +146,14 @@ class Controller
 
 	protected function generateUrl($route, $id = null) {
 		return $this->router->generateUrl($this->parameters->get('url'), $route, $id);
+	}
+
+	protected function notFound() {
+		return $this->forward('S7D\Core\Routing\Controller\ErrorController', 'notFound');
+	}
+
+	protected function forward($controller, $action) {
+		$errorController = new $controller($this->user, $this->em, $this->request, $this->session, $this->router, $this->parameters, $this->rootDir, $this->mailerTransport);
+		return $errorController->$action();
 	}
 }
