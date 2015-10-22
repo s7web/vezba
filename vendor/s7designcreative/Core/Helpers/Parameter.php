@@ -10,7 +10,7 @@ class Parameter {
 	}
 
 	public function get($key, $default = null) {
-		return ArrayDot::get($this->data, $key, null);
+		return ArrayDot::get($this->data, $key, $default);
 	}
 
 	public function getAll() {
