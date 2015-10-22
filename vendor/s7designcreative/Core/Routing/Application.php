@@ -21,9 +21,13 @@ class Application
 		$this->root = $root;
 		$this->parameters = $this->getParams('parameters.yml');
 
-		$paths = $this->parameters->get('packages');
-        $paths[] = $this->root . '/src/S7D/App/' . $this->parameters->get('app');
+		$packages = $this->parameters->get('packages', []);
+		$paths = [];
         $paths[] = $this->root . '/vendor/s7designcreative/Core/';
+		foreach($packages as $package) {
+			$paths[] = $this->root . '/vendor/s7designcreative/Vendor/' . $package;
+		}
+        $paths[] = $this->root . '/src/S7D/App/' . $this->parameters->get('app');
 
         $config = Setup::createAnnotationMetadataConfiguration( $paths );
         $config->setAutoGenerateProxyClasses(false);
