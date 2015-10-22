@@ -3,7 +3,7 @@ namespace S7D\Vendor\Media\Controller;
 
 use Eventviva\ImageResize;
 use S7D\Vendor\Media\Entity\Media;
-use S7D\Vendor\Routing\Controller;
+use S7D\Core\Routing\Controller;
 
 class ImageController extends Controller {
 

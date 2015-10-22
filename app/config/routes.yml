@@ -1,55 +1,55 @@
 login:
   route: login
-  controller: S7D\Vendor\Auth\Controller\UserController
+  controller: S7D\Core\Auth\Controller\UserController
   method: login
   request_method: GET
   roles: [GUEST]
 
 logout:
   route: logout
-  controller: S7D\Vendor\Auth\Controller\UserController
+  controller: S7D\Core\Auth\Controller\UserController
   method: logout
   request_method: GET
   roles: [ADMIN, USER, SUPER_ADMIN]
 
 registration:
   route: registration
-  controller: S7D\Vendor\Auth\Controller\UserController
+  controller: S7D\Core\Auth\Controller\UserController
   method: registration
   request_method: ANY
   roles: [GUEST]
 
 verify:
   route: verify
-  controller: S7D\Vendor\Auth\Controller\UserController
+  controller: S7D\Core\Auth\Controller\UserController
   method: verify
   request_method: ANY
   roles: [GUEST]
 
 confirm:
   route: confirm/(.+)?
-  controller: S7D\Vendor\Auth\Controller\UserController
+  controller: S7D\Core\Auth\Controller\UserController
   method: confirm
   request_method: ANY
   roles: [GUEST]
 
 register:
   route: register
-  controller: S7D\Vendor\Auth\Controller\UserController
+  controller: S7D\Core\Auth\Controller\UserController
   method: register
   request_method: ANY
   roles: [GUEST]
 
 registered:
   route: registered
-  controller: S7D\Vendor\Auth\Controller\UserController
+  controller: S7D\Core\Auth\Controller\UserController
   method: registered
   request_method: ANY
   roles: [ADMIN, USER]
 
 saveImage:
   route: image/save
-  controller: S7D\Vendor\Media\Controller\ImageController
+  controller: S7D\Core\Media\Controller\ImageController
   method: saveImage
   request_method: ANY
   roles: [ADMIN]
