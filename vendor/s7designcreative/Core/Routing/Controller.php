@@ -5,6 +5,7 @@ use Doctrine\ORM\EntityManager;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use S7D\Core\Auth\Entity\User;
+use S7D\Core\Helpers\Container;
 use S7D\Core\Helpers\Parameter;
 use S7D\Core\HTTP\Request;
 use \S7D\Core\HTTP\Response;
@@ -36,17 +37,17 @@ class Controller
 
 	protected $validCSRF = true;
 
-	function __construct($c)
+	function __construct(Container $c)
 	{
 		$this->container = $c;
-		$this->user = $c->user;
-		$this->mailer = $c->mailer;
 		$this->em = $c->em;
+		$this->mailer = $c->mailer;
 		$this->request = $c->request;
 		$this->session = $c->session;
 		$this->parameters = $c->parameters;
 		$this->router = $c->router;
 		$this->rootDir = $c->root;
+		$this->user = $this->em->getRepository('S7D\Core\Auth\Entity\User')->find($this->session->getAuth());
 		if($c->request->isPost() && $c->request->get('CSRFtoken') !== $c->session->getCSRF()) {
 			$this->validCSRF = false;
 			$logger = new Logger('Invalid CSRF');

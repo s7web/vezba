@@ -52,4 +52,8 @@ class Session {
 		$this->set('auth', $id);
 	}
 
+	public function getAuth() {
+		return $this->get('auth');
+	}
+
 }

@@ -76,8 +76,8 @@ class Application
 				break;
 			}
 		}
-		if($session->get('auth')) {
-			$user = $this->container->em->getRepository( 'S7D\Core\Auth\Entity\User' )->find($session->get('auth'));
+		if($session->getAuth()) {
+			$user = $this->container->em->getRepository( 'S7D\Core\Auth\Entity\User' )->find($session->getAuth());
 		} else {
 			$user = new User();
 			$role = new Role();
@@ -99,7 +99,6 @@ class Application
 			$action = 'forbidden';
 		}
 
-		$this->container->user = function() use ($user) { return $user; };
 		$this->container->request = function() { return new \S7D\Core\HTTP\Request(); };
 		$this->container->session = function() use ($session) { return $session; };
 		$this->container->router = function() use ($router) { return $router; };
