@@ -26,13 +26,13 @@ $console
     }
 );
 
-foreach($app->parameters->get('commands') as $command => $arr) {
+foreach($app->container->parameters->get('commands') as $command => $arr) {
 	$console
 		->register($command)
 		->setDescription($arr['description'])
 		->setCode(function (InputInterface $input, OutputInterface $output) use ($app, $arr) {
 			$c = new $arr['class'];
-			$c->run($app->em, $app->parameters, $app->root . '/log');
+			$c->run($app->container->em, $app->parameters, $app->root . '/log');
 		}
 	);
 }

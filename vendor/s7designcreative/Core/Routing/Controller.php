@@ -36,25 +36,25 @@ class Controller
 
 	protected $validCSRF = true;
 
-	function __construct(User $user, EntityManager $em, Request $request, Session $session, Router $router, Parameter $parameters, $rootDir, $mailerTransport)
+	function __construct($c)
 	{
-		$this->user = $user;
-		$this->mailerTransport = $mailerTransport;
-		$this->mailer = \Swift_Mailer::newInstance($mailerTransport);
-		$this->em = $em;
-		$this->request = $request;
-		$this->session = $session;
-		$this->parameters = $parameters;
-		$this->router = $router;
-		$this->rootDir = $rootDir;
-		if($request->isPost() && $request->get('CSRFtoken') !== $session->getCSRF()) {
+		$this->container = $c;
+		$this->user = $c->user;
+		$this->mailer = $c->mailer;
+		$this->em = $c->em;
+		$this->request = $c->request;
+		$this->session = $c->session;
+		$this->parameters = $c->parameters;
+		$this->router = $c->router;
+		$this->rootDir = $c->root;
+		if($c->request->isPost() && $c->request->get('CSRFtoken') !== $c->session->getCSRF()) {
 			$this->validCSRF = false;
 			$logger = new Logger('Invalid CSRF');
-			$logger->pushHandler(new StreamHandler($rootDir . '/log/invalid_requests.log'));
+			$logger->pushHandler(new StreamHandler($c->rootDir . '/log/invalid_requests.log'));
 			$logger->addInfo(vsprintf('%s, %s, %s, %s', [
 				$_SERVER['REMOTE_ADDR'],
-				$user->getEmail(),
-				$request->getMethod(),
+				$c->user->getEmail(),
+				$c->request->getMethod(),
 				$_SERVER['HTTP_REFERER'],
 			]));
 		}
@@ -100,11 +100,11 @@ class Controller
 		$twig->addFunction($function);
 
 		$that = $this;
-		$function = new \Twig_SimpleFunction('renderController', function($action) use ($that, $twig){
+		$function = new \Twig_SimpleFunction('renderController', function($action) use ($that, $twig) {
 			list($cnt, $action) = explode('::', $action);
-			$cnt = new $cnt($that->user, $that->em, $that->request, $that->session, $that->router, $that->parameters, $that->rootDir, $that->mailerTransport);
+			$this->changeController($cnt);
 			/** @var Response $response */
-			$response = $cnt->$action();
+			$response = $this->container->controllerObj->$action();
 			return $response->getOutput();
 		});
 		$twig->addFunction($function);
@@ -153,7 +153,13 @@ class Controller
 	}
 
 	protected function forward($controller, $action) {
-		$errorController = new $controller($this->user, $this->em, $this->request, $this->session, $this->router, $this->parameters, $this->rootDir, $this->mailerTransport);
-		return $errorController->$action();
+		$this->changeController($controller);
+		return $this->container->controllerObj->$action();
+	}
+
+	private function changeController($newController) {
+		$this->container->controller = function() use ($newController) {
+			return $newController;
+		};
 	}
 }

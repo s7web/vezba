@@ -5,6 +5,7 @@ use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
 use S7D\Core\Auth\Entity\Role;
 use S7D\Core\Auth\Entity\User;
+use S7D\Core\Helpers\Container;
 use S7D\Core\Helpers\Parameter;
 use S7D\Core\HTTP\Response;
 use Symfony\Component\Yaml\Parser;
@@ -17,23 +18,33 @@ class Application
 
 	public $em;
 
+	public $container;
+
 	function __construct( $root ) {
 		$this->root = $root;
-		$this->parameters = $this->getParams('parameters.yml');
+		$that = $this;
+		$c = new Container();
+		$c->root = function() use ($that) { return $that->root; };
+		$c->parameters = function($c) use ($that) {
+			return $that->getParams('parameters.yml');
+		};
+        $c->em = function($c) {
 
-		$packages = $this->parameters->get('packages', []);
-		$paths = [];
-        $paths[] = $this->root . '/vendor/s7designcreative/Core/';
-		foreach($packages as $package) {
-			$paths[] = $this->root . '/vendor/s7designcreative/Vendor/' . $package;
-		}
-        $paths[] = $this->root . '/src/S7D/App/' . $this->parameters->get('app');
+			$packages = $c->parameters->get('packages', []);
+			$paths = [];
+			$paths[] = $this->root . '/vendor/s7designcreative/Core/';
+			foreach($packages as $package) {
+				$paths[] = $this->root . '/vendor/s7designcreative/Vendor/' . $package;
+			}
+			$paths[] = $this->root . '/src/S7D/App/' . $c->parameters->get('app');
 
-        $config = Setup::createAnnotationMetadataConfiguration( $paths );
-        $config->setAutoGenerateProxyClasses(false);
-		$config->setProxyDir( $this->root . '/cache');
+			$config = Setup::createAnnotationMetadataConfiguration( $paths );
+			$config->setAutoGenerateProxyClasses(false);
+			$config->setProxyDir( $this->root . '/cache');
 
-        $this->em = EntityManager::create( $this->parameters->get('database'), $config );
+			return EntityManager::create( $c->parameters->get('database'), $config );
+		};
+		$this->container = $c;
 	}
 
     public function run() {
@@ -50,11 +61,8 @@ class Application
 			$router->addRoute($name, new Route($route['route'], $route['controller'], $route['method'], $method, $roles));
 		}
 
-		$request = new \S7D\Core\HTTP\Request();
 		$session = new \S7D\Core\HTTP\Session();
-	    $mailer  = \Swift_SmtpTransport::newInstance($this->parameters->get('email.host'),$this->parameters->get('email.port'))
-		    ->setUsername($this->parameters->get('email.username'))
-		    ->setPassword($this->parameters->get('email.password'));
+
 		$uri = ltrim($_SERVER['REQUEST_URI'], '/');
 		$uri = preg_replace('/\?.*/', '', $uri);
 		$found = false;
@@ -69,7 +77,7 @@ class Application
 			}
 		}
 		if($session->get('auth')) {
-			$user = $this->em->getRepository( 'S7D\Core\Auth\Entity\User' )->find($session->get('auth'));
+			$user = $this->container->em->getRepository( 'S7D\Core\Auth\Entity\User' )->find($session->get('auth'));
 		} else {
 			$user = new User();
 			$role = new Role();
@@ -78,20 +86,40 @@ class Application
 		}
 		$errorController = __NAMESPACE__ . '\Controller\ErrorController';
 		if(! $found) {
-			if($this->parameters->get('debug')) {
+			if($this->container->parameters->get('debug')) {
 				throw new \Exception('Route doesn\'t exists.');
 			}
 			$controller = $errorController;
 			$action = 'notFound';
 		} elseif(! array_intersect($user->getRoles(), $roles)){
-			if($this->parameters->get('debug')) {
+			if($this->container->parameters->get('debug')) {
 				throw new \Exception('This role can\'t access this resource.');
 			}
 			$controller = $errorController;
 			$action = 'forbidden';
 		}
-		$controller = new $controller($user, $this->em, $request, $session, $router, $this->parameters, $this->root, $mailer);
+
+		$this->container->user = function() use ($user) { return $user; };
+		$this->container->request = function() { return new \S7D\Core\HTTP\Request(); };
+		$this->container->session = function() use ($session) { return $session; };
+		$this->container->router = function() use ($router) { return $router; };
+
+		$this->container->mailer = function($c) {
+			$transport = \Swift_SmtpTransport::newInstance($c->parameters->get('email.host'), $c->parameters->get('email.port'))
+				 ->setUsername($c->parameters->get('email.username'))
+				 ->setPassword($c->parameters->get('email.password'))
+			;
+			return \Swift_Mailer::newInstance($transport);
+		};
+		$this->container->controller = function($c) use ($controller) {
+			return $controller;
+		};
+		$this->container->controllerObj = function($c) {
+			return new $c->controller($c);
+		};
+		$controller = $this->container->controllerObj;
 		$response = call_user_func_array( [ $controller, $action ], array_values($queryParams) );
+
 		if(! $response instanceof Response) {
 			throw new \Exception(sprintf('Action %s::%s must return Response object.', get_class($controller), $action));
 		}
@@ -103,7 +131,7 @@ class Application
 
 		$yml = new Parser();
 		$data = $yml->parse( file_get_contents( $this->root . '/app/config/' . $filePattern ) );
-		$app = isset($data['app']) ? $data['app'] : $this->parameters->get('app');
+		$app = isset($data['app']) ? $data['app'] : $this->container->parameters->get('app');
 
 		$appConfig = $this->root . '/src/S7D/App/' . $app . '/config/' . $filePattern;
 		if(file_exists($appConfig)) {
