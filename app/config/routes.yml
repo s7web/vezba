@@ -49,7 +49,21 @@ registered:
 
 saveImage:
   route: image/save
-  controller: S7D\Core\Media\Controller\ImageController
+  controller: S7D\Vendor\Media\Controller\ImageController
   method: saveImage
   request_method: ANY
   roles: [ADMIN]
+
+reductorJson:
+  route: reductor/json
+  controller: S7D\Vendor\Media\Controller\ImageController
+  method: reductorJson
+  request_method: ANY
+  roles: [ADMIN, USER, GUEST]
+
+reductorUpload:
+  route: reductor/upload
+  controller: S7D\Vendor\Media\Controller\ImageController
+  method: reductorSave
+  request_method: ANY
+  roles: [ADMIN, USER, GUEST]

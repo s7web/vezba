@@ -2,8 +2,10 @@
 namespace S7D\Vendor\Media\Controller;
 
 use Eventviva\ImageResize;
+use S7D\Core\HTTP\ResponseJSON;
 use S7D\Vendor\Media\Entity\Media;
 use S7D\Core\Routing\Controller;
+use Symfony\Component\Validator\Constraints\Image;
 
 class ImageController extends Controller {
 
@@ -13,11 +15,19 @@ class ImageController extends Controller {
 
 	public function saveImage() {
 
-		$image = $this->request->get('image');
-		$name = $this->request->get('filename', md5(uniqid()));
-
+		$image = $this->request->get('image-base64');
 		$image = str_replace('data:image/png;base64,', '', $image);
 		$image = base64_decode($image);
+		$image = ImageResize::createFromString($image);
+
+		$name = $this->request->get('filename', md5(uniqid()));
+		$this->uploadImage($image, $name);
+
+		return $this->redirectBack();
+	}
+
+	private function uploadImage(ImageResize $image, $name) {
+
 		$path = 'upload/' . $name . '.png';
 		$i = 0;
 		$fileName = $name;
@@ -25,8 +35,7 @@ class ImageController extends Controller {
 			$path = 'upload/' . $name . '-' . ++$i . '.png';
 			$fileName = $name . '-' . $i;
 		}
-		mkdir('upload');
-		$image = ImageResize::createFromString($image);
+
 		$image->save($path);
 
 		$image = new Media();
@@ -48,10 +57,9 @@ class ImageController extends Controller {
 		$thumbnail->type = 'image/png';
 		$thumbnail->parent = $image->id;
 		$this->em->persist($thumbnail);
-
 		$this->em->flush();
 
-		return $this->redirectBack();
+		return $path;
 	}
 
 	public function gallery() {
@@ -71,6 +79,34 @@ class ImageController extends Controller {
 
 		return $this->render([
 			'gallery' => $gallery,
+		]);
+	}
+
+	public function reductorJson() {
+		$images = $this->getMediaRepo()->findBy(['type' => 'image/png'], [], 100);
+		$gallery = [];
+		foreach($images as $image) {
+			if(!$image->parent) {
+				$full = $image->file;
+			} else {
+				$gallery[] = [
+					'image' => '/' . $full,
+					'thumb' => '/' . $image->file,
+				];
+			}
+		}
+		return new ResponseJSON($gallery);
+	}
+
+	public function reductorSave() {
+
+		$image = new ImageResize($_FILES['file']['tmp_name']);
+		$image->resize(800, 600);
+		$name = preg_replace('/\..+$/', '', $_FILES['file']['name']);
+		$src = $this->uploadImage($image, $name);
+
+		return new ResponseJSON([
+			'filelink' => '/' . $src,
 		]);
 	}
 
