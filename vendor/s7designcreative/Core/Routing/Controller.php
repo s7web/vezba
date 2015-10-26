@@ -31,7 +31,7 @@ class Controller
 	/** @var  Router */
 	protected $router;
 
-	protected $rootDir;
+	protected $root;
 
 	protected $mailer;
 
@@ -46,12 +46,12 @@ class Controller
 		$this->session = $c->session;
 		$this->parameters = $c->parameters;
 		$this->router = $c->router;
-		$this->rootDir = $c->root;
+		$this->root = $c->root;
 		$this->user = $this->em->getRepository('S7D\Core\Auth\Entity\User')->find($this->session->getAuth());
 		if($c->request->isPost() && $c->request->get('CSRFtoken') !== $c->session->getCSRF()) {
 			$this->validCSRF = false;
 			$logger = new Logger('Invalid CSRF');
-			$logger->pushHandler(new StreamHandler($c->rootDir . '/log/invalid_requests.log'));
+			$logger->pushHandler(new StreamHandler($c->root . '/log/invalid_requests.log'));
 			$logger->addInfo(vsprintf('%s, %s, %s, %s', [
 				$_SERVER['REMOTE_ADDR'],
 				$c->user->getEmail(),
@@ -77,8 +77,8 @@ class Controller
 		}
 
         $loader = new \Twig_Loader_Filesystem([
-			$this->rootDir . '/src/S7D/App/' . $this->parameters->get('app') . '/views/',
-			$this->rootDir . '/app/views/',
+			$this->root . '/src/S7D/App/' . $this->parameters->get('app') . '/views/',
+			$this->root . '/app/views/',
 		]);
 
         $twig = new \Twig_Environment( $loader );

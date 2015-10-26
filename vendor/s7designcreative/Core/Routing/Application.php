@@ -100,6 +100,7 @@ class Application
 		}
 
 		$this->container->request = function() { return new \S7D\Core\HTTP\Request(); };
+		$this->container->user = function() use ($user) { return $user; };
 		$this->container->session = function() use ($session) { return $session; };
 		$this->container->router = function() use ($router) { return $router; };
 
