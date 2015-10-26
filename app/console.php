@@ -26,7 +26,7 @@ $console
     }
 );
 
-foreach($app->container->parameters->get('commands') as $command => $arr) {
+foreach($app->container->parameters->get('commands', []) as $command => $arr) {
 	$console
 		->register($command)
 		->setDescription($arr['description'])
