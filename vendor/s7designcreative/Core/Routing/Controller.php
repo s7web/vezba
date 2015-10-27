@@ -108,7 +108,7 @@ class Controller
 			list($cnt, $action) = explode('::', $action);
 			$this->changeController($cnt);
 			/** @var Response $response */
-			$response = $this->container->controllerObj->$action();
+			$response = $this->container->controller->$action();
 			return $response->getOutput();
 		});
 		$twig->addFunction($function);
@@ -156,17 +156,17 @@ class Controller
 	}
 
 	protected function notFound() {
-		return $this->forward('S7D\Core\Routing\Controller\ErrorController', 'notFound');
+		return $this->forward($this->container->errorController, 'notFound');
 	}
 
 	protected function forward($controller, $action) {
 		$this->changeController($controller);
-		return $this->container->controllerObj->$action();
+		return $this->container->controller->$action();
 	}
 
 	private function changeController($newController) {
-		$this->container->controller = function() use ($newController) {
-			return $newController;
+		$this->container->controller = function($c) use ($newController) {
+			return new $newController($c);
 		};
 	}
 }

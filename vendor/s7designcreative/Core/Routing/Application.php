@@ -105,6 +105,9 @@ class Application
 		$this->container->session = function() use ($session) { return $session; };
 		$this->container->router = function() use ($router) { return $router; };
 
+		$this->container->errorController = function($c) use ($errorController) {
+			return new $errorController($c);
+		};
 
 		$that = $this;
 
@@ -123,17 +126,17 @@ class Application
 			;
 			return \Swift_Mailer::newInstance($transport);
 		};
+
 		$this->container->controller = function($c) use ($controller) {
-			return $controller;
+			return new $controller($c);
 		};
-		$this->container->controllerObj = function($c) {
-			return new $c->controller($c);
-		};
-		$controller = $this->container->controllerObj;
-		$response = call_user_func_array( [ $controller, $action ], array_values($queryParams) );
+		$response = call_user_func_array( [ $this->container->controller , $action ], array_values($queryParams) );
 
 		if(! $response instanceof Response) {
-			throw new \Exception(sprintf('Action %s::%s must return Response object.', get_class($controller), $action));
+			if($this->container->parameters->get('debug')) {
+				throw new \Exception(sprintf('Action %s::%s must return Response object.', $controller, $action));
+			}
+			$response = call_user_func( [ $this->container->errorController, 'serverError' ] );
 		}
 		$response->out();
 
