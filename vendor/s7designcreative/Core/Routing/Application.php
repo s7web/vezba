@@ -114,7 +114,7 @@ class Application
 		$this->container->translations = function($c) use ($that) {
 			$language = $c->session->get(
 				'lang',
-				$c->parameters->get('lang', 'DE')
+				$c->parameters->get('language', 'EN')
 			);
 			return $that->getParams($language . '.yml', 'translations');
 		};
