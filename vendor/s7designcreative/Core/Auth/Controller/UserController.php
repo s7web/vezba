@@ -63,10 +63,10 @@ class UserController extends Controller {
 			$app = $this->parameters->get('app');
 			$token = md5(uniqid());
 			$url = $this->generateUrl('confirm', $token);
-			$message = \Swift_Message::newInstance('Registration on peepl network')
-			                         ->setFrom('npaic@s7designcreative.com', 'Peepl')
-			                         ->setTo($email)
-			                         ->setBody(sprintf('To activate your account on %s follow this url %s.', $app, $url));
+			$message = \Swift_Message::newInstance('Registration for '. $app)
+				 ->setFrom($this->parameters->get('email.username'), $app)
+				 ->setTo($email)
+				 ->setBody(sprintf('To activate your account on %s follow this url %s', $app, $url));
 			$this->mailer->send($message);
 			$this->insertUser($email, $this->request->get('password'), 'USER', [], 0, $token);
 			return $this->render();
