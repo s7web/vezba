@@ -27,7 +27,7 @@ verify:
   roles: [GUEST]
 
 confirm:
-  route: confirm/(.+)?
+  route: confirm/(.+)
   controller: S7D\Core\Auth\Controller\UserController
   method: confirm
   request_method: ANY
