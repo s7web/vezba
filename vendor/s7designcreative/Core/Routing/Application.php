@@ -14,6 +14,7 @@ class Application
 {
 	public $root;
 
+	/** @var Parameter */
 	public $parameters;
 
 	public $em;
@@ -104,6 +105,17 @@ class Application
 		$this->container->session = function() use ($session) { return $session; };
 		$this->container->router = function() use ($router) { return $router; };
 
+
+		$that = $this;
+
+		$this->container->translations = function($c) use ($that) {
+			$language = $c->session->get(
+				'lang',
+				$c->parameters->get('lang', 'DE')
+			);
+			return $that->getParams($language . '.yml', 'translations');
+		};
+
 		$this->container->mailer = function($c) {
 			$transport = \Swift_SmtpTransport::newInstance($c->parameters->get('email.host'), $c->parameters->get('email.port'))
 				 ->setUsername($c->parameters->get('email.username'))
@@ -127,13 +139,17 @@ class Application
 
 	}
 
-	public function getParams($filePattern) {
+	public function getParams($filePattern, $dir = 'config') {
 
 		$yml = new Parser();
-		$data = $yml->parse( file_get_contents( $this->root . '/app/config/' . $filePattern ) );
+		$configDir = $this->root . '/app/' . $dir . '/' . $filePattern;
+		$data = [];
+		if(file_exists($configDir)) {
+			$data = $yml->parse( file_get_contents($configDir) );
+		}
 		$app = isset($data['app']) ? $data['app'] : $this->container->parameters->get('app');
 
-		$appConfig = $this->root . '/src/S7D/App/' . $app . '/config/' . $filePattern;
+		$appConfig = $this->root . '/src/S7D/App/' . $app . '/' . $dir . '/' . $filePattern;
 		if(file_exists($appConfig)) {
 			$data = array_merge($data, $yml->parse(file_get_contents($appConfig)));
 		}

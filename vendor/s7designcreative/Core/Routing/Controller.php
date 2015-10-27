@@ -6,6 +6,7 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use S7D\Core\Auth\Entity\User;
 use S7D\Core\Helpers\Container;
+use S7D\Core\Helpers\LanguageExtension;
 use S7D\Core\Helpers\Parameter;
 use S7D\Core\HTTP\Request;
 use \S7D\Core\HTTP\Response;
@@ -76,8 +77,10 @@ class Controller
 			$view = preg_replace('/.*::/', '', $view);
 		}
 
+		$appDir = $this->root . '/src/S7D/App/' . $this->parameters->get('app');
+
         $loader = new \Twig_Loader_Filesystem([
-			$this->root . '/src/S7D/App/' . $this->parameters->get('app') . '/views/',
+			$appDir . '/views/',
 			$this->root . '/app/views/',
 		]);
 
@@ -109,6 +112,9 @@ class Controller
 			return $response->getOutput();
 		});
 		$twig->addFunction($function);
+
+
+		$twig->addExtension(new LanguageExtension($this->container->translations));
 
         if ($this->parameters->get('debug')) {
             $twig->enableDebug();

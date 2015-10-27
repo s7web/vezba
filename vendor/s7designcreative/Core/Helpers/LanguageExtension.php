@@ -11,28 +11,14 @@ namespace S7D\Core\Helpers;
  */
 class LanguageExtension extends \Twig_Extension
 {
-    private $lang;
+    private $translations;
 
     /**
      * Set up params
      */
-    public function __construct()
-    {
-        if (session_id() == '') {
-            session_start();
-        }
-        $sec_session = DEFAULT_LANG;
-        $lang        = array();
-        if (array_key_exists( 'lang', $_SESSION )) {
-            $sec_session = $_SESSION['lang'];
-        }
-        if (is_readable( APP_PATH.'/languages/lang.'.$sec_session.'.php' )) {
-            require_once APP_PATH.'/languages/lang.'.$sec_session.'.php';
-            $this->lang = $lang;
-        } else {
-            throw new \Exception( 'Such language does not exist.' );
-        }
+    public function __construct(Parameter $translations) {
 
+		$this->translations = $translations;
     }
 
     /**
@@ -41,9 +27,9 @@ class LanguageExtension extends \Twig_Extension
      */
     public function getFilters()
     {
-        return array(
-            'lang_trans' => new \Twig_SimpleFilter( 'lang_trans', array( $this, 'lang_trans' ) ),
-        );
+        return [
+            'trans' => new \Twig_SimpleFilter( 'trans', [$this, 'trans'] ),
+        ];
     }
 
     /**
@@ -53,9 +39,9 @@ class LanguageExtension extends \Twig_Extension
      *
      * @return string
      */
-    public function lang_trans( $term )
+    public function trans( $term )
     {
-        return sprintf( '%s', $this->lang[$term] );
+        return $this->translations->get($term, $term);
     }
 
     /**
@@ -67,4 +53,4 @@ class LanguageExtension extends \Twig_Extension
     {
         return 'lang';
     }
-} 
+}
