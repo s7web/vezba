@@ -1,0 +1,22 @@
+url: http://easy-cms.username.loc/
+database:
+  dbname: ~
+  driver: pdo_mysql
+  host: 127.0.0.1
+  port: 3306
+  user: root
+  password: root
+debug: true
+secret: 3z7ed7we2e77mjkfkiqowc
+app: ~
+captcha:
+  url: https://www.google.com/recaptcha/api/siteverify
+  siteKey: ~
+  secret: ~
+thumbnail:
+  size: 100
+email:
+  host: mail.s7designcreative.com
+  port: 25
+  username: username@s7designcreative.com
+  password: ~
