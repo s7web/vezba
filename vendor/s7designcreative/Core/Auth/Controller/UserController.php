@@ -68,7 +68,10 @@ class UserController extends Controller {
 				 ->setTo($email)
 				 ->setBody(sprintf('To activate your account on %s follow this url %s', $app, $url));
 			$this->mailer->send($message);
-			$this->insertUser($email, $this->request->get('password'), 'USER', [], 0, $token);
+
+			/** @var \S7D\Core\Auth\Repository\UserRepository $userRepo */
+			$userRepo = $this->em->getRepository('S7D\Core\Auth\Entity\User');
+			$userRepo->insert($email, $this->request->get('password'), 'USER', [], 0, $token);
 			return $this->render();
 		}
 		$this->session->setFlash('Something went wrong.');
@@ -91,29 +94,5 @@ class UserController extends Controller {
 			$this->session->setFlash('Invalid token.');
 		}
 		return $this->redirectRoute('logout');
-	}
-
-	private function insertUser($email, $password, $role, $meta = [], $status = 0, $token = null) {
-		$user = new User();
-		$user->setEmail($email);
-		$user->setUsername($email);
-		$password = password_hash($password, PASSWORD_DEFAULT);
-		$user->setPassword($password);
-		$roleEntity = new Role();
-		$roleEntity->name = $role;
-		$user->setRoles([$roleEntity]);
-		$user->setStatus($status);
-		$user->setToken($token);
-		$group = $this->getUserRepo()->createQueryBuilder('u');
-		$group->select('MAX(u.user_group)');
-		$newGroup = $group->getQuery()->getSingleScalarResult() + 1;
-		$user->setUserGroup($newGroup);
-
-		$user->setMeta($meta);
-		$this->em->persist($roleEntity);
-		$this->em->persist($user);
-		$this->em->flush();
-
-		return $user->getId();
 	}
 }

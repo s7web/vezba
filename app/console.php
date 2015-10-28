@@ -25,6 +25,18 @@ $console
         }
     }
 );
+/** @var \Doctrine\ORM\EntityManager $em */
+$em = $app->container->em;
+$console
+    ->register('insertUser')
+    ->setDescription('Insert admin user admin@admin.com:admin123')
+    ->setCode(function (InputInterface $input, OutputInterface $output) use($em) {
+
+		/** @var \S7D\Core\Auth\Repository\UserRepository $userRepo */
+        $userRepo = $em->getRepository('S7D\Core\Auth\Entity\User');
+		$userRepo->insert('admin@admin.com', 'admin123', 'ADMIN', [], 3);
+    }
+);
 
 foreach($app->container->parameters->get('commands', []) as $command => $arr) {
 	$console

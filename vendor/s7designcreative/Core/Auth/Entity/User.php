@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use S7D\Vendor\Blog\Entity\Post;
 
 /**
- * @Entity @Table(name="user")
+ * @Entity(repositoryClass="S7D\Core\Auth\Repository\UserRepository") @Table(name="user")
  */
 class User {
 
