@@ -8,7 +8,7 @@ use S7D\Core\Auth\Entity\User;
 
 class UserRepository extends EntityRepository {
 
-	public function insert($email, $password, $role, $meta = [], $status = 0, $token = null, $id = 0) {
+	public function insert($email, $password, $roles, $meta = [], $status = 0, $token = null, $id = 0) {
 
 		if($id) {
 			$user = $this->find($id);
@@ -22,15 +22,9 @@ class UserRepository extends EntityRepository {
 		$user->setUsername($email);
 		$password = password_hash($password, PASSWORD_DEFAULT);
 		$user->setPassword($password);
-		$roleEntity = $this->getEntityManager()->getRepository('S7D\Core\Auth\Entity\Role')->findOneBy(['name' => $role]);
-		if(!$roleEntity) {
-			$roleEntity = new Role();
-			$roleEntity->name = $role;
-		}
-		$user->setRoles([$roleEntity]);
+		$user->setRoles($roles);
 		$user->setStatus($status);
 
-		$this->getEntityManager()->persist($roleEntity);
 		$this->getEntityManager()->persist($user);
 		$this->getEntityManager()->flush();
 

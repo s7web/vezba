@@ -28,13 +28,36 @@ $console
 /** @var \Doctrine\ORM\EntityManager $em */
 $em = $app->container->em;
 $console
-    ->register('insertUser')
+    ->register('insert:user')
     ->setDescription('Insert admin user admin@admin.com:admin123')
     ->setCode(function (InputInterface $input, OutputInterface $output) use($em) {
 
+		$adminRole = new \S7D\Core\Auth\Entity\Role();
+		$adminRole->name = 'ADMIN';
+		$em->persist($adminRole);
+		$role = new \S7D\Core\Auth\Entity\Role();
+		$role->name = 'USER';
+		$em->persist($role);
+		$em->flush();
+
 		/** @var \S7D\Core\Auth\Repository\UserRepository $userRepo */
         $userRepo = $em->getRepository('S7D\Core\Auth\Entity\User');
-		$userRepo->insert('admin@admin.com', 'admin123', 'ADMIN', [], 3);
+		$userRepo->insert('admin@admin.com', 'admin123', [$adminRole], [], 1);
+    }
+);
+
+$console
+    ->register('insert:blogData')
+    ->setDescription('Insert blog data.')
+    ->setCode(function (InputInterface $input, OutputInterface $output) use($em) {
+
+		$postStatus = new \S7D\Vendor\Blog\Entity\PostStatus();
+		$postStatus->setName('public');
+		$em->persist($postStatus);
+		$postStatus = new \S7D\Vendor\Blog\Entity\PostStatus();
+		$postStatus->setName('private');
+		$em->persist($postStatus);
+		$em->flush();
     }
 );
 
