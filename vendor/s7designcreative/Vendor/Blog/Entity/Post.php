@@ -9,7 +9,7 @@ use S7D\Core\Auth\Entity\User;
  * Class Post
  * @package S7D\Vendor\Post\Entity
  *
- * @Entity @Table(name="post")
+ * @Entity(repositoryClass="S7D\Vendor\Blog\Repository\PostRepository") @Table(name="post")
  */
 class Post
 {
