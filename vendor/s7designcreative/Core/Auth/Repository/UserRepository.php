@@ -8,8 +8,16 @@ use S7D\Core\Auth\Entity\User;
 
 class UserRepository extends EntityRepository {
 
-	public function insert($email, $password, $role, $meta = [], $status = 0, $token = null) {
-		$user = new User();
+	public function insert($email, $password, $role, $meta = [], $status = 0, $token = null, $id) {
+
+		if($id) {
+			$user = $this->find($id);
+		} else {
+			$user = new User();
+			$user->setToken($token);
+			$user->setUserGroup(1);
+			$user->setMeta($meta);
+		}
 		$user->setEmail($email);
 		$user->setUsername($email);
 		$password = password_hash($password, PASSWORD_DEFAULT);
@@ -21,10 +29,7 @@ class UserRepository extends EntityRepository {
 		}
 		$user->setRoles([$roleEntity]);
 		$user->setStatus($status);
-		$user->setToken($token);
-		$user->setUserGroup(1);
 
-		$user->setMeta($meta);
 		$this->getEntityManager()->persist($roleEntity);
 		$this->getEntityManager()->persist($user);
 		$this->getEntityManager()->flush();

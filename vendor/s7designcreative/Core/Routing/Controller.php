@@ -5,6 +5,7 @@ use Doctrine\ORM\EntityManager;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use S7D\Core\Auth\Entity\User;
+use S7D\Core\Auth\Repository\UserRepository;
 use S7D\Core\Helpers\Container;
 use S7D\Core\Helpers\LanguageExtension;
 use S7D\Core\Helpers\Parameter;
@@ -122,6 +123,7 @@ class Controller
 
         $data['flash'] = $this->session->getFlash();
 		$data['user'] = $this->user;
+		$data['parameters'] = $this->parameters;
 
         $response = new Response($twig->render( $view, $data ));
 		$response->setCode($code);
@@ -172,5 +174,12 @@ class Controller
 
 	protected function translate($term) {
 		return $this->container->translations->get($term, $term);
+	}
+
+	/**
+	 * @return UserRepository
+	 */
+	protected function getUserRepo() {
+		return $this->em->getRepository('S7D\Core\Auth\Entity\User');
 	}
 }
