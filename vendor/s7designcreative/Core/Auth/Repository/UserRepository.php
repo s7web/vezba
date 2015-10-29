@@ -8,7 +8,7 @@ use S7D\Core\Auth\Entity\User;
 
 class UserRepository extends EntityRepository {
 
-	public function insert($email, $password, $role, $meta = [], $status = 0, $token = null, $id) {
+	public function insert($email, $password, $role, $meta = [], $status = 0, $token = null, $id = 0) {
 
 		if($id) {
 			$user = $this->find($id);

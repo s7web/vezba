@@ -87,11 +87,7 @@ class User {
 	}
 
 	/**
-	 * @ManyToMany(targetEntity="S7D\Core\Auth\Entity\Role")
-	 * @JoinTable(name="users_roles",
-	 *      joinColumns={@JoinColumn(name="user_id", referencedColumnName="id")},
-	 *      inverseJoinColumns={@JoinColumn(name="role_id", referencedColumnName="id")}
-	 *      )
+	 * @ManyToMany(targetEntity="S7D\Core\Auth\Entity\Role", inversedBy="user")
 	 **/
 	protected $roles;
 
