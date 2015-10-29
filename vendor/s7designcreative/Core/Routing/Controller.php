@@ -169,4 +169,8 @@ class Controller
 			return new $newController($c);
 		};
 	}
+
+	protected function translate($term) {
+		return $this->container->translations->get($term, $term);
+	}
 }
