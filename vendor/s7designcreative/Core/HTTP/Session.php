@@ -25,6 +25,10 @@ class Session {
 		unset($_SESSION[$key]);
 	}
 
+	public function destroy() {
+		session_destroy();
+	}
+
 	public function setFlash($message, $class = '') {
 		$this->set('flash', [
 			'message' => $message,

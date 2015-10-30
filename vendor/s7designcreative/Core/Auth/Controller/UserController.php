@@ -30,7 +30,7 @@ class UserController extends Controller {
 	}
 
 	public function logout() {
-		$this->session->remove('auth');
+		$this->session->destroy();
 		return $this->redirectRoute('login');
 	}
 
