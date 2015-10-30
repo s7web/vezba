@@ -69,9 +69,10 @@ class UserController extends Controller {
 				 ->setBody(sprintf('To activate your account on %s follow this url %s', $app, $url));
 			$this->mailer->send($message);
 
+			$role = $this->em->getRepository('S7D\Core\Auth\Entity\Role')->findOneBy(['name' => 'USER']);
 			/** @var \S7D\Core\Auth\Repository\UserRepository $userRepo */
 			$userRepo = $this->em->getRepository('S7D\Core\Auth\Entity\User');
-			$userRepo->insert($email, $this->request->get('password'), 'USER', [], 0, $token);
+			$userRepo->insert($email, $this->request->get('password'), [$role], [], 0, $token);
 			return $this->render();
 		}
 		$this->session->setFlash('Something went wrong.');
