@@ -8,6 +8,7 @@ use S7D\Core\Auth\Entity\User;
 use S7D\Core\Helpers\Container;
 use S7D\Core\Helpers\Parameter;
 use S7D\Core\HTTP\Response;
+use S7D\Core\Routing\Controller\ErrorController;
 use Symfony\Component\Yaml\Parser;
 
 class Application
@@ -46,10 +47,22 @@ class Application
 			return EntityManager::create( $c->parameters->get('database'), $config );
 		};
 		$this->container = $c;
+
+	}
+
+
+	public function errorHandler() {
+
+		$last_error = error_get_last();
+		if ($last_error['type'] === E_ERROR) {
+			$response = call_user_func( [ $this->container->errorController, 'serverError' ] );
+			$response->out();
+		}
 	}
 
     public function run() {
 
+		register_shutdown_function([$this, 'errorHandler']);
 		$routesArray = $this->getParams('routes.yml')->getAll();
 
 		$router = new Router();
@@ -158,5 +171,6 @@ class Application
 		}
 		return new Parameter($data);
 	}
+
 
 }
