@@ -63,7 +63,7 @@ class ValidatorType
     private function max( $key, $value, $length )
     {
         $val_length = strlen( $value );
-        if ( ! $val_length < $length) {
+        if ($val_length > $length) {
             $this->setError( $key, "$key must be less than $length characters long" );
         }
     }
