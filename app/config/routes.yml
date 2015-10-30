@@ -31,7 +31,7 @@ confirm:
   controller: S7D\Core\Auth\Controller\UserController
   method: confirm
   request_method: ANY
-  roles: [GUEST, USER]
+  roles: [GUEST, USER, ADMIN]
 
 register:
   route: register
