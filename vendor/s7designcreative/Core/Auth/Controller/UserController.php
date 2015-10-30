@@ -80,6 +80,7 @@ class UserController extends Controller {
 	}
 
 	public function confirm($token) {
+		$this->session->setAuth(null);
 		$user = $this->getUserRepo()->findOneBy(['token' => $token]);
 		if($user) {
 			$user->setToken(null);
