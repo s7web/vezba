@@ -88,6 +88,7 @@ class User {
 
 	/**
 	 * @ManyToMany(targetEntity="S7D\Core\Auth\Entity\Role", inversedBy="user")
+	 * @JoinTable(name="users_roles")
 	 **/
 	protected $roles;
 
