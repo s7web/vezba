@@ -5,10 +5,9 @@ use S7D\Core\Helpers\ArrayDot;
 
 class Session {
 
-	function __construct() {
+	public function sessionStart(){
 		session_start();
 	}
-
 	public function get($key, $default = false) {
 		return ArrayDot::get($_SESSION, $key, $default);
 	}
