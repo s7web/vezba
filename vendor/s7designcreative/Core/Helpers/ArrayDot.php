@@ -5,6 +5,9 @@ class ArrayDot {
 
 	public static function get($array, $key, $default = null) {
 		if (!empty($key)) {
+			if(isset($array[$key])) {
+				return $array[$key];
+			}
 			$keys = explode('.', $key);
 			foreach ($keys as $key) {
 				if (isset($array[$key])) {
