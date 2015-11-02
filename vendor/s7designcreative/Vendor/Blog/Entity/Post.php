@@ -45,6 +45,25 @@ class Post
     /** @Column(type="integer") */
     protected $author_id;
 
+	/**
+	 * @Column(type="string")
+	 */
+	protected $slug;
+
+	/**
+	 * @return mixed
+	 */
+	public function getSlug() {
+		return $this->slug;
+	}
+
+	/**
+	 * @param mixed $slug
+	 */
+	public function setSlug( $slug ) {
+		$this->slug = $slug;
+	}
+
     /**
      * @ManyToOne(targetEntity="S7D\Core\Auth\Entity\User", inversedBy="post")
      * @JoinColumn(name="author_id", referencedColumnName="id")

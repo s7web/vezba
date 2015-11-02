@@ -140,6 +140,14 @@ class Application
 			return \Swift_Mailer::newInstance($transport);
 		};
 
+		$services = $this->getParams('services.yml');
+		foreach ( $services->getAll() as $service => $args ) {
+			$this->container->$service = function($c) use ($args) {
+				return new $args['class'];
+			};
+		}
+
+
 		$this->container->controller = function($c) use ($controller) {
 			return new $controller($c);
 		};
