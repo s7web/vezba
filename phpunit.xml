@@ -21,6 +21,9 @@
         <testsuite name="main">
             <directory>./src/**/**/**/Tests</directory>
         </testsuite>
+        <testsuite name="packages">
+            <directory>./vendor/s7designcreative/Vendor/**/Tests</directory>
+        </testsuite>
     </testsuites>
 
     <filter>
