@@ -6,7 +6,7 @@ namespace S7D\Vendor\Menu\Entity;
  * Class Menu
  * @package S7D\Vendor\Menu\Entity
  *
- * @Entity(repositoryClass="S7D\Vendor\Menu\Repository\MenuRepository") @Table(name="menu")
+ * @Entity @Table(name="menu")
  */
 class Menu
 {
@@ -16,4 +16,36 @@ class Menu
 
     /** @Column(type="string") */
     protected $name;
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param mixed $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
 }
