@@ -76,6 +76,7 @@ class Application
 		}
 
 		$session = new \S7D\Core\HTTP\Session();
+	    $session->sessionStart();
 
 		$uri = ltrim($_SERVER['REQUEST_URI'], '/');
 		$uri = preg_replace('/\?.*/', '', $uri);

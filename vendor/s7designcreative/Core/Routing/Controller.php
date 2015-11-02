@@ -78,11 +78,11 @@ class Controller
 			$view = preg_replace('/.*::/', '', $view);
 		}
 
-		$appDir = $this->root . '/src/S7D/App/' . $this->parameters->get('app');
+		$appDir = $this->root . 'src/S7D/App/' . $this->parameters->get('app');
 
         $loader = new \Twig_Loader_Filesystem([
 			$appDir . '/views/',
-			$this->root . '/app/views/',
+			$this->root . 'app/views/',
 		]);
 
         $twig = new \Twig_Environment( $loader );
