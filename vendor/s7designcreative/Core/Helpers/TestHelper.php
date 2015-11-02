@@ -4,7 +4,6 @@ namespace S7D\Core\Helpers;
 
 use Symfony\Component\Yaml\Parser;
 
-
 /**
  * Class TestHelper
  * @package S7D\Core\Helpers
@@ -13,65 +12,52 @@ class TestHelper extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @var
+     * @var Container
      */
     protected $container;
 
     /**
-     * @var
+     * @var string
      */
     protected $root;
 
     /**
      * Mock dependency injection container for tests
      *
-     * @param array $params
-     *
      * @return Container
      */
     protected function mockContainer()
     {
-
-        $em              = $this->mockEntityManager();
-        $router          = $this->mockRouter();
-        $session         = $this->mockSession();
-        $params          = $this->mockParameter('parameters.yml');
-        $request         = $this->mockRequest();
-        $userClass       = $this->mockUserClass();
-        $mailerClass     = $this->mockMailerClass();
-        $this->root      = $this->mockRoot();
-        $root            = $this->mockRoot();
         $this->container = new Container();
 
-        $this->container->em         = function () use ($em) {
-            return $em;
+        $this->container->em         = function () {
+            return $this->mockEntityManager();
         };
-        $this->container->parameters = function () use ($params) {
-            return $params;
+        $this->container->parameters = function () {
+            return $this->mockParameter('parameters.yml');
         };
-        $this->container->mailer     = function () use ($mailerClass) {
-            return $mailerClass;
+        $this->container->mailer     = function () {
+            return $this->mockMailerClass();
         };
-        $this->container->request    = function () use ($request) {
-            return $request;
+        $this->container->request    = function () {
+            return $this->mockRequest();
         };
-        $this->container->session    = function () use ($session) {
-            return $session;
+        $this->container->session    = function () {
+            return $this->mockSession();
         };
-        $this->container->root       = function () use ($root) {
-            return $root;
+        $this->container->root       = function () {
+            return $this->mockRoot();
         };
-        $this->container->user       = function () use ($userClass) {
-            return $userClass;
+        $this->container->user       = function () {
+            return $this->mockUserClass();
         };
 
-        $this->container->router = function () use ($router) {
-            return $router;
+        $this->container->router = function () {
+            return $this->mockRouter();
         };
-        $trans                   = $this->mockParameter('EN.yml', 'translations');
         @session_start();
-        $this->container->translations = function () use ($trans) {
-            return $trans;
+        $this->container->translations = function () {
+            return $this->mockParameter('EN.yml', 'translations');
         };
 
         return $this->container;
