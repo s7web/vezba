@@ -1,1 +1,17 @@
 <h4>Menus list</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <td>Id</td>
+            <td>Menu name</td>
+        </tr>
+    </thead>
+    <tbody>
+    {% for menu in menus %}
+        <tr>
+            <td>{{ menu.getId() }}</td>
+            <td>{{ menu.getName() }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
