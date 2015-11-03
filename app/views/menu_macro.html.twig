@@ -1,10 +1,10 @@
-{% macro childrenIterate(children) %}
+{% macro children(children) %}
     <ol class="dd-list dark">
     {% for child in children %}
-        <li class="dd-item" data-name="{{ child.name }}" data-url="{{ menu.url }}">
+        <li class="dd-item" id="{{ child.name }}" data-name="{{ child.name }}" data-url="{{ child.url }}">
             <div class="dd-handle">{{ child.name }}</div>
             {% if child.children is defined %}
-                {{ childrenIterate(child.children) }}
+                {{ _self.children(child.children) }}
             {% endif %}
         </li>
     {% endfor %}
