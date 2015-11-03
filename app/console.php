@@ -72,4 +72,8 @@ foreach($app->container->parameters->get('commands', []) as $command => $arr) {
 	);
 }
 
+$helperSet = \Doctrine\ORM\Tools\Console\ConsoleRunner::createHelperSet($em);
+$console->setHelperSet($helperSet);
+\Doctrine\ORM\Tools\Console\ConsoleRunner::addCommands($console);
+
 $console->run();
