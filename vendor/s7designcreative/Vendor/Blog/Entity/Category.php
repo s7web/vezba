@@ -21,6 +21,7 @@ class Category
 
     /**
      * @ManyToMany(targetEntity="S7D\Vendor\Blog\Entity\Post", mappedBy="categories")
+	 * @OrderBy({"id" = "DESC"})
      */
     protected $posts;
 
