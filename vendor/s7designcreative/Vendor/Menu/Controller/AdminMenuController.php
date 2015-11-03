@@ -106,6 +106,7 @@ class AdminMenuController extends Controller
         $menu->setLocation($data['menu_location']);
         $this->em->persist($menu);
         $this->em->flush();
+        $this->session->setFlash('Successfully added menu.');
         return $this->redirect('/admin/menu/list');
     }
 
@@ -126,6 +127,7 @@ class AdminMenuController extends Controller
 
         $this->em->remove($menu);
         $this->em->flush();
+        $this->session->setFlash('Successfully deleted menu');
         return $this->redirect('/admin/menu/list');
     }
 }

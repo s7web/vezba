@@ -37,11 +37,6 @@ class AdminMenuTest extends TestHelper
     public function testCreate()
     {
         $this->assertContains(
-            '<h4>Add new menu</h4>',
-            $this->controller->create()->getOutput(),
-            'Expected form title for creating new menu but there is no such element'
-        );
-        $this->assertContains(
             '<input name="menu_name" type="text" placeholder="Menu name" id="menu_name" required/>',
             $this->controller->create()->getOutput(),
             'Expected form input for creating new menu but there is no such element'
