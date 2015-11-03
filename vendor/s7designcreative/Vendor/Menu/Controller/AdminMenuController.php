@@ -65,7 +65,7 @@ class AdminMenuController extends Controller
     public function edit($id)
     {
         $data = $this->request->getAll();
-        $v    = Validator::make($data, array('menu_name' => 'min:3|required'));
+        $v    = Validator::make($data, array('menu_name' => 'min:3|required', 'menu_location' => 'numeric|required'));
         if ( ! $v->isValid()) {
             $this->session->setFlash('Data is not valid, please look at examples and follow validation instructions');
 
@@ -79,6 +79,7 @@ class AdminMenuController extends Controller
             return $this->redirectBack();
         }
         $menu->setName($data['menu_name']);
+        $menu->setLocation($data['menu_location']);
         $this->em->persist($menu);
         $this->em->flush();
         $this->session->setFlash('Successfully updated menu');
@@ -102,6 +103,7 @@ class AdminMenuController extends Controller
         }
         $menu = new Menu();
         $menu->setName($data['menu_name']);
+        $menu->setLocation($data['menu_location']);
         $this->em->persist($menu);
         $this->em->flush();
         return $this->redirect('/admin/menu/list');

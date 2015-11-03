@@ -17,6 +17,9 @@ class Menu
     /** @Column(type="string") */
     protected $name;
 
+    /** @Column(type="integer") */
+    protected $location;
+
     /**
      * @return mixed
      */
@@ -47,5 +50,21 @@ class Menu
     public function setName($name)
     {
         $this->name = $name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * @param mixed $location
+     */
+    public function setLocation($location)
+    {
+        $this->location = $location;
     }
 }

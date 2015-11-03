@@ -46,6 +46,11 @@ class AdminMenuTest extends TestHelper
             $this->controller->create()->getOutput(),
             'Expected form input for creating new menu but there is no such element'
         );
+        $this->assertContains(
+            'name="menu_location"',
+            $this->controller->show(1)->getOutput(),
+            'Expected that single view has location to edit but there is no such field'
+        );
     }
 
     public function testShow()
@@ -54,6 +59,11 @@ class AdminMenuTest extends TestHelper
             '<input name="menu_name" type="text" placeholder="Menu name" value="Main menu" id="menu_name" required/>',
             $this->controller->show(1)->getOutput(),
             'Expected that single view has Menu to edit but there is no such field'
+        );
+        $this->assertContains(
+            'name="menu_location"',
+            $this->controller->show(1)->getOutput(),
+            'Expected that single view has location to edit but there is no such field'
         );
     }
 
@@ -126,7 +136,7 @@ class AdminMenuTest extends TestHelper
                         ->getMock();
 
         $request->method('isPost')->will($this->returnValue(false));
-        $request->method('getAll')->will($this->returnValue(array('menu_name' => 'Main menu')));
+        $request->method('getAll')->will($this->returnValue(array('menu_name' => 'Main menu', 'menu_location' => 1)));
 
         return $request;
     }
