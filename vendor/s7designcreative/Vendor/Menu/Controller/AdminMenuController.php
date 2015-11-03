@@ -124,6 +124,6 @@ class AdminMenuController extends Controller
 
         $this->em->remove($menu);
         $this->em->flush();
-        return $this->redirectBack();
+        return $this->redirect('/admin/menu/list');
     }
 }
