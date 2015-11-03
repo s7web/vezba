@@ -1,9 +1,42 @@
-<h4>Menus list</h4>
-<table class="table">
+{% extends 'app_admin_layout.html.twig' %}
+{% block css %}
+    <link href="/admin/assets/plugins/jquery-datatable/css/jquery.dataTables.css" rel="stylesheet" type="text/css">
+    <link href="/admin/assets/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css" media="screen"/>
+{% endblock %}
+{% block javascripts_footer %}
+    <script src="/admin/assets/plugins/jquery-datatable/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="/admin/assets/plugins/jquery-datatable/extra/js/TableTools.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/admin/assets/plugins/datatables-responsive/js/datatables.responsive.js"></script>
+    <script type="text/javascript" src="/admin/assets/plugins/datatables-responsive/js/lodash.min.js"></script>
+{% endblock%}
+{% block breadcrumb %}
+    Menu list
+{% endblock %}
+{% block content_title %}
+    Menu list
+{% endblock %}
+{% block body %}
+<a class="btn btn-primary btn-cons" href="{{ path('menuCreate') }}">Add new menu</a>
+{% if  menus is empty %}
+    <div class="alert">
+        <button data-dismiss="alert" class="close"></button>
+        There is no menus at this time, be first to add new menu by pressing a button <span class="label label-success">Add new menu</span>.
+        After successful adding you will see
+        how list below being populated.
+    </div>
+{% endif %}
+{% if flash %}
+    <div class="alert">
+        <button class="close" data-dismiss="alert"></button>
+        {{ flash.message }}
+    </div>
+{% endif %}
+<table class="table table-hover table-condensed dataTable">
     <thead>
         <tr>
-            <td>Id</td>
+            <td>#Id</td>
             <td>Menu name</td>
+            <td>Actions</td>
         </tr>
     </thead>
     <tbody>
@@ -11,7 +44,9 @@
         <tr>
             <td>{{ menu.getId() }}</td>
             <td>{{ menu.getName() }}</td>
+            <td><a href="{{ path('menuShow', menu.getId()) }}"><span class="label label-success">EDIT</span></a></td>
         </tr>
     {% endfor %}
     </tbody>
 </table>
+{% endblock %}
