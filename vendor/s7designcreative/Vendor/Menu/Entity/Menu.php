@@ -20,6 +20,9 @@ class Menu
     /** @Column(type="integer") */
     protected $location;
 
+    /** @Column(type="json_array") */
+    protected $items;
+
     /**
      * @return mixed
      */
@@ -67,4 +70,21 @@ class Menu
     {
         $this->location = $location;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getItems()
+    {
+        return ($this->items != '' && $this->items != ' ' && $this->items != null) ? json_decode($this->items) : array();
+    }
+
+    /**
+     * @param mixed $items
+     */
+    public function setItems($items)
+    {
+        $this->items = $items;
+    }
+
 }

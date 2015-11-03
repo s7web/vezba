@@ -60,6 +60,21 @@ class AdminMenuTest extends TestHelper
             $this->controller->show(1)->getOutput(),
             'Expected that single view has location to edit but there is no such field'
         );
+        $this->assertContains(
+            'Menu items',
+            $this->controller->show(1)->getOutput(),
+            'Expected that single view has items to edit but there is no such data'
+        );
+        $this->assertContains(
+            'Add item to menu from categories',
+            $this->controller->show(1)->getOutput(),
+            'Expected that single view has items to add on menu but there is no such data'
+        );
+        $this->assertContains(
+            'class="dd"',
+            $this->controller->show(1)->getOutput(),
+            'Expected that single view has sortable list but there is no such data'
+        );
     }
 
     public function testEdit()

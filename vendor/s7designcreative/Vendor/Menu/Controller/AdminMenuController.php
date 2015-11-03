@@ -2,6 +2,7 @@
 
 namespace S7D\Vendor\Menu\Controller;
 
+use S7D\Core\HTTP\ResponseJSON;
 use S7D\Core\Routing\Controller;
 use S7D\Core\Validator\Validator;
 use S7D\Vendor\Menu\Entity\Menu;
@@ -35,14 +36,17 @@ class AdminMenuController extends Controller
      */
     public function show($id)
     {
-
+        $dependenciesForMenu = array();
+        if ((in_array('Blog', $this->parameters->get('packages', [])))) {
+            $dependenciesForMenu['Blog'] = $this->em->getRepository('S7D\Vendor\Blog\Entity\Category')->findAll();
+        }
         $menu = $this->em->getRepository('S7D\Vendor\Menu\Entity\Menu')->find($id);
 
         if ( ! $menu) {
             return $this->redirectBack();
         }
 
-        return $this->render(array('menu' => $menu));
+        return $this->render(array('menu' => $menu, 'dependencies' => $dependenciesForMenu));
     }
 
     /**
@@ -104,10 +108,24 @@ class AdminMenuController extends Controller
         $menu = new Menu();
         $menu->setName($data['menu_name']);
         $menu->setLocation($data['menu_location']);
+        $menu->setItems('');
         $this->em->persist($menu);
         $this->em->flush();
         $this->session->setFlash('Successfully added menu.');
         return $this->redirect('/admin/menu/list');
+    }
+
+    public function updateMenuItems($id){
+        $data = $this->request->getAll();
+        if(! isset($data['items'])){
+            return new ResponseJSON(array('status' => false));
+        }
+        /** @var Menu $menu */
+        $menu = $this->em->getRepository('S7D\Vendor\Menu\Entity\Menu')->find($id);
+        $menu->setItems($data['items']);
+        $this->em->persist($menu);
+        $this->em->flush();
+        return new ResponseJSON(array('status' => true));
     }
 
     /**
