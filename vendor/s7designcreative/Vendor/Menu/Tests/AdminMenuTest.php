@@ -22,12 +22,6 @@ class AdminMenuTest extends TestHelper
 
     public function testIndex()
     {
-
-        $this->assertContains(
-            '<h4>Menus list</h4>',
-            $this->controller->index()->getOutput(),
-            'Expected that admin menu pages exist but there is no such page'
-        );
         $this->assertContains(
             '<td>Main menu</td>',
             $this->controller->index()->getOutput(),
@@ -56,12 +50,6 @@ class AdminMenuTest extends TestHelper
 
     public function testShow()
     {
-
-        $this->assertContains(
-            '<h4>Edit Menu</h4>',
-            $this->controller->show(1)->getOutput(),
-            'Expected that single view has title but there is no title'
-        );
         $this->assertContains(
             '<input name="menu_name" type="text" placeholder="Menu name" value="Main menu" id="menu_name" required/>',
             $this->controller->show(1)->getOutput(),
