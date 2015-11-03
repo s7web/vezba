@@ -10,10 +10,15 @@ class Router {
 		$this->routes[$name] = $route;
 	}
 
-	public function generateUrl($baseUrl, $name, $id = null) {
+	public function generateUrl($baseUrl, $name, $params) {
 		if(!isset($this->routes[$name])) {
 			throw new \Exception(sprintf('Route \'%s\' is not defined.', $name));
 		}
-		return $baseUrl . preg_replace('/\(.*\)/', $id, $this->routes[$name]->pattern);
+		if(!is_array($params)) {
+			$params = [$params];
+		}
+		return $baseUrl . preg_replace_callback('/\(.*\)/U', function() use (&$params) {
+			return array_shift($params);
+		}, $this->routes[$name]->pattern);
 	}
 }

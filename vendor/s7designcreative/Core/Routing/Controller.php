@@ -91,8 +91,8 @@ class Controller
 
 		$router = $this->router;
 
-		$function = new \Twig_SimpleFunction('path', function($routeName, $id = null) use ($router){
-			return $router->generateUrl($this->parameters->get('url'), $routeName, $id);
+		$function = new \Twig_SimpleFunction('path', function($routeName, $params = null) use ($router){
+			return $router->generateUrl($this->parameters->get('url'), $routeName, $params);
 		});
 		$twig->addFunction($function);
 
