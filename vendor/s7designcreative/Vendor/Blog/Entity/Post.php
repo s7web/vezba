@@ -310,6 +310,16 @@ class Post
         return $this->categories;
     }
 
+	public function getFirstCategory() {
+		$categories = $this->categories;
+		if(!$categories->toArray()) {
+			$category = new Category();
+			$category->setName('News');
+			return $category;
+		}
+		return $categories[0];
+	}
+
 
     public function addCategory(Category $category)
     {
