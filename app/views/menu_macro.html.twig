@@ -1,0 +1,12 @@
+{% macro childrenIterate(children) %}
+    <ol class="dd-list dark">
+    {% for child in children %}
+        <li class="dd-item" data-name="{{ child.name }}" data-url="{{ menu.url }}">
+            <div class="dd-handle">{{ child.name }}</div>
+            {% if child.children is defined %}
+                {{ childrenIterate(child.children) }}
+            {% endif %}
+        </li>
+    {% endfor %}
+    </ol>
+{% endmacro %}
