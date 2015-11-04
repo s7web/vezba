@@ -6,6 +6,7 @@ database:
   port: 3306
   user: root
   password: root
+  charset: utf8mb4
 debug: true
 secret: 3z7ed7we2e77mjkfkiqowc
 app: ~
