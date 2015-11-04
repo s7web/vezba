@@ -115,6 +115,13 @@ class AdminMenuController extends Controller
         return $this->redirect('/admin/menu/list');
     }
 
+    /**
+     * Update menu item structure
+     *
+     * @param int $id Menu item id
+     *
+     * @return ResponseJSON
+     */
     public function updateMenuItems($id){
         $data = $this->request->getAll();
         if(! isset($data['items'])){
