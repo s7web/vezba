@@ -10,3 +10,15 @@
     {% endfor %}
     </ol>
 {% endmacro %}
+{% macro childrenFront(children) %}
+    <ul>
+        {% for child in children %}
+            <li>
+                <a href="{{ child.url }}">{{ child.name }}</a>
+                {% if child.children is defined %}
+                    {{ _self.children(child.children) }}
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% endmacro %}
