@@ -34,14 +34,20 @@
   /**
    * Send request to backend to save menu structure
    */
-  $('#force_save_menu').click(function(e){
+  $('#force_save_menu').click(function(){
     $.post($('#menu_items_list').attr('data-urlpost'), {items: JSON.stringify($('#menu_items_list').nestable('serialize'))}, function(){}, 'json');
   });
 
   /**
    * Get data values of transfer element and create new menu item
    */
-  $('.item_transfer_to_menu').click( function(){
+  $('.item_transfer_to_menu').click(function(e){
+    if((typeof $(this).attr('data-itemName') == undefined  || $(this).attr('data-itemName').length < 1 ) || (typeof $(this).attr('data-composedUrl') == undefined || $(this).attr('data-composedUrl') < 1)){
+      return
+    }
+    if (e.keyCode == 13){
+      return false;
+    }
     var html = '<li class="dd-item" data-name="'+ $(this).attr('data-itemName') +'" data-url="'+ $(this).attr('data-composedUrl') +'"><div class="dd-handle">'+ $(this).attr('data-itemName') +'</div></li>';
     $('#menu_items_list_container').append(html);
     $('#custom_menu_item_name').val('');
