@@ -4,6 +4,7 @@ namespace S7D\Core\Routing;
 use Doctrine\ORM\EntityManager;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use S7D\Vendor\Blog\Twig\TextTransition;
 use S7D\Core\Auth\Entity\User;
 use S7D\Core\Auth\Repository\UserRepository;
 use S7D\Core\Helpers\Container;
@@ -116,6 +117,7 @@ class Controller
 
 
 		$twig->addExtension(new LanguageExtension($this->container->translations));
+		$twig->addExtension(new TextTransition($this->session->get('textScript', $this->parameters->get('textScript'))));
 
         if ($this->parameters->get('debug')) {
             $twig->enableDebug();
