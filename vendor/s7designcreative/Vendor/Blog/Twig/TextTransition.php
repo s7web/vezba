@@ -32,7 +32,7 @@ class TextTransition extends \Twig_Extension {
 		];
 	}
 
-	public function transit( $string )
+	public function transit( $html )
 	{
 		$search = $this->sr['cyrillic'];
 		$replacement = $this->sr['latin'];
@@ -40,8 +40,16 @@ class TextTransition extends \Twig_Extension {
 			$search = $this->sr['latin'];
 			$replacement = $this->sr['cyrillic'];
 		}
-		return str_replace($search, $replacement, $string);
+
+		$texts = preg_split('/<.*>/U', $html, -1, PREG_SPLIT_NO_EMPTY);
+
+		foreach ( $texts as $text ) {
+			$textChanged = str_replace($search, $replacement, $text);
+			$html = str_replace($text, $textChanged, $html);
+		}
+		return $html;
 	}
+
 
 	public function getName() {
 		return 'textTransition';
