@@ -14,7 +14,7 @@
     <ul>
         {% for child in children %}
             <li>
-                <a href="{{ child.url }}">{{ child.name }}</a>
+                <a href="{{ child.url }}">{{ child.name | transit }}</a>
                 {% if child.children is defined %}
                     {{ _self.children(child.children) }}
                 {% endif %}
