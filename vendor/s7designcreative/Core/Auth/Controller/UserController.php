@@ -24,7 +24,7 @@ class UserController extends Controller {
 				$this->session->setFlash('Invalid email and/or password.');
 				return $this->redirectBack();
 			}
-			return $this->redirect($this->parameters->get('landing')[$user->getRoles()[0]]);
+			return $this->redirectRoute($this->parameters->get('landing')[$user->getRoles()[0]]);
 		}
 		return $this->render();
 	}
