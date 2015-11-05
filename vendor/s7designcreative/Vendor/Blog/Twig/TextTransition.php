@@ -34,19 +34,29 @@ class TextTransition extends \Twig_Extension {
 
 	public function transit( $html )
 	{
-		$search = $this->sr['cyrillic'];
-		$replacement = $this->sr['latin'];
+		/* If transit is for cyrillic and html contains html tags. */
 		if($this->textScript === 'cyrillic') {
 			$search = $this->sr['latin'];
 			$replacement = $this->sr['cyrillic'];
+			if(preg_match('/<.*>/', $html)) {
+				/* Wrap html with tag, to ensure all text is in html tag */
+				$html = '<div>' . $html . '</div>';
+				$search = $this->sr['latin'];
+				$replacement = $this->sr['cyrillic'];
+				/* Prevent transition html tag name and attributes. */
+				$html = preg_replace_callback('/>.*</sU', function($matches) use ($search, $replacement) {
+					return str_replace($search, $replacement, $matches[0]);
+				}, $html);
+				/* Role back these special cases. */
+				$html = str_replace(['&лт;', '&гт;'], ['&lt;', '&gt;'], $html);
+				return $html;
+			}
+		} else {
+			$search = $this->sr['cyrillic'];
+			$replacement = $this->sr['latin'];
 		}
+		$html = str_replace($search, $replacement, $html);
 
-		$texts = preg_split('/<.*>/U', $html, -1, PREG_SPLIT_NO_EMPTY);
-
-		foreach ( $texts as $text ) {
-			$textChanged = str_replace($search, $replacement, $text);
-			$html = str_replace($text, $textChanged, $html);
-		}
 		return $html;
 	}
 
