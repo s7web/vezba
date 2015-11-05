@@ -126,6 +126,9 @@ class Controller
         $data['flash'] = $this->session->getFlash();
 		$data['user'] = $this->user;
 		$data['parameters'] = $this->parameters;
+		$data['site'] = [
+			'language' => $this->session->get('language', $this->parameters->get('language', 'en')),
+		];
 
         $response = new Response($twig->render( $view, $data ));
 		$response->setCode($code);
