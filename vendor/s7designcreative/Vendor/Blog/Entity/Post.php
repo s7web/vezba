@@ -50,6 +50,9 @@ class Post
 	 */
 	protected $slug;
 
+    /** @Column(type="array") */
+    protected $meta;
+
 	/**
 	 * @return mixed
 	 */
@@ -298,6 +301,22 @@ class Post
     public function setAuthor(User $author)
     {
         $this->author = $author;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMeta()
+    {
+        return $this->meta;
+    }
+
+    /**
+     * @param mixed $meta
+     */
+    public function setMeta($meta)
+    {
+        $this->meta = $meta;
     }
 
     /**
