@@ -61,6 +61,22 @@ $console
     }
 );
 
+$console
+    ->register('update:blogData')
+    ->setDescription('Insert blog data.')
+    ->setCode(function (InputInterface $input, OutputInterface $output) use($em) {
+
+		/** @var \S7D\Vendor\Blog\Entity\Post[] $posts */
+		$posts = $em->getRepository('S7D\Vendor\Blog\Entity\Post')->findAll();
+		foreach($posts as $post) {
+			$slugger = new \S7D\App\News\Utils\Slugger();
+			$post->setSlug($slugger->slugify($post->getTitle()));
+			$em->persist($post);
+		}
+		$em->flush();
+    }
+);
+
 foreach($app->container->parameters->get('commands', []) as $command => $arr) {
 	$console
 		->register($command)
