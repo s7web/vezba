@@ -128,6 +128,7 @@ class Controller
 		$data['parameters'] = $this->parameters;
 		$data['site'] = [
 			'language' => $this->session->get('language', $this->parameters->get('language', 'en')),
+			'textScript' => $this->session->get('textScript', $this->parameters->get('textScript', 'latin')),
 		];
 
         $response = new Response($twig->render( $view, $data ));
