@@ -32,9 +32,8 @@ class Application
 			return $that->parameters;
 		};
 		if($import = $this->parameters->get('import')) {
-			$imports = explode(',', $import);
-			foreach ($imports as $import) {
-				$this->parameters->add($import, $this->getParams($import . '.yml'));
+			foreach ($import as $file) {
+				$this->parameters->add($file, $this->getParams($file . '.yml'));
 			}
 		}
         $c->em = function($c) {
