@@ -27,9 +27,16 @@ class Application
 		$that = $this;
 		$c = new Container();
 		$c->root = function() use ($that) { return $that->root; };
+		$this->parameters = $that->getParams('parameters.yml');
 		$c->parameters = function($c) use ($that) {
-			return $that->getParams('parameters.yml');
+			return $that->parameters;
 		};
+		if($import = $this->parameters->get('import')) {
+			$imports = explode(',', $import);
+			foreach ($imports as $import) {
+				$this->parameters->add($import, $this->getParams($import . '.yml'));
+			}
+		}
         $c->em = function($c) {
 
 			$packages = $c->parameters->get('packages', []);
@@ -173,7 +180,7 @@ class Application
 		if(file_exists($configDir)) {
 			$data = $yml->parse( file_get_contents($configDir) );
 		}
-		$app = isset($data['app']) ? $data['app'] : $this->container->parameters->get('app');
+		$app = isset($data['app']) ? $data['app'] : $this->parameters->get('app');
 
 		$appConfig = $this->root . '/src/S7D/App/' . $app . '/' . $dir . '/' . $filePattern;
 		if(file_exists($appConfig)) {
