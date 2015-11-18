@@ -306,9 +306,9 @@ class Post
     /**
      * @return mixed
      */
-    public function getMeta()
+    public function getMeta($key)
     {
-        return $this->meta;
+        return isset($this->meta[$key]) ? $this->meta[$key] : null;
     }
 
     /**
