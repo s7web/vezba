@@ -4,16 +4,25 @@ $(function(){
 
     $(document).on('submit', '[data-ajax]', function(){
         var $this = $(this);
+        if($this.data('confirm') !== undefined) {
+            if(! confirm('Are your sure?')) {
+                return false;
+            }
+        }
+        $('.fa-spin').show();
         $.post($this.data('ajax'), $this.serialize(), function(response) {
             $($this.data('target')).html(response.html);
+            $('.fa-spin').hide();
         });
         return false;
     });
 
     $('[data-load]').each(function() {
         var $this = $(this);
+        $('.fa-spin').show();
         $.get($this.data('load'), function(response) {
             $this.html(response.html);
+            $('.fa-spin').hide();
         });
     });
 
