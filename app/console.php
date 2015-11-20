@@ -79,7 +79,7 @@ $console
 
 foreach($app->container->parameters->get('commands', []) as $command => $arr) {
 	$console
-		->register($command)
+		->register(strtolower($app->container->parameters->get('app')) . ':' . $command)
 		->setDescription($arr['description'])
 		->setCode(function (InputInterface $input, OutputInterface $output) use ($app, $arr) {
 			$c = new $arr['class'];
