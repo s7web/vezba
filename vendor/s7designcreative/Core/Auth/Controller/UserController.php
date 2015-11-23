@@ -48,7 +48,7 @@ class UserController extends Controller {
 		$email = $this->request->get('email');
 		$user = $this->getUserRepo()->findOneBy(['email' => $email]);
 		if($user) {
-			$this->session->setFlash(sprintf('Registration failed, email %s already taken.', $email));
+			$this->session->setFlash(sprintf($this->translate('emailTaken'), $email));
 			return $this->redirectBack();
 		}
 		$client = new Client();
