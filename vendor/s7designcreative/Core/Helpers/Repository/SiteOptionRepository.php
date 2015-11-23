@@ -8,14 +8,17 @@ class SiteOptionRepository extends EntityRepository {
 
 	public function get($key) {
 
-		$value = $this->createQueryBuilder('o')->select('o.option_value')
+		$so = $this->createQueryBuilder('o')
 			->where('o.option_key= :key')
 			->setParameter(':key', $key)
 			->getQuery()
-			->getSingleScalarResult();
+			->getOneOrNullResult();
+		if(!$so) {
+			return null;
+		}
 
-		$json = json_decode($value, true);
-		return (json_last_error() == JSON_ERROR_NONE) ? $json : $value;
+		$json = json_decode($so->option_value, true);
+		return (json_last_error() == JSON_ERROR_NONE) ? $json : $so->option_value;
 	}
 
 	public function set($key, $value, $json = false) {
