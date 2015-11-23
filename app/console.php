@@ -77,15 +77,15 @@ $console
     }
 );
 
-foreach($app->container->parameters->get('commands', []) as $command => $arr) {
-	$console
-		->register(strtolower($app->container->parameters->get('app')) . ':' . $command)
-		->setDescription($arr['description'])
-		->setCode(function (InputInterface $input, OutputInterface $output) use ($app, $arr) {
-			$c = new $arr['class'];
-			$c->run($app->container->em, $app->parameters, $app->root . '/log');
-		}
-	);
+$finder = new \Symfony\Component\Finder\Finder();
+$finder->files()->name('*Command.php')->in(__DIR__ . '/../src/S7D/App/' . $app->parameters->get('app'));
+
+$ns = 'S7D\App\\' . $app->parameters->get('app');
+
+foreach($finder as $file) {
+	$class = $ns . '\Command\\' . $file->getBasename('.php');
+	$r = new \ReflectionClass($class);
+	$console->add($r->newInstance($app->container->em));
 }
 
 $helperSet = \Doctrine\ORM\Tools\Console\ConsoleRunner::createHelperSet($em);
