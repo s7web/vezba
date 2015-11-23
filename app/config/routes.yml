@@ -3,7 +3,7 @@ login:
   controller: S7D\Core\Auth\Controller\UserController
   method: login
   request_method: GET
-  roles: [GUEST]
+  roles: [GUEST, ADMIN, USER]
 
 logout:
   route: logout

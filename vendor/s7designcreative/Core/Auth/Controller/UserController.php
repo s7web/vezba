@@ -13,6 +13,9 @@ class UserController extends Controller {
 	}
 
 	public function login() {
+		if($this->user) {
+			return $this->redirectRoute($this->parameters->get('landing')[$this->user->getRoles()[0]]);
+		}
 		if($this->request->isPost()) {
 			$user = $this->getUserRepo()->findOneBy([
 				'username' => $this->request->get('user'),
