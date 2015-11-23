@@ -77,6 +77,19 @@ $console
     }
 );
 
+$console
+    ->register('insert:siteOption')
+    ->setDescription('Insert site option.')
+	->addArgument('key', \Symfony\Component\Console\Input\InputArgument::REQUIRED, 'key')
+	->addArgument('value', \Symfony\Component\Console\Input\InputArgument::REQUIRED, 'value')
+    ->setCode(function (InputInterface $input, OutputInterface $output) use($em) {
+
+		/** @var \S7D\Core\Helpers\Repository\SiteOptionRepository $optionRepo */
+		$optionRepo =  $em->getRepository('S7D\Core\Helpers\Entity\SiteOption');
+		$optionRepo->set($input->getArgument('key'), $input->getArgument('value'));
+    }
+);
+
 $finder = new \Symfony\Component\Finder\Finder();
 $finder->files()->name('*Command.php')->in(__DIR__ . '/../src/S7D/App/' . $app->parameters->get('app'));
 

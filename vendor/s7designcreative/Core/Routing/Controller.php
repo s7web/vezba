@@ -4,6 +4,7 @@ namespace S7D\Core\Routing;
 use Doctrine\ORM\EntityManager;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use S7D\Core\Helpers\Repository\SiteOptionRepository;
 use S7D\Vendor\Blog\Twig\TextTransition;
 use S7D\Core\Auth\Entity\User;
 use S7D\Core\Auth\Repository\UserRepository;
@@ -115,6 +116,11 @@ class Controller
 		});
 		$twig->addFunction($function);
 
+		$function = new \Twig_SimpleFunction('getOption', function($key)  {
+			return $this->getOption($key);
+		}, ['is_safe' => ['html']]);
+		$twig->addFunction($function);
+
 
 		$twig->addExtension(new LanguageExtension($this->container->translations));
 		$twig->addExtension(new TextTransition($this->session->get('textScript', $this->parameters->get('textScript'))));
@@ -187,5 +193,16 @@ class Controller
 	 */
 	protected function getUserRepo() {
 		return $this->em->getRepository('S7D\Core\Auth\Entity\User');
+	}
+
+	/**
+	 * @return SiteOptionRepository
+	 */
+	protected function getSiteOptionRepo() {
+		return $this->em->getRepository('S7D\Core\Helpers\Entity\SiteOption');
+	}
+
+	protected function getOption($key) {
+		return $this->getSiteOptionRepo()->get($key);
 	}
 }
