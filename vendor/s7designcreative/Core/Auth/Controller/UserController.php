@@ -66,10 +66,11 @@ class UserController extends Controller {
 			$app = $this->parameters->get('app');
 			$token = md5(uniqid());
 			$url = $this->generateUrl('confirm', $token);
-			$message = \Swift_Message::newInstance('Registration for '. $app)
+			$message = \Swift_Message::newInstance(sprintf($this->translate('emailConfirmSubject'), $app))
 				 ->setFrom($this->parameters->get('email.username'), $app)
 				 ->setTo($email)
-				 ->setBody(sprintf('To activate your account on %s follow this url %s', $app, $url));
+				 ->setBody(sprintf($this->translate('emailConfirm'), $url))
+				 ->setContentType('text/html');
 			$this->mailer->send($message);
 
 			$role = $this->em->getRepository('S7D\Core\Auth\Entity\Role')->findOneBy(['name' => 'USER']);

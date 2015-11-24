@@ -1,1 +1,3 @@
 emailTaken: Registration failed, email %s already taken.
+emailConfirmSubject: Registration for %s
+emailConfirm: To activate your account follow this url %s
