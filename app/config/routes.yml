@@ -26,6 +26,13 @@ verify:
   request_method: ANY
   roles: [GUEST]
 
+resendToken:
+  route: resend/(.+)
+  controller: S7D\Core\Auth\Controller\UserController
+  method: resendToken
+  request_method: ANY
+  roles: [GUEST]
+
 confirm:
   route: confirm/(.+)
   controller: S7D\Core\Auth\Controller\UserController

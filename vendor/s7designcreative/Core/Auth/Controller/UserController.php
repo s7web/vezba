@@ -63,16 +63,11 @@ class UserController extends Controller {
 		$response = json_decode($response);
 
 		if($response->success) {
-			$app = $this->parameters->get('app');
 			$token = md5(uniqid());
 			$url = $this->generateUrl('confirm', $token);
-			$message = \Swift_Message::newInstance(sprintf($this->translate('emailConfirmSubject'), $app))
-				 ->setFrom($this->parameters->get('email.username'), $app)
-				 ->setTo($email)
-				 ->setBody(sprintf($this->translate('emailConfirm'), $url))
-				 ->setContentType('text/html');
+			$message = $this->getMessage($token);
+			$message->setTo($email);
 			$this->mailer->send($message);
-
 			$role = $this->em->getRepository('S7D\Core\Auth\Entity\Role')->findOneBy(['name' => 'USER']);
 			/** @var \S7D\Core\Auth\Repository\UserRepository $userRepo */
 			$userRepo = $this->em->getRepository('S7D\Core\Auth\Entity\User');
@@ -81,6 +76,27 @@ class UserController extends Controller {
 		}
 		$this->session->setFlash('Something went wrong.');
 		return $this->redirectBack();
+	}
+
+	private function getMessage($token) {
+
+		$app = $this->parameters->get('app');
+		$url = $this->generateUrl('confirm', $token);
+		return \Swift_Message::newInstance(sprintf($this->translate('emailConfirmSubject'), $app))
+		  ->setFrom($this->parameters->get('email.username'), $app)
+		  ->setBody(sprintf($this->translate('emailConfirm'), $url))
+		  ->setContentType('text/html');
+	}
+
+	public function resendToken($email) {
+
+		$user = $this->getUserRepo()->findOneBy(['email' => $email]);
+		if($user) {
+			$message = $this->getMessage($user->getToken());
+			$message->setTo($email);
+			$this->mailer->send($message);
+		}
+		return $this->view('User/verify.html.twig');
 	}
 
 	public function confirm($token) {
