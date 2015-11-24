@@ -205,4 +205,8 @@ class Controller
 	protected function getOption($key) {
 		return $this->getSiteOptionRepo()->get($key);
 	}
+
+	protected function setOption($key, $value) {
+		$this->getSiteOptionRepo()->set($key, $value);
+	}
 }
