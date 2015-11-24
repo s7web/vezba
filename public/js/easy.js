@@ -4,6 +4,7 @@ $(function(){
 
     $(document).on('submit', '[data-ajax]', function(){
         var $this = $(this);
+        var target = $this.data('target') || this;
         if($this.data('confirm') !== undefined) {
             if(! confirm('Are your sure?')) {
                 return false;
@@ -11,7 +12,7 @@ $(function(){
         }
         $('.fa-spin').show();
         $.post($this.data('ajax'), $this.serialize(), function(response) {
-            $($this.data('target')).html(response.html);
+            $(target).html(response.html);
             $('.fa-spin').hide();
         });
         return false;
