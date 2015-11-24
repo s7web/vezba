@@ -72,7 +72,7 @@ class UserController extends Controller {
 			/** @var \S7D\Core\Auth\Repository\UserRepository $userRepo */
 			$userRepo = $this->em->getRepository('S7D\Core\Auth\Entity\User');
 			$userRepo->insert($email, $this->request->get('password'), [$role], [], 0, $token);
-			return $this->render();
+			return $this->render(['email' => $email]);
 		}
 		$this->session->setFlash('Something went wrong.');
 		return $this->redirectBack();
@@ -96,7 +96,7 @@ class UserController extends Controller {
 			$message->setTo($email);
 			$this->mailer->send($message);
 		}
-		return $this->view('User/verify.html.twig');
+		return $this->view('User/verify.html.twig', ['email' => $email]);
 	}
 
 	public function confirm($token) {
