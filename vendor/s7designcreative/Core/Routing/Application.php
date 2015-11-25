@@ -3,12 +3,14 @@ namespace S7D\Core\Routing;
 
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
+use S7D\App\News\Utils\Slugger;
 use S7D\Core\Auth\Entity\Role;
 use S7D\Core\Auth\Entity\User;
 use S7D\Core\Helpers\Container;
 use S7D\Core\Helpers\Parameter;
 use S7D\Core\HTTP\Response;
 use S7D\Core\Routing\Controller\ErrorController;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Parser;
 
 class Application
@@ -155,11 +157,21 @@ class Application
 			};
 		}
 
-
 		$this->container->controller = function($c) use ($controller) {
 			return new $controller($c);
 		};
+
+		$ba = 'S7D\App\\' . $this->parameters->get('app') . '\Event\BeforeAction';
+		if(class_exists($ba)) {
+			call_user_func([ new $ba($this->container) , 'run' ]);
+		}
+
 		$response = call_user_func_array( [ $this->container->controller , $action ], array_values($queryParams) );
+
+		$aa = 'S7D\App\\' . $this->parameters->get('app') . '\Event\AfterAction';
+		if(class_exists($aa)) {
+			call_user_func([ new $aa($this->container) , 'run' ]);
+		}
 
 		if(! $response instanceof Response) {
 			if($this->container->parameters->get('debug')) {

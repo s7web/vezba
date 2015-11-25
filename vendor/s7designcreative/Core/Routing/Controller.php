@@ -116,8 +116,8 @@ class Controller
 		});
 		$twig->addFunction($function);
 
-		$function = new \Twig_SimpleFunction('getOption', function($key)  {
-			return $this->getOption($key);
+		$function = new \Twig_SimpleFunction('getOption', function($key, $default)  {
+			return $this->getOption($key, $default);
 		}, ['is_safe' => ['html']]);
 		$twig->addFunction($function);
 
@@ -202,8 +202,8 @@ class Controller
 		return $this->em->getRepository('S7D\Core\Helpers\Entity\SiteOption');
 	}
 
-	protected function getOption($key) {
-		return $this->getSiteOptionRepo()->get($key);
+	protected function getOption($key, $default = null) {
+		return $this->getSiteOptionRepo()->get($key, $default);
 	}
 
 	protected function setOption($key, $value) {

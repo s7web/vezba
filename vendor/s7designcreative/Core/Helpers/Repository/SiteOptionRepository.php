@@ -6,11 +6,11 @@ use S7D\Core\Helpers\Entity\SiteOption;
 
 class SiteOptionRepository extends EntityRepository {
 
-	public function get($key) {
+	public function get($key, $default = null) {
 
 		$so = $this->findOneBy(['option_key' => $key]);
 
-		return $so ? json_decode($so->option_value, true) : null;
+		return $so ? json_decode($so->option_value, true) : $default;
 	}
 
 	public function set($key, $value) {
