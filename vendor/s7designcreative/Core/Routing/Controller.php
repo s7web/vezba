@@ -4,6 +4,7 @@ namespace S7D\Core\Routing;
 use Doctrine\ORM\EntityManager;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use S7D\Core\Auth\Repository\UserMetaRepository;
 use S7D\Core\Helpers\Repository\SiteOptionRepository;
 use S7D\Vendor\Blog\Twig\TextTransition;
 use S7D\Core\Auth\Entity\User;
@@ -196,11 +197,19 @@ class Controller
 	}
 
 	/**
+	 * @return UserMetaRepository
+	 */
+	protected function getUserMetaRepo() {
+		return $this->em->getRepository('S7D\Core\Auth\Entity\UserMeta');
+	}
+
+	/**
 	 * @return SiteOptionRepository
 	 */
 	protected function getSiteOptionRepo() {
 		return $this->em->getRepository('S7D\Core\Helpers\Entity\SiteOption');
 	}
+
 
 	protected function getOption($key, $default = null) {
 		return $this->getSiteOptionRepo()->get($key, $default);
@@ -208,5 +217,21 @@ class Controller
 
 	protected function setOption($key, $value) {
 		$this->getSiteOptionRepo()->set($key, $value);
+	}
+
+	protected function getUserMeta($user, $key) {
+		return $this->getUserMetaRepo()->get($user, $key);
+	}
+
+	protected function setUserMeta($user, $key, $value) {
+		$this->getUserMetaRepo()->set($user, $key, $value);
+	}
+
+	protected function getCurrentUserMeta($key) {
+		return $this->getUserMeta($this->user, $key);
+	}
+
+	protected function setCurrentUserMeta($key, $value) {
+		$this->setUserMeta($this->user, $key, $value);
 	}
 }

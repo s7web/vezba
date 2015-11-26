@@ -33,6 +33,11 @@ class User {
 	 */
 	protected $post;
 
+	/**
+	 * @OneToMany(targetEntity="S7D\Core\Auth\Entity\UserMeta", mappedBy="user")
+	 */
+	protected $meta;
+
 
 	public function __construct(){
 		$this->post = new ArrayCollection();
@@ -91,10 +96,6 @@ class User {
 	 * @JoinTable(name="users_roles")
 	 **/
 	protected $roles;
-
-
-	/** @Column(type="array", nullable=true) **/
-	protected $meta;
 
 	/**
 	 * @return mixed
