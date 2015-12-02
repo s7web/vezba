@@ -1,0 +1,13 @@
+web:
+  build: .
+  ports:
+    - "80:80"
+  links:
+    - mysql
+
+mysql:
+  image: mysql
+  environment:
+   MYSQL_ROOT_PASSWORD: root
+   MYSQL_DATABASE: eis
+   MYSQL_USER: root
