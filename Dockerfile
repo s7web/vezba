@@ -24,3 +24,6 @@ EXPOSE 80
 EXPOSE 443
 
 WORKDIR /var/www/html
+
+RUN mkdir log
+RUN chmod 777 log
