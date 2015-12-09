@@ -14,7 +14,8 @@
         "swiftmailer/swiftmailer": "^5.4",
         "phpunit/phpunit": "4.8.*",
         "eventviva/php-image-resize": "^1.5",
-        "symfony/finder": "^2.7"
+        "symfony/finder": "^2.7",
+        "tecnickcom/tcpdf": "6.2.12"
     },
     "autoload" : {
         "psr-4" : {
