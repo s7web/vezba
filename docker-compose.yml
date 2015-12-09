@@ -4,7 +4,6 @@ web:
     - "80:80"
   links:
     - mysql
-    - .:/var/www/html
 
 mysql:
   image: mysql
