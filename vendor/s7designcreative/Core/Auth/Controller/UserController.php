@@ -83,7 +83,7 @@ class UserController extends Controller {
 		$app = $this->parameters->get('app');
 		$url = $this->generateUrl('confirm', $token);
 		return \Swift_Message::newInstance(sprintf($this->translate('emailConfirmSubject'), $app))
-		  ->setFrom($this->parameters->get('email.username'), $app)
+		  ->setFrom($this->parameters->get('email.emailExplicit'), $app)
 		  ->setBody(sprintf($this->translate('emailConfirm'), $url))
 		  ->setContentType('text/html');
 	}
