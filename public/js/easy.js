@@ -32,4 +32,15 @@ $(function(){
         EasyCms[callback[0]][callback[1]](this);
     });
 
+    $(document).on('change', '[data-change]', function() {
+        var callback = $(this).data('change').split('.');
+        EasyCms[callback[0]][callback[1]](this);
+    });
+
 });
+
+EasyCms.system = {
+    toggleInput : function(el) {
+        $($(el).data('target')).prop('disabled', !$(el).prop('checked'));
+    }
+}
