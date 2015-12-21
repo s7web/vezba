@@ -25,6 +25,23 @@ class Category
      */
     protected $posts;
 
+	/** @Column(type="string", nullable=true) */
+	protected $color;
+
+	/**
+	 * @return mixed
+	 */
+	public function getColor() {
+		return $this->color;
+	}
+
+	/**
+	 * @param mixed $color
+	 */
+	public function setColor( $color ) {
+		$this->color = $color;
+	}
+
     /**
      * Set up class properties
      */
