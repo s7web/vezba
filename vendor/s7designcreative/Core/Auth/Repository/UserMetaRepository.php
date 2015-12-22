@@ -14,7 +14,7 @@ class UserMetaRepository extends EntityRepository {
 
 	public function set($user, $key, $value) {
 
-		$um = $this->findOneBy(['option_key' => $key]);
+		$um = $this->findOneBy(['option_key' => $key, 'user' => $user]);
 		if(! $um) {
 			$um = new UserMeta();
 			$um->option_key = $key;
