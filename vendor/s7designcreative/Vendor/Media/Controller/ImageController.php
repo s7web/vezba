@@ -83,7 +83,7 @@ class ImageController extends Controller {
 	}
 
 	public function reductorJson() {
-		$images = $this->getMediaRepo()->findBy(['type' => 'image/png'], [], 100);
+		$images = $this->getMediaRepo()->findBy(['type' => 'image/png'], ['id' => 'desc'], 100);
 		$gallery = [];
 		foreach($images as $image) {
 			if(!$image->parent) {
