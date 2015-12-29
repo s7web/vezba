@@ -42,6 +42,8 @@ class Controller
 
 	protected $validCSRF = true;
 
+	protected $logger;
+
 	function __construct(Container $c)
 	{
 		$this->container = $c;
@@ -53,6 +55,8 @@ class Controller
 		$this->router = $c->router;
 		$this->root = $c->root;
 		$this->user = $this->em->getRepository('S7D\Core\Auth\Entity\User')->find($this->session->getAuth());
+		$this->logger = new Logger('Dev');
+		$this->logger->pushHandler(new StreamHandler($c->root . '/log/dev.log'));
 		if($c->request->isPost() && $c->request->get('CSRFtoken') !== $c->session->getCSRF()) {
 			$this->validCSRF = false;
 			$logger = new Logger('Invalid CSRF');
