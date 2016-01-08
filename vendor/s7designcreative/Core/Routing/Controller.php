@@ -104,9 +104,9 @@ class Controller
 		$twig->addFunction($function);
 
 		$function = new \Twig_SimpleFunction('CSRFinput', function($reload = false) {
-			if($reload) {
-				$this->session->generateCSRF();
-			}
+
+			$this->session->generateCSRF();
+
 			return sprintf('<input type="hidden" name="CSRFtoken" value="%s">', $this->session->getCSRF() );
 		});
 		$twig->addFunction($function);
