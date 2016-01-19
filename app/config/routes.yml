@@ -62,7 +62,7 @@ saveImage:
   roles: [ADMIN]
 
 reductorJson:
-  route: reductor/json
+  route: reductor/json/(.*)
   controller: S7D\Vendor\Media\Controller\ImageController
   method: reductorJson
   request_method: ANY

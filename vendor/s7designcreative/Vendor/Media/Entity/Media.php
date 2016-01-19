@@ -2,7 +2,7 @@
 namespace S7D\Vendor\Media\Entity;
 
 /**
- * @Entity @Table(name="media")
+ * @Entity(repositoryClass="S7D\Vendor\Media\Repository\MediaRepository") @Table(name="media")
  */
 class Media {
 

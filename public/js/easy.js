@@ -19,12 +19,7 @@ $(function(){
     });
 
     $('[data-load]').each(function() {
-        var $this = $(this);
-        $('.fa-spin').show();
-        $.get($this.data('load'), function(response) {
-            $this.html(response.html);
-            $('.fa-spin').hide();
-        });
+        EasyCms.system.reload(this);
     });
 
     $(document).on('click', '[data-click]', function() {
@@ -37,10 +32,23 @@ $(function(){
         EasyCms[callback[0]][callback[1]](this);
     });
 
+    $(document).on('keyup', '[data-keyup]', function() {
+        var callback = $(this).data('keyup').split('.');
+        EasyCms[callback[0]][callback[1]](this);
+    });
+
 });
 
 EasyCms.system = {
     toggleInput : function(el) {
         $($(el).data('target')).prop('disabled', !$(el).prop('checked'));
+    },
+    reload: function(el) {
+        var $this = $(el);
+        $('.fa-spin').show();
+        $.get($this.data('load'), function(response) {
+            $this.html(response.html);
+            $('.fa-spin').hide();
+        });
     }
 }

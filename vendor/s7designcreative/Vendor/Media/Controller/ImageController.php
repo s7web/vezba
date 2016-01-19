@@ -5,6 +5,7 @@ use Eventviva\ImageResize;
 use S7D\Core\HTTP\ResponseJSON;
 use S7D\Vendor\Media\Entity\Media;
 use S7D\Core\Routing\Controller;
+use S7D\Vendor\Media\Repository\MediaRepository;
 use Symfony\Component\Validator\Constraints\Image;
 
 class ImageController extends Controller {
@@ -82,8 +83,8 @@ class ImageController extends Controller {
 		]);
 	}
 
-	public function reductorJson() {
-		$images = $this->getMediaRepo()->findBy(['type' => 'image/png'], ['id' => 'desc'], 100);
+	public function reductorJson($query) {
+		$images = $this->getMediaRepo()->search($query, 'image/png', 100);
 		$gallery = [];
 		foreach($images as $image) {
 			if(!$image->parent) {
@@ -110,6 +111,9 @@ class ImageController extends Controller {
 		]);
 	}
 
+	/**
+	 * @return MediaRepository
+	 */
 	private function getMediaRepo() {
 		return $this->em->getRepository('S7D\Vendor\Media\Entity\Media');
 	}
