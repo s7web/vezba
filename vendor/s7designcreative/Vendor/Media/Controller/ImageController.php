@@ -86,6 +86,7 @@ class ImageController extends Controller {
 	public function reductorJson($query) {
 		$images = $this->getMediaRepo()->search($query, 'image/png', 100);
 		$gallery = [];
+		$images = array_reverse($images);
 		foreach($images as $image) {
 			if(!$image->parent) {
 				$full = $image->file;
@@ -96,6 +97,7 @@ class ImageController extends Controller {
 				];
 			}
 		}
+		$gallery = array_reverse($gallery);
 		return new ResponseJSON($gallery);
 	}
 

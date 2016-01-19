@@ -10,6 +10,7 @@ class MediaRepository extends EntityRepository {
 		return $this->createQueryBuilder('m')
 			->where('m.fileName LIKE :query')
 			->andWhere('m.type = :type')
+			->orderBy('m.id', 'DESC')
 			->setMaxResults($limit)
 			->setParameter('query', '%' . $query . '%')
 			->setParameter('type', $type)
