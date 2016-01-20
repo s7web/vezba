@@ -126,6 +126,8 @@ class Controller
 		}, ['is_safe' => ['html']]);
 		$twig->addFunction($function);
 
+		$filter = new \Twig_SimpleFilter('unserialize', 'unserialize');
+		$twig->addFilter($filter);
 
 		$twig->addExtension(new LanguageExtension($this->container->translations));
 		$twig->addExtension(new TextTransition($this->session->get('textScript', $this->parameters->get('textScript'))));
