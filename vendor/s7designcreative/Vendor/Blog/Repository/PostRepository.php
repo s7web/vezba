@@ -28,4 +28,14 @@ SQL
 		return $query->fetchAll();
 
 	}
+
+	public function mostCommented($limit) {
+		return $this->createQueryBuilder('p')
+			->select('p, count(c) as counter')
+			->leftJoin('S7D\Vendor\Blog\Entity\Comment', 'c', 'with', 'c.post = p.id')
+			->groupBy('p.id')
+			->setMaxResults($limit)
+			->getQuery()
+			->getResult();
+	}
 }
