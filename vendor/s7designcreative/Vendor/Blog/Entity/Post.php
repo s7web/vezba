@@ -45,10 +45,27 @@ class Post
     /** @Column(type="integer") */
     protected $author_id;
 
+    /** @Column(type="integer", options={"default" = 0}) */
+    protected $views;
+
 	/**
 	 * @Column(type="string")
 	 */
 	protected $slug;
+
+	/**
+	 * @return mixed
+	 */
+	public function getViews() {
+		return $this->views;
+	}
+
+	/**
+	 * @param mixed $views
+	 */
+	public function setViews( $views ) {
+		$this->views = $views;
+	}
 
     /** @Column(type="array") */
     protected $meta;
