@@ -29,11 +29,24 @@ SQL
 
 	}
 
-	public function mostCommented($limit) {
+	public function mostCommented($limit, $daysAgo) {
 		return $this->createQueryBuilder('p')
-			->select('p, count(c) as counter')
+			->select('p, count(c) as HIDDEN counter')
 			->leftJoin('S7D\Vendor\Blog\Entity\Comment', 'c', 'with', 'c.post = p.id')
+			->where('p.updated > :date')
+			->setParameter('date', new \DateTime("-$daysAgo days"))
 			->groupBy('p.id')
+			->orderBy('counter', 'DESC')
+			->setMaxResults($limit)
+			->getQuery()
+			->getResult();
+	}
+
+	public function getMostViewed($limit, $daysAgo) {
+		return $this->createQueryBuilder('p')
+			->where('p.updated > :date')
+			->setParameter('date', new \DateTime("-$daysAgo days"))
+			->orderBy('p.views', 'DESC')
 			->setMaxResults($limit)
 			->getQuery()
 			->getResult();
