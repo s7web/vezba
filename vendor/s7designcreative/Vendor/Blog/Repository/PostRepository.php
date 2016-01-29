@@ -14,15 +14,14 @@ class PostRepository extends EntityRepository {
 		return $count->getQuery()->getSingleScalarResult();
 	}
 
-	public function latestComments() {
-		$query = $this->getEntityManager()->getConnection()->prepare(<<<SQL
-SELECT p . *
+	public function getLastest($categoryId, $limit) {
+		$query = $this->getEntityManager()->getConnection()->prepare(
+'SELECT p . *
 FROM post_has_category pc
 LEFT JOIN post p ON ( p.id = pc.post_id )
-WHERE pc.category_id = 12
+WHERE pc.category_id = ' . $categoryId . '
 ORDER BY p.id DESC
-LIMIT 3
-SQL
+LIMIT ' . $limit
 		);
 		$query->execute();
 		return $query->fetchAll();
@@ -51,4 +50,5 @@ SQL
 			->getQuery()
 			->getResult();
 	}
+
 }

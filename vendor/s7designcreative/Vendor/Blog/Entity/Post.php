@@ -351,6 +351,7 @@ class Post
 		if(!$categories->toArray()) {
 			$category = new Category();
 			$category->setName('News');
+			$category->setId(rand(1,10));
 			return $category;
 		}
 		return $categories[0];
