@@ -144,6 +144,8 @@ class Controller
 			'textScript' => $this->session->get('textScript', $this->parameters->get('textScript', 'latin')),
 		];
 
+		$data['siteUrl'] = $this->parameters->get('url');
+
         $response = new Response($twig->render( $view, $data ));
 		$response->setCode($code);
 		return $response;
