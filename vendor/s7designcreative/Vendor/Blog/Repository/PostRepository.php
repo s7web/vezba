@@ -36,6 +36,7 @@ LIMIT ' . $limit
 			->setParameter('date', new \DateTime("-$daysAgo days"))
 			->groupBy('p.id')
 			->orderBy('counter', 'DESC')
+			->orderBy('p.updated', 'DESC')
 			->setMaxResults($limit)
 			->getQuery()
 			->getResult();
@@ -46,6 +47,7 @@ LIMIT ' . $limit
 			->where('p.updated > :date')
 			->setParameter('date', new \DateTime("-$daysAgo days"))
 			->orderBy('p.views', 'DESC')
+			->orderBy('p.updated', 'DESC')
 			->setMaxResults($limit)
 			->getQuery()
 			->getResult();
