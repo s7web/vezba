@@ -47,18 +47,22 @@ class ImageController extends Controller {
 		$this->em->flush();
 
 		$ir = new ImageResize($path);
-		$thumbSize = $this->parameters->get('thumbnail.size');
-		$ir->crop($thumbSize, $thumbSize);
-		$thumbPath = 'upload/' . $fileName . '-' . $thumbSize . 'x' . $thumbSize . '.png';
-		$ir->save($thumbPath);
+		$thumbnailSizes = $this->parameters->get('thumbnails');
+		foreach($thumbnailSizes as $size) {
+			$width = $size[0];
+			$height = $size[1];;
+			$ir->crop($width, $height);
+			$thumbPath = 'upload/' . $fileName . '-' . $width . 'x' . $height . '.png';
+			$ir->save($thumbPath);
 
-		$thumbnail = new Media();
-		$thumbnail->file = $thumbPath;
-		$thumbnail->fileName = $fileName;
-		$thumbnail->type = 'image/png';
-		$thumbnail->parent = $image->id;
-		$this->em->persist($thumbnail);
-		$this->em->flush();
+			$thumbnail = new Media();
+			$thumbnail->file = $thumbPath;
+			$thumbnail->fileName = $fileName;
+			$thumbnail->type = 'image/png';
+			$thumbnail->parent = $image->id;
+			$this->em->persist($thumbnail);
+			$this->em->flush();
+		}
 
 		return $path;
 	}
@@ -88,14 +92,10 @@ class ImageController extends Controller {
 		$gallery = [];
 		$images = array_reverse($images);
 		foreach($images as $image) {
-			if(!$image->parent) {
-				$full = $image->file;
-			} else {
-				$gallery[] = [
-					'image' => '/' . $full,
-					'thumb' => '/' . $image->file,
-				];
-			}
+			$gallery[] = [
+				'image' => '/' . $image->file,
+				'thumb' => '/' . 'upload/' . $image->fileName . '-100x100.png',
+			];
 		}
 		$gallery = array_reverse($gallery);
 		return new ResponseJSON($gallery);
