@@ -4,6 +4,7 @@ $(function(){
 
     $(document).on('submit', '[data-ajax]', function(){
         var $this = $(this);
+        var append = $this.data('append');
         var target = $this.data('target') || this;
         if($this.data('confirm') !== undefined) {
             if(! confirm('Are your sure?')) {
@@ -12,7 +13,16 @@ $(function(){
         }
         $('.fa-spin').show();
         $.post($this.data('ajax'), $this.serialize(), function(response) {
-            $(target).html(response.html);
+            if (append) {
+                $(target).append(response.html);
+                var $page = $this.find('[name="page"]');
+                $page.val(parseInt($page.val()) + 1);
+                if(!response.append) {
+                    $(append).hide();
+                }
+            } else {
+                $(target).html(response.html);
+            }
             $('.fa-spin').hide();
         });
         return false;

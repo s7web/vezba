@@ -2,7 +2,7 @@
 namespace S7D\Vendor\Blog\Entity;
 
 /**
- * @Entity @Table(name="post_comment")
+ * @Entity(repositoryClass="S7D\Vendor\Blog\Repository\CommentRepository") @Table(name="post_comment")
  */
 class Comment {
 
@@ -14,6 +14,9 @@ class Comment {
 
 	/** @Column(type="string") */
 	public $email;
+
+	/** @Column(type="string") */
+	public $name;
 
 	/**
 	 * @ManyToOne(targetEntity="S7D\Vendor\Blog\Entity\Post")
@@ -28,4 +31,10 @@ class Comment {
 
 	/** @Column(type="datetime", nullable=true) **/
 	public $created;
+
+	/** @Column(type="integer", options={"default" = 0}) **/
+	public $likes;
+
+	/** @Column(type="integer", options={"default" = 0}) **/
+	public $dislikes;
 }
