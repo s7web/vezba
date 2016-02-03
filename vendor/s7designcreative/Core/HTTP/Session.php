@@ -56,6 +56,10 @@ class Session {
 	}
 
 	public function getAuth() {
+		$test = Cookie::getCookieByName('auth');
+		if(Cookie::getCookieByName('authState', false) && ! $this->get('auth')){
+			$this->set('authState', Cookie::getCookieByName('auth'));
+		}
 		return $this->get('auth');
 	}
 

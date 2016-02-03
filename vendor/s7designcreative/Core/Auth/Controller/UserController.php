@@ -4,6 +4,7 @@ namespace S7D\Core\Auth\Controller;
 use GuzzleHttp\Client;
 use S7D\Core\Auth\Entity\Role;
 use S7D\Core\Auth\Entity\User;
+use S7D\Core\HTTP\Cookie;
 use S7D\Core\Routing\Controller;
 
 class UserController extends Controller {
@@ -20,9 +21,15 @@ class UserController extends Controller {
 			$user = $this->getUserRepo()->findOneBy([
 				'username' => $this->request->get('user'),
 			]);
-			$password = $this->request->get('password');
+			$password   = $this->request->get('password');
+			$rememberMe = $this->request->get('remember_me');
 			if ( $user && $password && password_verify($password, $user->getPassword())) {
-				$this->session->set('auth', $user->getId());
+				if($rememberMe){
+					$this->session->set('auth', $user->getId());
+					setcookie('authState', $user->getId(), time() + (86400 * 30), null, null, null, true);
+				}else{
+					$this->session->set('auth', $user->getId());
+				}
 			} else {
 				$this->session->setFlash('Invalid email and/or password.');
 				return $this->redirectBack();
@@ -34,6 +41,10 @@ class UserController extends Controller {
 
 	public function logout() {
 		$this->session->destroy();
+		if(Cookie::getCookieByName('authState', false)){
+			setcookie('authState', "", time()-3600);
+			unset($_COOKIE['authState']);
+		}
 		return $this->redirectRoute('login');
 	}
 
