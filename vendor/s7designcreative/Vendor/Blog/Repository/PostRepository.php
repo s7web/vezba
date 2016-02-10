@@ -25,7 +25,17 @@ LIMIT ' . $limit
 		);
 		$query->execute();
 		return $query->fetchAll();
+	}
 
+	public function search($q, $limit = 10) {
+		return $this->createQueryBuilder('p')
+            ->where('p.title LIKE :q')
+            ->orWhere('p.summary LIKE :q')
+            ->orWhere('p.content LIKE :q')
+            ->setParameter('q', '%' . $q . '%')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
 	}
 
 	public function mostCommented($limit, $daysAgo) {
