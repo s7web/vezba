@@ -38,6 +38,22 @@ LIMIT ' . $limit
             ->getResult();
 	}
 
+    public function getByTag($tag, $limit = 10) {
+        $query = $this->getEntityManager()->getConnection()->prepare(<<<SQL
+SELECT p.id, p.title, p.summary
+FROM post p
+INNER JOIN post_has_tag as pt ON (p.id = pt.post_id)
+INNER JOIN tag as t ON (t.id = pt.tag_id)
+WHERE t.name LIKE :q
+GROUP BY p.id
+LIMIT {$limit}
+SQL
+        );
+        $query->bindValue(':q', "%{$tag}%");
+        $query->execute();
+        return $query->fetchAll();
+    }
+
 	public function mostCommented($limit, $daysAgo) {
 		return $this->createQueryBuilder('p')
 			->select('p, count(c) as HIDDEN counter')
