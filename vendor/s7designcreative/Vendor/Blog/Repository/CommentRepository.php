@@ -11,7 +11,8 @@ class CommentRepository extends EntityRepository {
 			->groupBy('c.id')
 			->where('c.post = :postId')
 			->setParameter('postId', $postId)
-			->orderBy('diff', $order)
+			->addOrderBy('diff', $order)
+			->addOrderBy('c.id', 'DESC')
 			->setMaxResults($limit)
 			->getQuery()
 			->getResult();
