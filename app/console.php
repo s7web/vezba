@@ -78,6 +78,22 @@ $console
 );
 
 $console
+    ->register('update:blog:category:slug')
+    ->setDescription('Update categories slug.')
+    ->setCode(function (InputInterface $input, OutputInterface $output) use($em) {
+
+		/** @var \S7D\Vendor\Blog\Entity\Category[] $categories */
+		$categories = $em->getRepository('S7D\Vendor\Blog\Entity\Category')->findAll();
+		foreach($categories as $category) {
+			$slugger = new \S7D\App\News\Utils\Slugger();
+			$category->setSlug($slugger->slugify($category->getName()));
+			$em->persist($category);
+		}
+		$em->flush();
+    }
+);
+
+$console
     ->register('insert:siteOption')
     ->setDescription('Insert site option.')
 	->addArgument('key', \Symfony\Component\Console\Input\InputArgument::REQUIRED, 'key')

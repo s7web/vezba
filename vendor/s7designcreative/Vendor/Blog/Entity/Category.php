@@ -28,6 +28,25 @@ class Category
 	/** @Column(type="string", nullable=true) */
 	protected $color;
 
+	/** @Column(type="string", nullable=true) */
+	protected $slug;
+
+    /**
+     * @return mixed
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param mixed $slug
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    }
+
 	/**
 	 * @return mixed
 	 */
