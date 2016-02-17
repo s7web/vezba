@@ -18,6 +18,9 @@ class Media {
 	/** @Column(type="string") **/
 	public $type;
 
+	/** @Column(type="json_array", nullable=true) **/
+	public $meta;
+
 	/** @Column(type="string", nullable=true) **/
 	public $parent;
 }

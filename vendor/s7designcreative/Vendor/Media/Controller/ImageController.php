@@ -92,9 +92,12 @@ class ImageController extends Controller {
 		$gallery = [];
 		$images = array_reverse($images);
 		foreach($images as $image) {
+			$source = isset($image->meta['source']) ? $image->meta['source'] : '';
 			$gallery[] = [
 				'image' => '/' . $image->file,
 				'thumb' => '/' . 'upload/' . $image->fileName . '-100x100.png',
+				'source' => $source,
+				'saveSourceUrl' => $this->generateUrl('saveSource', $image->id),
 			];
 		}
 		$gallery = array_reverse($gallery);
