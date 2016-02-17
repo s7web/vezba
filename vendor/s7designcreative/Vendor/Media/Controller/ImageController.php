@@ -104,7 +104,7 @@ class ImageController extends Controller {
 	public function reductorSave() {
 
 		$image = new ImageResize($_FILES['file']['tmp_name']);
-		$image->resize(960, 720);
+		$image->crop(960, 720);
 		$name = preg_replace('/\..+$/', '', $_FILES['file']['name']);
 		$src = $this->uploadImage($image, $name);
 
