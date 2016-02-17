@@ -114,7 +114,7 @@ $ns = 'S7D\App\\' . $app->parameters->get('app');
 foreach($finder as $file) {
 	$class = $ns . '\Command\\' . $file->getBasename('.php');
 	$r = new \ReflectionClass($class);
-	$console->add($r->newInstance($app->container->em));
+	$console->add($r->newInstance($app->container));
 }
 
 $helperSet = \Doctrine\ORM\Tools\Console\ConsoleRunner::createHelperSet($em);

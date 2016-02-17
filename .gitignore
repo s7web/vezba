@@ -8,3 +8,5 @@ public/upload
 cache/
 src/
 app/config/parameters.yml
+public/robots.txt
+public/sitemap.xml*
