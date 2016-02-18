@@ -38,19 +38,13 @@ class PostRepository extends EntityRepository {
 	}
 
     public function getByTag($tag, $limit = 10) {
-        $query = $this->getEntityManager()->getConnection()->prepare(<<<SQL
-SELECT p.id, p.title, p.summary
-FROM post p
-INNER JOIN post_has_tag as pt ON (p.id = pt.post_id)
-INNER JOIN tag as t ON (t.id = pt.tag_id)
-WHERE t.name LIKE :q
-GROUP BY p.id
-LIMIT {$limit}
-SQL
-        );
-        $query->bindValue(':q', "%{$tag}%");
-        $query->execute();
-        return $query->fetchAll();
+		return $this->createQueryBuilder('p')
+			->join('p.tags', 't')
+			->where('t.name = :tag')
+			->setParameter('tag', $tag)
+			->setMaxResults($limit)
+			->getQuery()
+			->getResult();
     }
 
 	public function mostCommented($limit, $daysAgo) {
