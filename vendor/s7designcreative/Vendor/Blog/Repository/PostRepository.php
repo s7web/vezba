@@ -18,8 +18,8 @@ class PostRepository extends EntityRepository {
 
 		return $this->createQueryBuilder('p')
 			->join('p.categories', 'c')
-			->where('c.name = :category')
-			->setParameter('category', $category)
+			->where('c.name LIKE :category')
+			->setParameter('category', '%' . $category . '%')
 			->orderBy('p.id', 'DESC')
 			->setMaxResults($limit)
 			->getQuery()
