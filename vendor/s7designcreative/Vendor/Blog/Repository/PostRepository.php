@@ -14,17 +14,16 @@ class PostRepository extends EntityRepository {
 		return $count->getQuery()->getSingleScalarResult();
 	}
 
-	public function getLastest($categoryId, $limit) {
-		$query = $this->getEntityManager()->getConnection()->prepare(
-'SELECT p . *
-FROM post_has_category pc
-LEFT JOIN post p ON ( p.id = pc.post_id )
-WHERE pc.category_id = ' . $categoryId . '
-ORDER BY p.id DESC
-LIMIT ' . $limit
-		);
-		$query->execute();
-		return $query->fetchAll();
+	public function getLatest($category, $limit) {
+
+		return $this->createQueryBuilder('p')
+			->join('p.categories', 'c')
+			->where('c.name = :category')
+			->setParameter('category', $category)
+			->orderBy('p.id', 'DESC')
+			->setMaxResults($limit)
+			->getQuery()
+			->getResult();
 	}
 
 	public function search($q, $limit = 10) {
