@@ -91,7 +91,7 @@ class Application
 		$uri = urldecode($uri);
 		$found = false;
 		foreach($router->routes as $route) {
-			if(preg_match('/^' . str_replace('/', '\/', $route->pattern) . '$/u', $uri, $queryParams)) {
+			if(preg_match('/^' . str_replace('/', '\/', $route->pattern) . '\/?$/u', $uri, $queryParams)) {
 				$controller = $route->controller;
 				$action = $route->action;
 				array_shift($queryParams);
