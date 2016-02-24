@@ -68,14 +68,18 @@ class Category
         $this->posts = new ArrayCollection();
     }
 
+
     /**
      * Get posts for category
      *
+     * @param int $offset
+     * @param int $limit
+     *
      * @return Post[]
      */
-    public function getPosts()
+    public function getPosts($offset = 0, $limit = 10)
     {
-        return $this->posts;
+        return array_slice($this->posts->toArray(), $offset, $limit);
     }
 
     /**
