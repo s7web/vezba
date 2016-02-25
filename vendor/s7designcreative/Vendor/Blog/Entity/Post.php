@@ -350,6 +350,10 @@ class Post
         return isset($this->meta[$key]) ? $this->meta[$key] : null;
     }
 
+    public function getAllMeta() {
+        return $this->meta;
+    }
+
     /**
      * @param mixed $meta
      */
