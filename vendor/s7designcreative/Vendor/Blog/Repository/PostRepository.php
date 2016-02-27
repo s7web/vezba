@@ -64,6 +64,7 @@ class PostRepository extends EntityRepository {
 	public function getMostViewed($limit, $daysAgo) {
 		return $this->createQueryBuilder('p')
 			->where('p.updated > :date')
+            ->andWhere('p.type is NULL')
 			->setParameter('date', new \DateTime("-$daysAgo days"))
 			->orderBy('p.views', 'DESC')
 			->orderBy('p.updated', 'DESC')
