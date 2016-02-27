@@ -142,6 +142,7 @@ class Controller
 		$data['site'] = [
 			'language' => $this->session->get('language', $this->parameters->get('language', 'en')),
 			'textScript' => $this->session->get('textScript', $this->parameters->get('textScript', 'latin')),
+            'base' => 'http://' . $_SERVER['HTTP_HOST']
 		];
 
 		$data['siteUrl'] = $this->parameters->get('url');
