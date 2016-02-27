@@ -89,6 +89,7 @@ class Application
 		$uri = ltrim($_SERVER['REQUEST_URI'], '/');
 		$uri = preg_replace('/\?.*/', '', $uri);
 		$uri = urldecode($uri);
+        $uri = str_replace('index.php', '', $uri);
 		$found = false;
 		foreach($router->routes as $route) {
 			if(preg_match('/^' . str_replace('/', '\/', $route->pattern) . '\/?$/u', $uri, $queryParams)) {
