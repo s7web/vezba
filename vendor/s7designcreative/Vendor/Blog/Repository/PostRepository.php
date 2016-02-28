@@ -52,6 +52,7 @@ class PostRepository extends EntityRepository {
 			->select('p, count(c) as HIDDEN counter')
 			->leftJoin('S7D\Vendor\Blog\Entity\Comment', 'c', 'with', 'c.post = p.id')
 			->where('p.updated > :date')
+            ->andWhere('p.type is NULL')
 			->setParameter('date', new \DateTime("-$daysAgo days"))
 			->groupBy('p.id')
 			->orderBy('counter', 'DESC')
