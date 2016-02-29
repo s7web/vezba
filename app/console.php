@@ -62,17 +62,20 @@ $console
 );
 
 $console
-    ->register('update:blogData')
-    ->setDescription('Insert blog data.')
+    ->register('update:blog:postSlug')
+    ->setDescription('Update post slug.')
     ->setCode(function (InputInterface $input, OutputInterface $output) use($em) {
 
 		/** @var \S7D\Vendor\Blog\Entity\Post[] $posts */
 		$posts = $em->getRepository('S7D\Vendor\Blog\Entity\Post')->findAll();
+        $c = 0;
 		foreach($posts as $post) {
 			$slugger = new \S7D\App\News\Utils\Slugger();
 			$post->setSlug($slugger->slugify($post->getTitle()));
 			$em->persist($post);
+            $c++;
 		}
+        $output->writeln(sprintf('Changed <info>%s</info> slug(s).', $c));
 		$em->flush();
     }
 );
