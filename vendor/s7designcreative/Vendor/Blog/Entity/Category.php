@@ -31,6 +31,44 @@ class Category
 	/** @Column(type="string", nullable=true) */
 	protected $slug;
 
+	/** @Column(type="simple_array", nullable=true) */
+    protected $children;
+
+	/** @Column(type="integer", nullable=true) */
+    protected $ordering;
+
+    /**
+     * @return mixed
+     */
+    public function getOrdering()
+    {
+        return $this->ordering;
+    }
+
+    /**
+     * @param mixed $ordering
+     */
+    public function setOrdering( $ordering )
+    {
+        $this->ordering = $ordering;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getChildren()
+    {
+        return $this->children;
+    }
+
+    /**
+     * @param mixed $children
+     */
+    public function setChildren( $children )
+    {
+        $this->children = $children;
+    }
+
     /**
      * @return mixed
      */
