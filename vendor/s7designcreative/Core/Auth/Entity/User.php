@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use S7D\Vendor\Blog\Entity\Post;
 
 /**
- * @Entity(repositoryClass="S7D\Core\Auth\Repository\UserRepository") @Table(name="user", uniqueConstraints={@UniqueConstraint(name="usr_idx", columns={"username", "email"})})
+ * @Entity(repositoryClass="S7D\Core\Auth\Repository\UserRepository") @Table(name="user", uniqueConstraints={@UniqueConstraint(name="usr_idx", columns={"email"})})
  */
 class User {
 
