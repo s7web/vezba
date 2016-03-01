@@ -26,13 +26,15 @@ class PostRepository extends EntityRepository {
 			->getResult();
 	}
 
-	public function search($q, $limit = 10) {
+	public function search($q, $offset = 0, $limit = 10) {
 		return $this->createQueryBuilder('p')
             ->where('p.title LIKE :q')
             ->orWhere('p.summary LIKE :q')
             ->orWhere('p.content LIKE :q')
             ->setParameter('q', '%' . $q . '%')
+            ->orderBy('p.id', 'DESC')
             ->setMaxResults($limit)
+            ->setFirstResult($offset)
             ->getQuery()
             ->getResult();
 	}
