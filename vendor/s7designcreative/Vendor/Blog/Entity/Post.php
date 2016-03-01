@@ -387,6 +387,16 @@ class Post
 		return $category;
 	}
 
+    public function hasCategory($categoryId) {
+        $categories = $this->categories;
+        $categories->toArray();
+        foreach($categories as $category) {
+            if($category->getId() === $categoryId) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public function addCategory(Category $category)
     {
