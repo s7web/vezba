@@ -37,9 +37,6 @@ class ImageController extends Controller {
 			$fileName = $name . '-' . $i;
 		}
 
-        $slugger = $this->container->slugger;
-        $fileName = $slugger->slugify($fileName);
-
 		$image->save($path);
 
 		$image = new Media();
