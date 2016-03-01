@@ -112,7 +112,7 @@ class Application
 		$errorController = __NAMESPACE__ . '\Controller\ErrorController';
 		if(! $found) {
 			if($this->container->parameters->get('debug')) {
-				throw new \Exception('Route doesn\'t exists.');
+				throw new \Exception("Route for url '{$uri}' doesn\'t exists.");
 			}
 			$controller = $errorController;
 			$action = 'notFound';
