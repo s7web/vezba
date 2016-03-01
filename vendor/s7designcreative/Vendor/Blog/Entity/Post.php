@@ -380,7 +380,11 @@ class Post
 			$category->setId(rand(1,10));
 			return $category;
 		}
-		return $categories[0];
+        $category = $categories[0];
+        if($category->getId() === 2 && isset($categories[1])) {
+            $category = $categories[1];
+        }
+		return $category;
 	}
 
 
