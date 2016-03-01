@@ -14,12 +14,14 @@ class PostRepository extends EntityRepository {
 		return $count->getQuery()->getSingleScalarResult();
 	}
 
-	public function getLatest($category, $limit) {
+	public function getLatest($category, $limit, $exclude = 0) {
 
 		return $this->createQueryBuilder('p')
 			->join('p.categories', 'c')
 			->where('c.name LIKE :category')
 			->setParameter('category', '%' . $category . '%')
+            ->andWhere('p.id <> :exclude')
+            ->setParameter('exclude', $exclude)
 			->orderBy('p.id', 'DESC')
 			->setMaxResults($limit)
 			->getQuery()
