@@ -71,8 +71,8 @@ class PostRepository extends EntityRepository {
 			->where('p.updated > :date')
             ->andWhere('p.type is NULL')
 			->setParameter('date', new \DateTime("-$daysAgo days"))
-			->orderBy('p.views', 'DESC')
 			->orderBy('p.updated', 'DESC')
+			->orderBy('p.views', 'DESC')
 			->setMaxResults($limit)
 			->getQuery()
 			->getResult();
