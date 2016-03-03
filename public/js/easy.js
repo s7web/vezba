@@ -51,7 +51,7 @@ $(function(){
 
 EasyCms.system = {
     toggleInput : function(el) {
-        $($(el).data('target')).prop('disabled', !$(el).prop('checked'));
+        $($(el).data('target')).prop('disabled', !$(el).val());
     },
     reload: function(el) {
         var $this = $(el);
