@@ -11,7 +11,7 @@ class Response {
 
 	protected $redirect;
 
-	function __construct($output = null, $contentType = ':', $code = 200) {
+	function __construct($output = null, $contentType = 'Content-Type: text/html; charset=utf-8', $code = 200) {
 		$this->output = $output;
 		$this->contentType = $contentType;
 		$this->code = $code;
