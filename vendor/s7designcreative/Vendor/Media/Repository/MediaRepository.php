@@ -6,15 +6,15 @@ use Doctrine\ORM\EntityRepository;
 
 class MediaRepository extends EntityRepository {
 
-	public function search($query, $type, $limit) {
+	public function search($query, $types, $limit) {
 		return $this->createQueryBuilder('m')
 			->where('m.fileName LIKE :query')
-			->andWhere('m.type = :type')
+			->andWhere('m.type IN (:types)')
 			->andWhere('m.parent IS NULL')
 			->orderBy('m.id', 'DESC')
 			->setMaxResults($limit)
 			->setParameter('query', '%' . $query . '%')
-			->setParameter('type', $type)
+			->setParameter('types', $types)
 			->getQuery()->getResult();
 	}
 

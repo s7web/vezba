@@ -27,22 +27,25 @@ class ImageController extends Controller {
 		return $this->redirectBack();
 	}
 
-	private function uploadImage(ImageResize $image, $name) {
+	private function uploadImage(ImageResize $image, $nameOriginal) {
 
-		$path = 'upload/' . $name . '.png';
+        $slugger = $this->container->slugger;
+        $file = $slugger->slugify($nameOriginal);
+
+		$path = 'upload/' . $file . '.jpg';
 		$i = 0;
-		$fileName = $name;
+		$fileWithNumber = $file;
 		while(file_exists($path)) {
-			$path = 'upload/' . $name . '-' . ++$i . '.png';
-			$fileName = $name . '-' . $i;
+			$path = 'upload/' . $file . '-' . ++$i . '.jpg';
+            $fileWithNumber = $file . '-' . $i;
 		}
 
-		$image->save($path);
+		$image->save($path, IMAGETYPE_JPEG);
 
 		$image = new Media();
 		$image->file = $path;
-		$image->fileName = $fileName;
-		$image->type = 'image/png';
+		$image->fileName = $nameOriginal;
+		$image->type = 'image/jpeg';
 		$this->em->persist($image);
 		$this->em->flush();
 
@@ -52,13 +55,13 @@ class ImageController extends Controller {
 			$width = $size[0];
 			$height = $size[1];;
 			$ir->crop($width, $height);
-			$thumbPath = 'upload/' . $fileName . '-' . $width . 'x' . $height . '.png';
-			$ir->save($thumbPath);
+			$thumbPath = 'upload/' . $fileWithNumber . '-' . $width . 'x' . $height . '.jpg';
+			$ir->save($thumbPath, IMAGETYPE_JPEG);
 
 			$thumbnail = new Media();
 			$thumbnail->file = $thumbPath;
-			$thumbnail->fileName = $fileName;
-			$thumbnail->type = 'image/png';
+			$thumbnail->fileName = $nameOriginal;
+			$thumbnail->type = 'image/jpeg';
 			$thumbnail->parent = $image->id;
 			$this->em->persist($thumbnail);
 			$this->em->flush();
@@ -88,14 +91,15 @@ class ImageController extends Controller {
 	}
 
 	public function reductorJson($query) {
-		$images = $this->getMediaRepo()->search($query, 'image/png', 100);
+		$images = $this->getMediaRepo()->search($query, ['image/png', 'image/jpeg'], 50);
 		$gallery = [];
 		$images = array_reverse($images);
 		foreach($images as $image) {
+            $type = $image->type === 'image/png' ? 'png' : 'jpg';
 			$source = isset($image->meta['source']) ? $image->meta['source'] : '';
 			$gallery[] = [
 				'image' => '/' . $image->file,
-				'thumb' => '/' . 'upload/' . $image->fileName . '-100x100.png',
+				'thumb' => '/' . str_replace('.' . $type, '-100x100.' . $type, $image->file),
 				'source' => $source,
 				'saveSourceUrl' => $this->generateUrl('saveSource', $image->id),
 			];
@@ -109,7 +113,8 @@ class ImageController extends Controller {
 		$image = new ImageResize($_FILES['file']['tmp_name']);
 		$image->crop(960, 720);
 		$name = preg_replace('/\..+$/', '', $_FILES['file']['name']);
-		$src = $this->uploadImage($image, $name);
+
+        $src = $this->uploadImage($image, $name);
 
 		return new ResponseJSON([
 			'filelink' => '/' . $src,
