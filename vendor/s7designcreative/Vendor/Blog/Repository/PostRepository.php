@@ -117,4 +117,15 @@ SQL
         $query->execute();
         return $query->fetchAll();
     }
+
+    public function getCountByViews() {
+        return $this->createQueryBuilder('p')
+            ->select('p.title as name, p.views as counter, c.color')
+            ->leftJoin('p.categories', 'c')
+            ->where('p.views > 20')
+            ->orderBy('p.created', 'desc')
+            ->groupBy('p.id')
+            ->getQuery()
+            ->getResult();
+    }
 }
