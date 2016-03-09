@@ -78,4 +78,43 @@ class PostRepository extends EntityRepository {
 			->getResult();
 	}
 
+    public function getCountByDay() {
+        $query = $this->getEntityManager()->getConnection()->prepare(<<<SQL
+SELECT DATE_FORMAT(p.created,"%d. %m. %Y.") as name, count(p.id) as counter
+FROM post p
+WHERE p.created BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW()
+GROUP BY name
+ORDER BY p.created DESC
+SQL
+        );
+        $query->execute();
+        return $query->fetchAll();
+    }
+
+    public function getCountByCategory() {
+        $query = $this->getEntityManager()->getConnection()->prepare(<<<SQL
+SELECT c.name, count(*) as counter, c.color
+FROM post_has_category pc
+LEFT JOIN category c ON (c.id = pc.category_id)
+GROUP BY category_id
+ORDER BY counter DESC
+SQL
+        );
+        $query->execute();
+        return $query->fetchAll();
+    }
+
+    public function getCountByTag() {
+        $query = $this->getEntityManager()->getConnection()->prepare(<<<SQL
+SELECT t.name, count(*) as counter
+FROM post_has_tag pt
+LEFT JOIN tag t ON (t.id = pt.tag_id)
+GROUP BY tag_id
+HAVING counter > 100
+ORDER BY counter DESC
+SQL
+        );
+        $query->execute();
+        return $query->fetchAll();
+    }
 }
