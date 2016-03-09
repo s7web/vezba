@@ -122,7 +122,7 @@ SQL
         return $this->createQueryBuilder('p')
             ->select('p.title as name, p.views as counter, c.color')
             ->leftJoin('p.categories', 'c')
-            ->where('p.views > 20')
+            ->where('p.views > 100')
             ->orderBy('p.created', 'desc')
             ->groupBy('p.id')
             ->getQuery()
