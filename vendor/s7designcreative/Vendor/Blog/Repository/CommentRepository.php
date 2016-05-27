@@ -10,6 +10,7 @@ class CommentRepository extends EntityRepository {
 			->select('c, MAX(c.likes - c.dislikes) as HIDDEN diff')
 			->groupBy('c.id')
 			->where('c.post = :postId')
+			->andWhere('c.status = 1')
 			->setParameter('postId', $postId)
 			->addOrderBy('diff', $order)
 			->addOrderBy('c.id', 'DESC')
