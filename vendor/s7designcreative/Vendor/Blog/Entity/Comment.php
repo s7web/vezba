@@ -12,7 +12,7 @@ class Comment {
 	/** @Column(type="integer", options={"default" = 0}, nullable=true) **/
 	public $author;
 
-	/** @Column(type="string") */
+	/** @Column(type="string", nullable=true) */
 	public $email;
 
 	/** @Column(type="string") */
