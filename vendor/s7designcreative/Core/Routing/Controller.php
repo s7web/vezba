@@ -112,11 +112,11 @@ class Controller
 		$twig->addFunction($function);
 
 		$that = $this;
-		$function = new \Twig_SimpleFunction('renderController', function($action) use ($that, $twig) {
+		$function = new \Twig_SimpleFunction('renderController', function($action, $param = null) use ($that, $twig) {
 			list($cnt, $action) = explode('::', $action);
 			$this->changeController($cnt);
 			/** @var Response $response */
-			$response = $this->container->controller->$action();
+			$response = $this->container->controller->$action($param);
 			return $response->getOutput();
 		});
 		$twig->addFunction($function);
