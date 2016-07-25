@@ -1,11 +1,11 @@
-url: http://easy-cms.username.loc/
+url: http://projectfour.dev/
 database:
-  dbname: ~
+  dbname: news
   driver: pdo_mysql
   host: 127.0.0.1
   port: 3306
   user: root
-  password: root
+  password:
   charset: utf8mb4
 debug: true
 secret: 3z7ed7we2e77mjkfkiqowc
