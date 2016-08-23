@@ -9,6 +9,7 @@
 class HomeModel extends BaseModel
 {
 
+	protected $table = 'nasa_tabela';
 
 	public $data = array(
 		array('name' => 'Neda', 'lastname' => 'Andric'),

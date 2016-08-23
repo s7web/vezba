@@ -11,10 +11,11 @@ class HomeController extends Controller
 
 	public function index($c)
 	{
-		
+		echo $_GET['bla'];
 		/** @var HomeModel $data */
 		$data = $c->databaseLoader->getModel('HomeModel');
-		$this->view('home/index', array('hack' => $data->data) );
+		$result = $data->select(array('*'))->where('title', '=', 'Naslov1')->getResults();
+		$this->view('home/index', array('hack' => $result) );
 	}
 
 }
