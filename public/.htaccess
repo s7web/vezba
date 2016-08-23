@@ -1,17 +1,7 @@
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ /index.php?/$1 [L]
-Options -Indexes
-
-RewriteCond %{HTTP_HOST} ^54\.93\.82\.81
-RewriteRule (.*) http://www.novaborba.co.rs/$1 [R=301,L]
-
-RewriteCond %{HTTP_HOST} ^www\.novaborba.co.rs\.com$
-RewriteRule ^/?$ "http\:\/\/novaborba\.co.rs\/" [R=301,L]
-
-RewriteCond %{HTTP_USER_AGENT} libwww-perl.*
-RewriteRule .* ? [F,L]
+RewriteRule ^(.*)$ /index.php?url=$1 [L]
 
 <IfModule mod_expires.c>
     ExpiresActive on
