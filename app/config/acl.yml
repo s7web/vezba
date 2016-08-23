@@ -1,3 +1,0 @@
-guest: []
-user: ["guest"]
-admin: ["guest", "user"]

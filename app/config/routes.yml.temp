@@ -1,5 +1,0 @@
-users:
-  route: "home/cms"
-  controller: "User\Controller\UserController"
-  method: "index"
-  request_method: "GET"
